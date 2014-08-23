@@ -9,7 +9,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.height = 640;
 		config.width = 1024;
-		config.title = "Beneath the surface of the democracy";
+		config.title = "Connected Worlds Incorporated v1.0.0";
 		new LwjglApplication(new LDGame(), config);
 	}
 }
