@@ -1,14 +1,12 @@
 package com.catinthedark.game.level;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 /**
  * Created by Ilya on 23.08.2014.
  */
 public class Tile {
     public final TileType type;
-    private float xTilePos;
-    private float yTilePos;
+    private float x;
+    private float y;
 
     /**
      *
@@ -21,12 +19,16 @@ public class Tile {
             throw new RuntimeException("Cannot create tile without type");
         }
 
-        this.xTilePos = xTilePos;
-        this.yTilePos = yTilePos;
+        this.x = xTilePos;
+        this.y = yTilePos;
         this.type = type;
     }
 
-    public void render(float delta, SpriteBatch batch, float x, float y){
-        // TODO
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
     }
 }

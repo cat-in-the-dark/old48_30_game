@@ -1,5 +1,7 @@
 package com.catinthedark.game.level;
 
+import com.catinthedark.game.Constants;
+
 import java.util.*;
 
 /**
@@ -22,24 +24,28 @@ public class TilePresetFactory {
         this.rawTilePresetsHard = new ArrayList<int[][]>();
 
         this.tilePresets = new HashMap<Integer, List<TilePreset>>();
-        this.tilePresets.put(TilePreset.EASY, new ArrayList<TilePreset>());
-        this.tilePresets.put(TilePreset.MEDIUM, new ArrayList<TilePreset>());
-        this.tilePresets.put(TilePreset.HARD, new ArrayList<TilePreset>());
+        this.tilePresets.put(Constants.EASY, new ArrayList<TilePreset>());
+        this.tilePresets.put(Constants.MEDIUM, new ArrayList<TilePreset>());
+        this.tilePresets.put(Constants.HARD, new ArrayList<TilePreset>());
 
         for (int[][] rawTilePreset : rawTilePresetsEasy) {
-            tilePresets.get(TilePreset.EASY).add(new TilePreset(rawTilePreset, TilePreset.EASY));
+            tilePresets.get(Constants.EASY).add(new TilePreset(rawTilePreset, Constants.EASY));
         }
 
         for (int[][] rawTilePreset : rawTilePresetsMedium) {
-            tilePresets.get(TilePreset.MEDIUM).add(new TilePreset(rawTilePreset, TilePreset.MEDIUM));
+            tilePresets.get(Constants.MEDIUM).add(new TilePreset(rawTilePreset, Constants.MEDIUM));
         }
 
         for (int[][] rawTilePreset : rawTilePresetsHard) {
-            tilePresets.get(TilePreset.HARD).add(new TilePreset(rawTilePreset, TilePreset.HARD));
+            tilePresets.get(Constants.HARD).add(new TilePreset(rawTilePreset, Constants.HARD));
         }
     }
 
     public TilePreset build(int difficult){
+        if (tilePresets.get(difficult).size() == 0) {
+            throw new RuntimeException("There is no tile preset for this difficult " + Integer.toString(difficult));
+        }
+
         Random random = new Random();
         int i = random.nextInt(tilePresets.get(difficult).size() + 1);
         return tilePresets.get(difficult).get(i);

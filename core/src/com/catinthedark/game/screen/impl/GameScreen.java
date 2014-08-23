@@ -17,6 +17,10 @@ public class GameScreen extends ResizableScreen {
 		this.camera.update();
 	}
 
+    public Camera getCamera() {
+        return camera;
+    }
+
 	@Override
 	public void render(float delta) {
 		super.render(delta);
