@@ -1,7 +1,11 @@
 package render;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.catinthedark.game.Config;
+import com.catinthedark.game.Constants;
 import com.catinthedark.game.assets.Assets;
 
 import entity.Player;
@@ -39,6 +43,11 @@ public class PlayerRender {
 			Assets.fonts.hudFont.draw(batch, "cross down", 200, 230);
 			break;
 		}
+
+        Vector2 playerPos = player.getBody().getPosition();
+        batch.draw(Assets.textures.playerReg, (playerPos.x - Constants.PLAYER_HEIGHT / 2 ) * conf.UNIT_SIZE,
+                (playerPos.y - Constants.PLAYER_WIDTH / 2)* conf.UNIT_SIZE,
+                Constants.PLAYER_WIDTH * conf.UNIT_SIZE, Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
 
 		batch.end();
 	}

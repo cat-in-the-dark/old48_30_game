@@ -1,17 +1,29 @@
 package com.catinthedark.game.screen.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import render.BlocksRender;
 import render.HudRenderer;
+import render.LevelRender;
 import render.PlayerRender;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.catinthedark.game.Config;
+import com.catinthedark.game.Constants;
 import com.catinthedark.game.assets.Assets;
 import com.catinthedark.game.hud.Hud;
+import com.catinthedark.game.level.Level;
+import com.catinthedark.game.physics.PhysicsModel;
 import com.catinthedark.game.screen.ResizableScreen;
 
+import entity.Block;
 import entity.Player;
 
 public class GameScreen extends ResizableScreen {
@@ -19,8 +31,12 @@ public class GameScreen extends ResizableScreen {
 	private final Camera camera;
 	private final Hud hud;
 	private final HudRenderer hudRenderer;
-	private final Player player = new Player();
 	private final PlayerRender playerRenderer;
+    private final LevelRender levelRender;
+    private final BlocksRender blocksRender;
+    private Player player;
+    private Level level;
+    private List<Block> blockList;
 
 	private final OrthographicCamera backgroundFarCamera = new OrthographicCamera(
 			conf.VIEW_PORT_WIDTH, conf.VIEW_PORT_HEIGHT);
@@ -39,6 +55,13 @@ public class GameScreen extends ResizableScreen {
 
 		playerRenderer = new PlayerRender(conf);
 
+        blocksRender = new BlocksRender(conf);
+
+        level = new Level();
+        levelRender = new LevelRender();
+
+        player = createPlayer(level.getWorld());
+
 		player.moveRight();
 		player.crosshairMiddle();
 
@@ -46,7 +69,24 @@ public class GameScreen extends ResizableScreen {
 				conf.VIEW_PORT_WIDTH / 2,
 				conf.VIEW_PORT_HEIGHT / 2, 0 });
 		backgroundFarCamera.update();
+
+        blockList = new ArrayList<Block>();
+        blockList.add(createBlock(level.getWorld()));
 	}
+
+    private Player createPlayer(World world) {
+        PolygonShape playerShape = new PolygonShape();
+        playerShape.setAsBox(Constants.PLAYER_WIDTH / 2, Constants.PLAYER_HEIGHT / 2);
+        PhysicsModel playerModel = new PhysicsModel(world, 0, 5, playerShape, true, BodyDef.BodyType.DynamicBody, 0.1f);
+        return new Player(playerModel);
+    }
+
+    private Block createBlock(World world) {
+        PolygonShape blockShape = new PolygonShape();
+        blockShape.setAsBox(Constants.BLOCK_WIDTH / 2, Constants.BLOCK_HEIGHT / 2);
+        PhysicsModel blockModel = new PhysicsModel(world, 0, 0, blockShape, true, BodyDef.BodyType.StaticBody, 0.1f);
+        return new Block(blockModel);
+    }
 
 	@Override
 	public void render(float delta) {
@@ -65,6 +105,8 @@ public class GameScreen extends ResizableScreen {
 			backgroundFarCamera.update();
 		}
 
+        levelRender.render(level, delta);
+        blocksRender.render(blockList);
 	}
 
 	@Override

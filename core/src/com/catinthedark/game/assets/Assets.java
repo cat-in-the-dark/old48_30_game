@@ -33,6 +33,8 @@ public class Assets {
 		public Texture logoTex;
 		public TextureRegion heartReg;
 		public TextureRegion hudWireReg;
+        public TextureRegion playerReg;
+        public TextureRegion blockReg;
 
 		public TiledMapRenderer backgroundFar;
 		public TiledMapRenderer background;
@@ -57,6 +59,11 @@ public class Assets {
 			backgroundFar = new OrthogonalTiledMapRenderer(backgroundFarMap,
 					1 / 32f);
 
+            Texture player = new Texture(Gdx.files.internal("texture/player.png"));
+            playerReg = new TextureRegion(player);
+
+            Texture block = new Texture(Gdx.files.internal("texture/block.png"));
+            blockReg = new TextureRegion(block);
 		}
 	}
 
