@@ -12,6 +12,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -41,6 +42,8 @@ public class GameScreen extends ResizableScreen {
 	private final OrthographicCamera backgroundFarCamera = new OrthographicCamera(
 			conf.VIEW_PORT_WIDTH, conf.VIEW_PORT_HEIGHT);
 	private final int[] layers = new int[] { 0 };
+
+	private SpriteBatch batch = new SpriteBatch();
 
 	public GameScreen(Config conf) {
 		super(conf);
@@ -91,12 +94,15 @@ public class GameScreen extends ResizableScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
+
 		// draw far background image
 		Assets.textures.backgroundFar.setView(backgroundFarCamera);
 		Assets.textures.backgroundFar.render(layers);
 
 		hudRenderer.render(hud);
 		playerRenderer.render(player);
+		
+		
 		if (Gdx.input.isKeyPressed(Keys.D)) {
 			backgroundFarCamera.position.set(
 					backgroundFarCamera.position.x + 0.15f,
@@ -135,6 +141,9 @@ public class GameScreen extends ResizableScreen {
 
 		if (keycode == Keys.SPACE) // space
 			player.jump();
+
+		if (keycode == Keys.ENTER)
+			player.shot();
 
 		// if (keycode == 51) // w
 		// hud.addMeters(3);

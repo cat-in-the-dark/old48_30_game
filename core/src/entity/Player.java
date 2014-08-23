@@ -1,25 +1,23 @@
 package entity;
 
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.catinthedark.game.Constants;
 import com.catinthedark.game.physics.PhysicsModel;
-
-import java.awt.*;
 
 public class Player {
 	private DirectionX dirX;
 	private DirectionY dirY;
+	private long attackBeganAt;
 
-    private PhysicsModel model;
+	private PhysicsModel model;
 
-    public Body getBody() {
-        return model.getBody();
-    }
+	public Body getBody() {
+		return model.getBody();
+	}
 
-    public Player(PhysicsModel model) {
-        this.model = model;
-    }
+	public Player(PhysicsModel model) {
+		this.model = model;
+	}
 
 	public DirectionX getDirX() {
 		return dirX;
@@ -39,7 +37,21 @@ public class Player {
 	}
 
 	public void jump() {
-        getBody().applyLinearImpulse(Constants.jumpImpulse, getBody().getPosition(), true);
+		getBody().applyLinearImpulse(Constants.jumpImpulse,
+				getBody().getPosition(), true);
+	}
+
+	public boolean isInAttack() {
+		return System.currentTimeMillis() - attackBeganAt < 1400;
+	}
+
+	public void shot() {
+		long now = System.currentTimeMillis();
+		if (now - attackBeganAt > 1400) {
+			// new attack
+			attackBeganAt = now;
+		}
+
 	}
 
 	public void crosshairUp() {

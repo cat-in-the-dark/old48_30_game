@@ -44,12 +44,43 @@ public class PlayerRender {
 			break;
 		}
 
-        Vector2 playerPos = player.getBody().getPosition();
-        batch.draw(Assets.textures.playerReg, (playerPos.x - Constants.PLAYER_HEIGHT / 2 ) * conf.UNIT_SIZE,
-                (playerPos.y - Constants.PLAYER_WIDTH / 2)* conf.UNIT_SIZE,
-                Constants.PLAYER_WIDTH * conf.UNIT_SIZE, Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
+		Vector2 playerPos = player.getBody().getPosition();
+		batch.draw(Assets.textures.playerReg,
+				(playerPos.x - Constants.PLAYER_HEIGHT / 2) * conf.UNIT_SIZE,
+				(playerPos.y - Constants.PLAYER_WIDTH / 2) * conf.UNIT_SIZE,
+				Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
+				Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
+		if (player.isInAttack()) {
+			switch (player.getDirY()) {
+			case CROSSHAIR_UP:
+				batch.draw(Assets.textures.shot,
+						(playerPos.x + Constants.PLAYER_HEIGHT / 2)
+								* conf.UNIT_SIZE,
+						(playerPos.y - Constants.PLAYER_WIDTH / 2)
+								* conf.UNIT_SIZE + 16, 0, 0,
+						256, 32, 1, 1, 45, 0, 0, 1, 1, false, false);
+				break;
+			case CROSSHAIR_MIDDLE:
+				batch.draw(
+						Assets.textures.shot,
+						(playerPos.x + Constants.PLAYER_HEIGHT / 2)
+								* conf.UNIT_SIZE,
+						(playerPos.y - Constants.PLAYER_WIDTH / 2)
+								* conf.UNIT_SIZE
+								+ 16,
+						256, 32);
+				break;
+			case CROSSHAIR_DOWN:
+				batch.draw(Assets.textures.shot,
+						(playerPos.x + Constants.PLAYER_HEIGHT / 2)
+								* conf.UNIT_SIZE,
+						(playerPos.y - Constants.PLAYER_WIDTH / 2)
+								* conf.UNIT_SIZE + 16, 0, 0,
+						256, 32, 1, 1, -45, 0, 0, 1, 1, false, false);
+				break;
+			}
+		}
 
 		batch.end();
 	}
-
 }

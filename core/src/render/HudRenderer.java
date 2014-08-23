@@ -38,7 +38,6 @@ public class HudRenderer {
 
 		Assets.fonts.hudFont.draw(batch, "Score: " + hud.getScore(),
 				conf.HUD_LEFT, conf.HUD_TOP - 50);
-
 		batch.end();
 
 	}
