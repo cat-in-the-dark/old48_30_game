@@ -1,27 +1,27 @@
 package com.catinthedark.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.Game;
+import com.catinthedark.game.assets.Assets;
+import com.catinthedark.game.screen.ScreenChain;
+import com.catinthedark.game.screen.TitleScreen;
+import com.catinthedark.game.screen.impl.GameScreen;
 
-public class LDGame extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-	}
+public class LDGame extends Game {
 
 	@Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+	public void create() {
+		Config conf = new Config();
+		// any settings here?
+
+		// load game resources
+		Assets.init(conf);
+		
+
+		ScreenChain chain = new ScreenChain(this);
+
+		chain.add(new TitleScreen(conf, Assets.textures.logoTex, 1000));
+		chain.add(new GameScreen(conf));
+		chain.gotoFrame(0);
+
 	}
 }
