@@ -1,10 +1,25 @@
 package entity;
 
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.catinthedark.game.Constants;
+import com.catinthedark.game.physics.PhysicsModel;
+
+import java.awt.*;
+
 public class Player {
 	private DirectionX dirX;
 	private DirectionY dirY;
 
-	// player physical model here
+    private PhysicsModel model;
+
+    public Body getBody() {
+        return model.getBody();
+    }
+
+    public Player(PhysicsModel model) {
+        this.model = model;
+    }
 
 	public DirectionX getDirX() {
 		return dirX;
@@ -24,7 +39,7 @@ public class Player {
 	}
 
 	public void jump() {
-		System.out.println("jump");
+        getBody().applyLinearImpulse(Constants.jumpImpulse, getBody().getPosition(), true);
 	}
 
 	public void crosshairUp() {

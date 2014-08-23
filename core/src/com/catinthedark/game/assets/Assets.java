@@ -31,6 +31,8 @@ public class Assets {
 		public Texture logoTex;
 		public TextureRegion heartReg;
 		public TextureRegion hudWireReg;
+        public TextureRegion playerReg;
+        public TextureRegion blockReg;
 
 		@Override
 		public void init(Config conf) {
@@ -46,6 +48,12 @@ public class Assets {
 					Gdx.files.internal("texture/hud_wire.png"));
 			hudWire.setWrap(TextureWrap.Repeat, TextureWrap.ClampToEdge);
 			hudWireReg = new TextureRegion(hudWire);
+
+            Texture player = new Texture(Gdx.files.internal("texture/player.png"));
+            playerReg = new TextureRegion(player);
+
+            Texture block = new Texture(Gdx.files.internal("texture/block.png"));
+            blockReg = new TextureRegion(block);
 		}
 	}
 
