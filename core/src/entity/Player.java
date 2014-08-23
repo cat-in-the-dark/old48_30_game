@@ -1,11 +1,8 @@
 package entity;
 
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.catinthedark.game.Constants;
 import com.catinthedark.game.physics.PhysicsModel;
-
-import java.awt.*;
 
 public class Player {
 	private DirectionX dirX;
@@ -15,6 +12,10 @@ public class Player {
 
     public Body getBody() {
         return model.getBody();
+    }
+
+    public PhysicsModel getModel() {
+        return model;
     }
 
     public Player(PhysicsModel model) {

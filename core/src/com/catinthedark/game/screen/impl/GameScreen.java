@@ -3,6 +3,8 @@ package com.catinthedark.game.screen.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import render.BlocksRender;
 import render.HudRenderer;
 import render.LevelRender;
@@ -12,9 +14,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 import com.catinthedark.game.Config;
 import com.catinthedark.game.Constants;
 import com.catinthedark.game.assets.Assets;
@@ -71,7 +70,9 @@ public class GameScreen extends ResizableScreen {
 		backgroundFarCamera.update();
 
         blockList = new ArrayList<Block>();
-        blockList.add(createBlock(level.getWorld()));
+        for (int i = 0; i < conf.VIEW_PORT_WIDTH; i++) {
+            blockList.add(createBlock(level.getWorld(), i));
+        }
 	}
 
     private Player createPlayer(World world) {
@@ -81,10 +82,10 @@ public class GameScreen extends ResizableScreen {
         return new Player(playerModel);
     }
 
-    private Block createBlock(World world) {
+    private Block createBlock(World world, int x) {
         PolygonShape blockShape = new PolygonShape();
         blockShape.setAsBox(Constants.BLOCK_WIDTH / 2, Constants.BLOCK_HEIGHT / 2);
-        PhysicsModel blockModel = new PhysicsModel(world, 0, 0, blockShape, true, BodyDef.BodyType.StaticBody, 0.1f);
+        PhysicsModel blockModel = new PhysicsModel(world, x, 0, blockShape, true, BodyDef.BodyType.StaticBody, 0.1f);
         return new Block(blockModel);
     }
 
@@ -133,8 +134,31 @@ public class GameScreen extends ResizableScreen {
 			player.moveRight();
 		}
 
-		if (keycode == Keys.SPACE) // space
-			player.jump();
+		if (keycode == Keys.SPACE) {  // space
+            Array<Contact> contactList = level.getWorld().getContactList();
+            for (int i = 0; i < contactList.size; i++) {
+                Contact contact = contactList.get(i);
+                if (contact.isTouching()) {
+
+                    List<Body> bodyList = new ArrayList<Body>();
+                    for (Block block : blockList) {
+                        bodyList.add(block.getBody());
+                    }
+
+                    if (contact.getFixtureA() == player.getModel().getFixture()) {
+                        if (bodyList.contains(contact.getFixtureB().getBody())) {
+                            player.jump();
+                            break;
+                        }
+                    } else if (contact.getFixtureB() == player.getModel().getFixture()) {
+                        if (bodyList.contains(contact.getFixtureA().getBody())) {
+                            player.jump();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
 		// if (keycode == 51) // w
 		// hud.addMeters(3);
