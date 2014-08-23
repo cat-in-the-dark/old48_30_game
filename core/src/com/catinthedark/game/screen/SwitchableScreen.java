@@ -38,8 +38,10 @@ public abstract class SwitchableScreen extends BasicScreen {
 	public boolean keyDown(int keycode) {
 		System.out.println("pressed key:" + keycode);
 		Integer nextFrame = bindingsMap.get(keycode);
-		if (nextFrame != null)
+		if (nextFrame != null) {
 			gotoFrame(nextFrame);
+			return true;
+		}
 
 		if (nextHook != null)
 			if (nextHook.equals(keycode)) {
@@ -53,6 +55,6 @@ public abstract class SwitchableScreen extends BasicScreen {
 				return true;
 			}
 
-		return true;
+		return false;
 	}
 }
