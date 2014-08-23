@@ -61,6 +61,7 @@ public class GameScreen extends ResizableScreen {
         levelRender = new LevelRender();
 
         player = createPlayer(level.getWorld());
+        player.getModel().getFixture().setFriction(Constants.FRICTION);
 
 		player.moveRight();
 		player.crosshairMiddle();
@@ -82,8 +83,8 @@ public class GameScreen extends ResizableScreen {
     }
 
     private Player createPlayer(World world) {
-        PolygonShape playerShape = new PolygonShape();
-        playerShape.setAsBox(Constants.PLAYER_WIDTH / 2, Constants.PLAYER_HEIGHT / 2);
+        CircleShape playerShape = new CircleShape();
+        playerShape.setRadius(Constants.PLAYER_WIDTH / 2);
         PhysicsModel playerModel = new PhysicsModel(world, 0, 5, playerShape, true, BodyDef.BodyType.DynamicBody, 0.1f);
         return new Player(playerModel);
     }
@@ -91,7 +92,7 @@ public class GameScreen extends ResizableScreen {
     private Block createBlock(World world, int x) {
         PolygonShape blockShape = new PolygonShape();
         blockShape.setAsBox(Constants.BLOCK_WIDTH / 2, Constants.BLOCK_HEIGHT / 2);
-        PhysicsModel blockModel = new PhysicsModel(world, x, 0, blockShape, true, BodyDef.BodyType.StaticBody, 0.1f);
+        PhysicsModel blockModel = new PhysicsModel(world, x, 0, blockShape, true, BodyDef.BodyType.StaticBody, 1.0f);
         return new Block(blockModel);
     }
 
@@ -117,6 +118,19 @@ public class GameScreen extends ResizableScreen {
 
         levelRender.render(level, delta);
         blocksRender.render(blockList);
+
+        // FIXME: move into render loop
+        if (Gdx.input.isKeyPressed(Keys.A)) { // a
+            if (player.getBody().getLinearVelocity().x > -10) {
+                player.moveLeft();
+            }
+        }
+
+        if (Gdx.input.isKeyPressed(Keys.D)) { // d
+            if (player.getBody().getLinearVelocity().x < 10) {
+                player.moveRight();
+            }
+        }
 	}
 
 	@Override
@@ -132,15 +146,6 @@ public class GameScreen extends ResizableScreen {
 
 		if (keycode == Keys.S) { // s
 			player.crosshairDown();
-		}
-
-		// FIXME: move into render loop
-		if (keycode == Keys.A) { // a
-			player.moveLeft();
-		}
-
-		if (keycode == Keys.D) { // d
-			player.moveRight();
 		}
 
 		if (keycode == Keys.SPACE) {  // space

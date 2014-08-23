@@ -7,6 +7,6 @@ import com.catinthedark.game.level.Level;
  */
 public class LevelRender {
     public void render(Level level, float delta) {
-        level.getWorld().step(delta, 6, 2);
+        level.getWorld().step(delta, 6, 300);
     }
 }

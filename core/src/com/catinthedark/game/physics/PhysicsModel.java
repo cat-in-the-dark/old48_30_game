@@ -8,10 +8,10 @@ import com.badlogic.gdx.physics.box2d.*;
  */
 public class PhysicsModel {
     private final Body body;
-    private final PolygonShape shape;
+    private final Shape shape;
     private final Fixture fixture;
 
-    public PhysicsModel(World world, float x, float y, PolygonShape shape, boolean fixedRotation, BodyDef.BodyType type, float density) {
+    public PhysicsModel(World world, float x, float y, Shape shape, boolean fixedRotation, BodyDef.BodyType type, float density) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.fixedRotation = fixedRotation;
         bodyDef.type = type;
@@ -26,7 +26,7 @@ public class PhysicsModel {
         return body;
     }
 
-    public PolygonShape getShape() {
+    public Shape getShape() {
         return shape;
     }
 

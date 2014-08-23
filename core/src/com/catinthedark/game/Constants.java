@@ -14,7 +14,11 @@ public class Constants {
     public static final float BLOCK_WIDTH = 1.0f;
     public static final float BLOCK_HEIGHT = 1.0f;
 
-    public static final int WORLD_GRAVITY = -10;
+    public static final int WORLD_GRAVITY = -30;
 
-    public static final Vector2 jumpImpulse = new Vector2(0f, 5.0f);
+    public static final Vector2 JUMP_IMPULSE = new Vector2(0f, 7.0f);
+    public static final float WALKING_FORCE = 1.0f;
+    public static final int FRICTION = 1;
+    public static final Vector2 WALKING_FORCE_RIGHT = new Vector2(WALKING_FORCE, 0f);
+    public static final Vector2 WALKING_FORCE_LEFT = new Vector2(-1 * WALKING_FORCE, 0f);
 }
