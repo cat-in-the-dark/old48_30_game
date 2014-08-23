@@ -19,6 +19,10 @@ public class Player {
 		this.model = model;
 	}
 
+	public PhysicsModel getModel() {
+		return model;
+	}
+
 	public DirectionX getDirX() {
 		return dirX;
 	}

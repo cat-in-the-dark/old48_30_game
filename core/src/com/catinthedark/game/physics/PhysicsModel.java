@@ -29,4 +29,8 @@ public class PhysicsModel {
     public PolygonShape getShape() {
         return shape;
     }
+
+    public Fixture getFixture() {
+        return fixture;
+    }
 }
