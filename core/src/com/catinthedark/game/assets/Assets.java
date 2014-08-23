@@ -1,7 +1,5 @@
 package com.catinthedark.game.assets;
 
-import java.awt.Font;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,6 +8,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.catinthedark.game.Config;
 
 public class Assets {
@@ -32,6 +34,9 @@ public class Assets {
 		public TextureRegion heartReg;
 		public TextureRegion hudWireReg;
 
+		public TiledMapRenderer backgroundFar;
+		public TiledMapRenderer background;
+
 		@Override
 		public void init(Config conf) {
 			logoTex = new Texture(
@@ -46,6 +51,12 @@ public class Assets {
 					Gdx.files.internal("texture/hud_wire.png"));
 			hudWire.setWrap(TextureWrap.Repeat, TextureWrap.ClampToEdge);
 			hudWireReg = new TextureRegion(hudWire);
+
+			TiledMap backgroundFarMap = new TmxMapLoader()
+					.load("background_far.tmx");
+			backgroundFar = new OrthogonalTiledMapRenderer(backgroundFarMap,
+					1 / 32f);
+
 		}
 	}
 
