@@ -9,93 +9,96 @@ import com.catinthedark.game.physics.PhysicsModel;
  * Created by Ilya on 24.08.2014.
  */
 public class MushroomedCrab implements Entity {
-	private DirectionX dirX =  DirectionX.RIGHT;
+	private DirectionX dirX = DirectionX.RIGHT;
 	private DirectionY dirY;
-    private float lastShutTime = 0f;
+	private float lastShutTime = 0f;
 	private float stateTime;
 	private boolean isMoving;
-    private boolean shutting = false;
+	public int healt = 100;
+	private boolean shutting = false;
 
-    private PhysicsModel model;
+	private PhysicsModel model;
 
-    public MushroomedCrab(PhysicsModel model) {
-        this.model = model;
-    }
+	public MushroomedCrab(PhysicsModel model) {
+		this.model = model;
+	}
 
-    @Override
-    public Body getBody() {
-        return model.getBody();
-    }
+	@Override
+	public Body getBody() {
+		return model.getBody();
+	}
 
-    @Override
-    public PhysicsModel getModel() {
-        return model;
-    }
+	@Override
+	public PhysicsModel getModel() {
+		return model;
+	}
 
-    @Override
-    public DirectionX getDirX() {
-        return dirX;
-    }
+	@Override
+	public DirectionX getDirX() {
+		return dirX;
+	}
 
-    @Override
-    public DirectionY getDirY() {
-        return dirY;
-    }
+	@Override
+	public DirectionY getDirY() {
+		return dirY;
+	}
 
-    @Override
-    public void moveRight() {
-        dirX = DirectionX.RIGHT;
-        getBody().applyLinearImpulse(Constants.WALKING_FORCE_RIGHT,
-                new Vector2(0f, 0f), true);
-    }
+	@Override
+	public void moveRight() {
+		dirX = DirectionX.RIGHT;
+		getBody().applyLinearImpulse(Constants.WALKING_FORCE_RIGHT,
+				new Vector2(0f, 0f), true);
+	}
 
-    @Override
-    public void moveLeft() {
-        dirX = DirectionX.LEFT;
-        getBody().applyLinearImpulse(Constants.WALKING_FORCE_LEFT,
-                new Vector2(0f, 0f), true);
-    }
+	@Override
+	public void moveLeft() {
+		dirX = DirectionX.LEFT;
+		getBody().applyLinearImpulse(Constants.WALKING_FORCE_LEFT,
+				new Vector2(0f, 0f), true);
+	}
 
-    @Override
-    public Bullet shot() {
-        if (lastShutTime > Constants.MUSHROOMED_CRAB_SHUT_DELAY) {
-            System.out.println("Shut");
-            lastShutTime = 0f;
-            switch (getDirX()) {
-                case RIGHT:
-                    shutting = true;
-                    return new Mushroom(DirectionX.RIGHT, DirectionY.CROSSHAIR_MIDDLE);
-                case LEFT:
-                    shutting = true;
-                    return new Mushroom(DirectionX.LEFT, DirectionY.CROSSHAIR_MIDDLE);
-            }
-        }
-        shutting = false;
-        return null;
-    }
+	@Override
+	public Bullet shot() {
+		if (lastShutTime > Constants.MUSHROOMED_CRAB_SHUT_DELAY) {
+			System.out.println("Shut");
+			lastShutTime = 0f;
+			switch (getDirX()) {
+			case RIGHT:
+				shutting = true;
+				return new Mushroom(DirectionX.RIGHT,
+						DirectionY.CROSSHAIR_MIDDLE);
+			case LEFT:
+				shutting = true;
+				return new Mushroom(DirectionX.LEFT,
+						DirectionY.CROSSHAIR_MIDDLE);
+			}
+		}
+		shutting = false;
+		return null;
+	}
 
-    @Override
-    public float getStateTime() {
-        return stateTime;
-    }
+	@Override
+	public float getStateTime() {
+		return stateTime;
+	}
 
-    public boolean isMoving() {
-        return isMoving;
-    }
+	public boolean isMoving() {
+		return isMoving;
+	}
 
-    @Override
-    public boolean isShutting() {
-        return shutting;
-    }
+	@Override
+	public boolean isShutting() {
+		return shutting;
+	}
 
-    @Override
-    public void setMoving(boolean isMoving) {
-        this.isMoving = isMoving;
-    }
+	@Override
+	public void setMoving(boolean isMoving) {
+		this.isMoving = isMoving;
+	}
 
-    @Override
-    public void update(float delta) {
-        stateTime += delta;
-        lastShutTime += delta;
-    }
+	@Override
+	public void update(float delta) {
+		stateTime += delta;
+		lastShutTime += delta;
+	}
 }

@@ -20,6 +20,7 @@ public class PhysicsModel {
         this.shape = shape;
         fixture = body.createFixture(this.shape, density);
         this.shape.dispose();
+        body.setUserData("1");
     }
 
     public Body getBody() {
