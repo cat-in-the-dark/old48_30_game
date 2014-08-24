@@ -17,6 +17,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.catinthedark.game.Config;
 import com.catinthedark.game.Constants;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Assets {
 	private interface Initable {
 		public void init(Config conf);
@@ -135,52 +138,37 @@ public class Assets {
         public Animation mushroomedCrabIdleRight;
         public Animation mushroomedCrabRunRight;
         public Animation mushroomedCrabRunLeft;
+        public Animation mushroomedCrabFireLeft;
+        public Animation mushroomedCrabFireRight;
+        public Animation mushroomedCrabMeltRight;
+        public Animation mushroomedCrabMeltLeft;
+
+        private TextureRegion[] selectRegions(TextureRegion[][] frames, int[] framesNumbers) {
+            List<TextureRegion> regions = new ArrayList<TextureRegion>(framesNumbers.length);
+            for (int index : framesNumbers) {
+                regions.add(frames[0][index]);
+            }
+
+            return regions.toArray(new TextureRegion[regions.size()]);
+        }
 
 		@Override
 		public void init(Config conf) {
 
 			playerJump = new Animation(0.05f,
-					new TextureRegion[] {
-							textures.playerFrames[0][14],
-							textures.playerFrames[0][15]
-					});
+                    selectRegions(textures.playerFrames, new int[]{14,15}));
 			playerJump.setPlayMode(Animation.PlayMode.NORMAL);
 
 			playerJumpBack = new Animation(0.05f,
-					new TextureRegion[] {
-							textures.playerFramesBack[0][14],
-							textures.playerFramesBack[0][15]
-					});
+                    selectRegions(textures.playerFramesBack, new int[]{14, 15}));
 			playerJumpBack.setPlayMode(Animation.PlayMode.NORMAL);
 
 			playerGo = new Animation(0.05f,
-					new TextureRegion[] {
-							textures.playerFrames[0][0],
-							textures.playerFrames[0][1],
-							textures.playerFrames[0][2],
-							textures.playerFrames[0][3],
-							textures.playerFrames[0][4],
-							textures.playerFrames[0][5],
-							textures.playerFrames[0][6],
-							textures.playerFrames[0][7],
-							textures.playerFrames[0][8],
-							textures.playerFrames[0][9],
-					});
+                    selectRegions(textures.playerFrames, new int[]{0,1,2,3,4,5,6,7,8,9}));
 			playerGo.setPlayMode(Animation.PlayMode.LOOP);
 
-			playerGoBack = new Animation(0.05f,
-					new TextureRegion[] {
-							textures.playerFramesBack[0][0],
-							textures.playerFramesBack[0][1],
-							textures.playerFramesBack[0][2],
-							textures.playerFramesBack[0][3],
-							textures.playerFramesBack[0][4],
-							textures.playerFramesBack[0][5],
-							textures.playerFramesBack[0][6],
-							textures.playerFramesBack[0][7],
-							textures.playerFramesBack[0][8],
-							textures.playerFramesBack[0][9],
-					});
+			playerGoBack = new Animation(0.05f, selectRegions(textures.playerFramesBack,
+                    new int[]{0,1,2,3,4,5,6,7,8,9}));
 			playerGoBack.setPlayMode(Animation.PlayMode.LOOP);
 
             mushroomedCrabIdleLeft = new Animation(Constants.ANIMATION_SPEED,
@@ -196,24 +184,28 @@ public class Assets {
             mushroomedCrabIdleRight.setPlayMode(Animation.PlayMode.NORMAL);
 
             mushroomedCrabRunLeft = new Animation(Constants.ANIMATION_SPEED,
-                    new TextureRegion[]{
-                            textures.mushroomedCrabFramesLeft[0][0],
-                            textures.mushroomedCrabFramesLeft[0][1],
-                            textures.mushroomedCrabFramesLeft[0][2],
-                            textures.mushroomedCrabFramesLeft[0][3],
-                            textures.mushroomedCrabFramesLeft[0][4]
-                    });
+                    selectRegions(textures.mushroomedCrabFramesLeft, new int[]{0,1,2,3,4}));
             mushroomedCrabRunLeft.setPlayMode(Animation.PlayMode.LOOP);
 
             mushroomedCrabRunRight = new Animation(Constants.ANIMATION_SPEED,
-                    new TextureRegion[]{
-                            textures.mushroomedCrabFramesRight[0][0],
-                            textures.mushroomedCrabFramesRight[0][1],
-                            textures.mushroomedCrabFramesRight[0][2],
-                            textures.mushroomedCrabFramesRight[0][3],
-                            textures.mushroomedCrabFramesRight[0][4]
-                    });
+                    selectRegions(textures.mushroomedCrabFramesRight, new int[]{0,1,2,3,4}));
             mushroomedCrabRunRight.setPlayMode(Animation.PlayMode.LOOP);
+
+            mushroomedCrabFireRight = new Animation(Constants.ANIMATION_SPEED,
+                    selectRegions(textures.mushroomedCrabFramesRight, new int[]{5,6,7}));
+            mushroomedCrabFireRight.setPlayMode(Animation.PlayMode.LOOP);
+
+            mushroomedCrabFireLeft = new Animation(Constants.ANIMATION_SPEED,
+                    selectRegions(textures.mushroomedCrabFramesLeft, new int[]{5,6,7}));
+            mushroomedCrabFireLeft.setPlayMode(Animation.PlayMode.LOOP);
+
+            mushroomedCrabMeltRight = new Animation(Constants.ANIMATION_SPEED,
+                    selectRegions(textures.mushroomedCrabFramesRight, new int[]{8,9,10,11,12,13}));
+            mushroomedCrabMeltRight.setPlayMode(Animation.PlayMode.LOOP);
+
+            mushroomedCrabMeltLeft = new Animation(Constants.ANIMATION_SPEED,
+                    selectRegions(textures.mushroomedCrabFramesLeft, new int[]{8,9,10,11,12,13}));
+            mushroomedCrabMeltLeft.setPlayMode(Animation.PlayMode.LOOP);
 		}
 
 	}
