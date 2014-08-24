@@ -13,9 +13,8 @@ public interface Entity {
     public DirectionY getDirY();
     public void moveRight();
     public void moveLeft();
-    public void shot();
+    public Bullet shot();
     public float getStateTime();
-    public void update(float delta, boolean isStay);
     public void update(float delta);
     public boolean isMoving();
     public void setMoving(boolean isMoving);
