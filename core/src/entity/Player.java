@@ -65,6 +65,7 @@ public class Player {
 	public void jump() {
 		getBody().applyLinearImpulse(Constants.JUMP_IMPULSE,
 				getBody().getPosition(), true);
+		Assets.audios.jump.play(1.0f);
 	}
 
 	public boolean isInAttack() {
