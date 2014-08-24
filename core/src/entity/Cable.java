@@ -47,10 +47,6 @@ public class Cable {
 
                 Joint joint = world.createJoint(revoluteJointDef);
             }
-
-            if (i == segmentCount - 1) {
-                segment.getBody().setGravityScale(-0.5f * (segmentCount - 1));
-            }
         }
     }
 

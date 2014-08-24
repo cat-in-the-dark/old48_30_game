@@ -128,7 +128,7 @@ public class GameScreen extends ResizableScreen {
 		weldJointDef.bodyB = cable.getBodyList().get(
 				cable.getBodyList().size() - 1);
 		Vector2 playerPos = player.getBody().getPosition();
-		weldJointDef.localAnchorA.set(-35, 3);
+		weldJointDef.localAnchorA.set(-30, 8);
 		world.createJoint(weldJointDef);
 
 		return player;

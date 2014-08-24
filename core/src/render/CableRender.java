@@ -29,7 +29,7 @@ public class CableRender {
         this.conf = conf;
         shapeRenderer = new ShapeRenderer();
         this.camera = camera;
-        shapeRenderer.setColor(0, 0, 0, 0.5f);
+        shapeRenderer.setColor(0.9f, 0.65f, 0.18f, 0.5f);
     }
 
     public void render(Cable cable) {
