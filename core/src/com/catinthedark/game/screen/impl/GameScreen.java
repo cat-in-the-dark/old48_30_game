@@ -15,6 +15,7 @@ import com.catinthedark.game.Constants;
 import com.catinthedark.game.assets.Assets;
 import com.catinthedark.game.hud.Hud;
 import com.catinthedark.game.level.AIManager;
+import com.catinthedark.game.level.BotsGenerator;
 import com.catinthedark.game.level.Level;
 import com.catinthedark.game.level.LevelGenerator;
 import com.catinthedark.game.physics.HitTester;
@@ -43,6 +44,7 @@ public class GameScreen extends ResizableScreen {
 	private final BlocksRender blocksRender;
 	private final CableRender cableRender;
 	private final HitTester hitTester;
+	private final BotsGenerator botsGenerator;
 
 	private Player player;
 	private Level level;
@@ -59,7 +61,7 @@ public class GameScreen extends ResizableScreen {
 	private Box2DDebugRenderer debugRenderer;
 	Matrix4 debugMatrix;
 
-    public float walkedDistance = 0;
+	public float walkedDistance = 0;
 
 	public GameScreen(Config conf) {
 		super(conf);
@@ -89,6 +91,8 @@ public class GameScreen extends ResizableScreen {
 		hitTester = new HitTester(level);
 
 		cableRender = new CableRender(conf, camera);
+
+		botsGenerator = new BotsGenerator(level);
 
 		debugRenderer = new Box2DDebugRenderer();
 		debugMatrix = new Matrix4(camera.combined);
@@ -187,6 +191,7 @@ public class GameScreen extends ResizableScreen {
 				crab.healt -= 10;
 				if (crab.healt < 0) {
 					level.deleteEntity(crab);
+					level.getWorld().destroyBody(crab.getBody());
 				}
 			}
 
@@ -203,6 +208,9 @@ public class GameScreen extends ResizableScreen {
 		}
 
 		level.getBullets().removeAll(forDelete);
+
+		// add bots
+		botsGenerator.step(delta, player);
 
 		hudRenderer.render(hud);
 		playerRenderer.render(player);
@@ -239,10 +247,11 @@ public class GameScreen extends ResizableScreen {
 
 	private void moveMainCamera() {
 
-        walkedDistance += Constants.MAIN_CAMERA_SPEED;
+		walkedDistance += Constants.MAIN_CAMERA_SPEED;
 
-        System.out.println(walkedDistance);
-        hud.addMeters((int)(walkedDistance  * 100) / Constants.DISTANCE_MAX_EASY);
+		System.out.println(walkedDistance);
+		hud.addMeters((int) (walkedDistance * 100)
+				/ Constants.DISTANCE_MAX_EASY);
 
 		camera.position.set(camera.position.x + Constants.MAIN_CAMERA_SPEED,
 				camera.position.y, camera.position.z);

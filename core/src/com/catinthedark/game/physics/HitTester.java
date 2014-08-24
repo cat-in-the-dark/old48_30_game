@@ -34,11 +34,11 @@ public class HitTester {
 
 				List<Body> bodyList = new ArrayList<Body>();
 				for (Tile tile : level.tiles) {
-                    if (tile.type == TileType.GRASS
-                            || tile.type == TileType.GRASS_SLOPE_LEFT
-                            || tile.type == TileType.GRASS_SLOPE_RIGHT) {
-                        bodyList.add(tile.body);
-                    }
+					if (tile.type == TileType.GRASS
+							|| tile.type == TileType.GRASS_SLOPE_LEFT
+							|| tile.type == TileType.GRASS_SLOPE_RIGHT) {
+						bodyList.add(tile.body);
+					}
 				}
 
 				if (contact.getFixtureA() == player.getModel().getFixture()) {
@@ -57,9 +57,11 @@ public class HitTester {
 
 	public boolean processContactFixture(Fixture fixture, Level level) {
 		for (MushroomedCrab crab : level.getCrabs())
-			if (crab.getBody().getFixtureList().get(0) == fixture) {
-				return true;
-			}
+			if (crab.getBody().getFixtureList().size != 0)
+				if (crab.getBody().getFixtureList().get(0) == fixture) {
+					level.getWorld().destroyBody(crab.getBody());
+					return true;
+				}
 
 		for (Bullet bullet : level.getBullets()) {
 			if (bullet.getBody().getFixtureList().size != 0)

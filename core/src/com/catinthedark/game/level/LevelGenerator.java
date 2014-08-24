@@ -18,7 +18,7 @@ import entity.MushroomedCrab;
 public class LevelGenerator {
 	private final TilePresetFactory factory;
 	private final Config conf;
-    private float lastPresetX = 0;
+	private float lastPresetX = 0;
 
 	public LevelGenerator(Config conf, Level level) {
 		this.factory = new TilePresetFactory(level.getWorld());
@@ -28,7 +28,7 @@ public class LevelGenerator {
 	private MushroomedCrab createCrub(Level level, float posX, float posY) {
 		PolygonShape crubShape = new PolygonShape();
 		crubShape.setAsBox(Constants.CRUB_WIDTH / 2, Constants.CRUB_HEIGHT / 2);
-		//crubShape.setRadius(Constants.CRUB_WIDTH / 2);
+		// crubShape.setRadius(Constants.CRUB_WIDTH / 2);
 		PhysicsModel crubModel = new PhysicsModel(level.getWorld(), posX
 				/ conf.UNIT_SIZE, posY / conf.UNIT_SIZE,
 				crubShape,
@@ -37,12 +37,13 @@ public class LevelGenerator {
 	}
 
 	public void generateLevel(Level level) {
-		level.addEntity(createCrub(level, 200, 100));
-		level.addEntity(createCrub(level, 250, 100));
+		// level.addEntity(createCrub(level, 200, 100));
+		// level.addEntity(createCrub(level, 250, 100));
 
 		List<Tile> preset = factory.build(level.difficult, lastPresetX, 0);
 		level.tiles.addAll(preset);
-        lastPresetX = preset.get(preset.size() - 1).getX() + Constants.BLOCK_WIDTH;
+		lastPresetX = preset.get(preset.size() - 1).getX()
+				+ Constants.BLOCK_WIDTH;
 	}
 
 	public void updateLevel(Level level, Camera camera) {
@@ -54,7 +55,8 @@ public class LevelGenerator {
 		if (tiles.get(tiles.size() - 1).getX() * Constants.tileSize < levelRightEdge) {
 			List<Tile> preset = factory.build(level.difficult, lastPresetX, 0);
 			tiles.addAll(preset);
-            lastPresetX = preset.get(preset.size() - 1).getX() + Constants.BLOCK_WIDTH;
+			lastPresetX = preset.get(preset.size() - 1).getX()
+					+ Constants.BLOCK_WIDTH;
 		}
 	}
 }
