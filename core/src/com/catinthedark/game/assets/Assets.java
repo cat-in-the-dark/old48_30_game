@@ -104,15 +104,42 @@ public class Assets {
 	}
 
 	public static class Animations implements Initable {
-		public Animation playerIdle;
+		public Animation playerJump;
+		public Animation playerJumpBack;
+		public Animation playerGo;
+		public Animation playerGoBack;
 
 		@Override
 		public void init(Config conf) {
-			playerIdle = new Animation(Constants.ANIMATION_SPEED,
+
+			playerJump = new Animation(0.05f,
 					new TextureRegion[] {
-							textures.playerFrames[0][1]
+							textures.playerFrames[0][14],
+							textures.playerFrames[0][15]
 					});
-			playerIdle.setPlayMode(Animation.PlayMode.NORMAL);
+			playerJump.setPlayMode(Animation.PlayMode.NORMAL);
+			
+			playerJumpBack = new Animation(0.05f,
+					new TextureRegion[] {
+							textures.playerFramesBack[0][14],
+							textures.playerFramesBack[0][15]
+					});
+			playerJumpBack.setPlayMode(Animation.PlayMode.NORMAL);
+
+			
+			playerGo = new Animation(0.05f,
+					new TextureRegion[] {
+							textures.playerFrames[0][14],
+							textures.playerFrames[0][15]
+					});
+			playerGo.setPlayMode(Animation.PlayMode.LOOP);
+			
+			playerGoBack = new Animation(0.05f,
+					new TextureRegion[] {
+							textures.playerFramesBack[0][14],
+							textures.playerFramesBack[0][15]
+					});
+			playerGoBack.setPlayMode(Animation.PlayMode.LOOP);
 
 		}
 

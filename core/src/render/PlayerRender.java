@@ -1,9 +1,8 @@
 package render;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.catinthedark.game.Config;
 import com.catinthedark.game.Constants;
@@ -25,11 +24,27 @@ public class PlayerRender {
 
 		Vector2 playerPos = player.getBody().getPosition();
 		TextureRegion[][] frames;
+		Animation jumpAnimation;
 
-		if (player.getDirX() == DirectionX.RIGHT)
+		if (player.getDirX() == DirectionX.RIGHT) {
 			frames = Assets.textures.playerFrames;
-		else
+			jumpAnimation = Assets.animations.playerJump;
+		}
+		else {
 			frames = Assets.textures.playerFramesBack;
+			jumpAnimation = Assets.animations.playerJumpBack;
+		}
+
+		if (player.isMooving()) {
+			batch.draw(
+					jumpAnimation.getKeyFrame(player
+							.getStateTime()),
+					(playerPos.x - Constants.PLAYER_HEIGHT / 2)
+							* conf.UNIT_SIZE,
+					(playerPos.y - Constants.PLAYER_WIDTH / 2) * conf.UNIT_SIZE,
+					Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
+					Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
+		}
 
 		if (player.isStay()) {
 
@@ -55,8 +70,15 @@ public class PlayerRender {
 					(playerPos.y - Constants.PLAYER_WIDTH / 2) * conf.UNIT_SIZE,
 					Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
 					Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
-		}else{
-			
+		} else {// летим
+			batch.draw(
+					jumpAnimation.getKeyFrame(player
+							.getStateTime()),
+					(playerPos.x - Constants.PLAYER_HEIGHT / 2)
+							* conf.UNIT_SIZE,
+					(playerPos.y - Constants.PLAYER_WIDTH / 2) * conf.UNIT_SIZE,
+					Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
+					Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
 		}
 
 		// draw shot

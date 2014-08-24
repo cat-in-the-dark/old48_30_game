@@ -9,7 +9,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -95,7 +94,22 @@ public class GameScreen extends ResizableScreen {
 		Assets.textures.backgroundFar.setView(backgroundFarCamera);
 		Assets.textures.backgroundFar.render(layers);
 
-		player.update(delta);
+		boolean isStayByPhysics = !hitTester.isPlayerFlyes(player);
+
+		if (Gdx.input.isKeyPressed(Keys.SPACE) && isStayByPhysics) {
+			player.update(delta, false);
+			player.jump();
+		}
+
+		if (isStayByPhysics == true)
+			player.update(delta, true);
+		else
+			player.update(delta);
+
+		if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.D))
+			player.setMooving(true);
+		else
+			player.setMooving(false);
 
 		hudRenderer.render(hud);
 		playerRenderer.render(player);
@@ -111,9 +125,9 @@ public class GameScreen extends ResizableScreen {
 		levelRender.render(level, delta);
 		// only for dev
 		blocksRender.render(level.getBlockList());
-		
-		//check here for camera move
-		//call levelGenerator
+
+		// check here for camera move
+		// call levelGenerator
 
 		// FIXME: move into render loop
 		if (Gdx.input.isKeyPressed(Keys.A)) { // a
@@ -144,10 +158,10 @@ public class GameScreen extends ResizableScreen {
 			player.crosshairDown();
 		}
 
-		if (keycode == Keys.SPACE) { // space
-			if (!hitTester.isPlayerFlyes(player))
-				player.jump();
-		}
+		// if (keycode == Keys.SPACE) { // space
+		// if (player.isStay())
+		// player.jump();
+		// }
 
 		if (keycode == Keys.ENTER)
 			player.shot();

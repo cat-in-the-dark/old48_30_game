@@ -11,6 +11,7 @@ public class Player {
 	private long attackBeganAt;
 	private float stateTime;
 	private boolean isStay = true;
+	private boolean isMooving;
 
 	private PhysicsModel model;
 
@@ -91,8 +92,21 @@ public class Player {
 		dirY = DirectionY.CROSSHAIR_MIDDLE;
 	}
 
+	public void update(float delta, boolean isStay) {
+		stateTime += delta;
+		this.isStay = isStay;
+	}
+
 	public void update(float delta) {
 		stateTime += delta;
+	}
+
+	public boolean isMooving() {
+		return isMooving;
+	}
+
+	public void setMooving(boolean isMooving) {
+		this.isMooving = isMooving;
 	}
 
 }

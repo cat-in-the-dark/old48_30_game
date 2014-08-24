@@ -47,7 +47,7 @@ public class TilePresetFactory {
         }
 
         Random random = new Random();
-        int i = random.nextInt(tilePresets.get(difficult).size() + 1);
+        int i = random.nextInt(tilePresets.get(difficult).size());
         return tilePresets.get(difficult).get(i);
     }
 }
