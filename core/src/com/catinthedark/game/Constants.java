@@ -42,4 +42,6 @@ public class Constants {
     public static float MAX_DISTANCE_CAMERA_AHEAD = 4.0f;
 	public static float BACK_CAMERA_SPEED = 0.05f;
 	public static float MAIN_CAMERA_SPEED = 5.0f;
+
+    public static final int DISTANCE_MAX_EASY = 100000;
 }
