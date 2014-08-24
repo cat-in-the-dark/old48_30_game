@@ -128,9 +128,10 @@ public class Assets {
 		public Animation playerGo;
 		public Animation playerGoBack;
 
-		public Animation mushroomedCrabIdle;
-		public Animation mushroomedCrabRunRight;
-		public Animation mushroomedCrabRunLeft;
+        public Animation mushroomedCrabIdleLeft;
+        public Animation mushroomedCrabIdleRight;
+        public Animation mushroomedCrabRunRight;
+        public Animation mushroomedCrabRunLeft;
 
 		@Override
 		public void init(Config conf) {
@@ -179,31 +180,37 @@ public class Assets {
 					});
 			playerGoBack.setPlayMode(Animation.PlayMode.LOOP);
 
-			mushroomedCrabIdle = new Animation(Constants.ANIMATION_SPEED,
-					new TextureRegion[] {
-							textures.mushroomedCrabFramesLeft[0][2]
-					});
-			mushroomedCrabIdle.setPlayMode(Animation.PlayMode.NORMAL);
+            mushroomedCrabIdleLeft = new Animation(Constants.ANIMATION_SPEED,
+                    new TextureRegion[]{
+                            textures.mushroomedCrabFramesLeft[0][2]
+                    });
+            mushroomedCrabIdleLeft.setPlayMode(Animation.PlayMode.NORMAL);
 
-			mushroomedCrabRunLeft = new Animation(Constants.ANIMATION_SPEED,
-					new TextureRegion[] {
-							textures.mushroomedCrabFramesLeft[0][0],
-							textures.mushroomedCrabFramesLeft[0][1],
-							textures.mushroomedCrabFramesLeft[0][2],
-							textures.mushroomedCrabFramesLeft[0][3],
-							textures.mushroomedCrabFramesLeft[0][4]
-					});
-			mushroomedCrabRunLeft.setPlayMode(Animation.PlayMode.LOOP);
+            mushroomedCrabIdleRight = new Animation(Constants.ANIMATION_SPEED,
+                    new TextureRegion[]{
+                            textures.mushroomedCrabFramesRight[0][2]
+                    });
+            mushroomedCrabIdleRight.setPlayMode(Animation.PlayMode.NORMAL);
 
-			mushroomedCrabRunRight = new Animation(Constants.ANIMATION_SPEED,
-					new TextureRegion[] {
-							textures.mushroomedCrabFramesRight[0][0],
-							textures.mushroomedCrabFramesRight[0][1],
-							textures.mushroomedCrabFramesRight[0][2],
-							textures.mushroomedCrabFramesRight[0][3],
-							textures.mushroomedCrabFramesRight[0][4]
-					});
-			mushroomedCrabRunRight.setPlayMode(Animation.PlayMode.LOOP);
+            mushroomedCrabRunLeft = new Animation(Constants.ANIMATION_SPEED,
+                    new TextureRegion[]{
+                            textures.mushroomedCrabFramesLeft[0][0],
+                            textures.mushroomedCrabFramesLeft[0][1],
+                            textures.mushroomedCrabFramesLeft[0][2],
+                            textures.mushroomedCrabFramesLeft[0][3],
+                            textures.mushroomedCrabFramesLeft[0][4]
+                    });
+            mushroomedCrabRunLeft.setPlayMode(Animation.PlayMode.LOOP);
+
+            mushroomedCrabRunRight = new Animation(Constants.ANIMATION_SPEED,
+                    new TextureRegion[]{
+                            textures.mushroomedCrabFramesRight[0][0],
+                            textures.mushroomedCrabFramesRight[0][1],
+                            textures.mushroomedCrabFramesRight[0][2],
+                            textures.mushroomedCrabFramesRight[0][3],
+                            textures.mushroomedCrabFramesRight[0][4]
+                    });
+            mushroomedCrabRunRight.setPlayMode(Animation.PlayMode.LOOP);
 		}
 
 	}
