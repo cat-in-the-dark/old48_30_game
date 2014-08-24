@@ -25,25 +25,30 @@ public class PlayerRender {
 		Vector2 playerPos = player.getBody().getPosition();
 		TextureRegion[][] frames;
 		Animation jumpAnimation;
+		Animation goAnimation;
 
 		if (player.getDirX() == DirectionX.RIGHT) {
 			frames = Assets.textures.playerFrames;
 			jumpAnimation = Assets.animations.playerJump;
+			goAnimation = Assets.animations.playerGo;
 		}
 		else {
 			frames = Assets.textures.playerFramesBack;
 			jumpAnimation = Assets.animations.playerJumpBack;
+			goAnimation = Assets.animations.playerGoBack;
 		}
 
 		if (player.isMooving()) {
 			batch.draw(
-					jumpAnimation.getKeyFrame(player
+					goAnimation.getKeyFrame(player
 							.getStateTime()),
 					(playerPos.x - Constants.PLAYER_HEIGHT / 2)
 							* conf.UNIT_SIZE,
 					(playerPos.y - Constants.PLAYER_WIDTH / 2) * conf.UNIT_SIZE,
 					Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
 					Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
+			batch.end();
+			return;
 		}
 
 		if (player.isStay()) {
