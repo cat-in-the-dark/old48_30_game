@@ -12,6 +12,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
+import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
+import com.badlogic.gdx.utils.Array;
 import com.catinthedark.game.Config;
 import com.catinthedark.game.Constants;
 import com.catinthedark.game.assets.Assets;
@@ -21,8 +29,15 @@ import com.catinthedark.game.level.LevelGenerator;
 import com.catinthedark.game.physics.HitTester;
 import com.catinthedark.game.physics.PhysicsModel;
 import com.catinthedark.game.screen.ResizableScreen;
+import entity.Block;
+import entity.Cable;
+import entity.Player;
+import render.*;
 
 import entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameScreen extends ResizableScreen {
 
@@ -32,16 +47,27 @@ public class GameScreen extends ResizableScreen {
 	private final PlayerRender playerRenderer;
 	private final LevelRender levelRender;
 	private final LevelGenerator levelGenerator = new LevelGenerator();
-	private final BlocksRender blocksRender;
-	private final HitTester hitTester;
-	private Player player;
-	private Level level;
+    private final BlocksRender blocksRender;
+    private final CableRender cableRender;
+    private final HitTester hitTester;
+
+    private Player player;
+    private Level level;
+    private List<Block> blockList;
+    private Cable cable;
 
 	private final OrthographicCamera backgroundFarCamera = new OrthographicCamera(
 			conf.VIEW_PORT_WIDTH, conf.VIEW_PORT_HEIGHT);
 	private final int[] layers = new int[] { 0 };
 
-	public GameScreen(Config conf) {
+	private SpriteBatch batch = new SpriteBatch();
+
+    private ShapeRenderer shapeRenderer;
+
+    private Box2DDebugRenderer debugRenderer;
+    Matrix4 debugMatrix;
+
+    public GameScreen(Config conf) {
 		super(conf);
 
 		this.camera = new OrthographicCamera(conf.VIEW_PORT_WIDTH,
@@ -62,29 +88,61 @@ public class GameScreen extends ResizableScreen {
 
 		hitTester = new HitTester(level);
 
-		player = createPlayer(level.getWorld());
-		player.getModel().getFixture().setFriction(Constants.FRICTION);
+        cableRender = new CableRender(conf);
 
-		player.moveRight();
-		player.crosshairMiddle();
+        debugRenderer = new Box2DDebugRenderer();
+        debugMatrix=new Matrix4(camera.combined);
 
 		backgroundFarCamera.position.set(new float[] {
 				conf.VIEW_PORT_WIDTH / 2,
 				conf.VIEW_PORT_HEIGHT / 2, 0 });
 		backgroundFarCamera.update();
+
+        blockList = new ArrayList<Block>();
+        for (int i = 0; i < conf.VIEW_PORT_WIDTH / 2; i++) {
+            blockList.add(createBlock(level.getWorld(), i));
+        }
+
+        cable = new Cable(level.getWorld(), new Vector2(5, 5), 1.0f, 40);
+
+        player = createPlayer(level.getWorld(), cable);
+        player.getModel().getFixture().setFriction(Constants.FRICTION);
+
+        player.moveRight();
+        player.crosshairMiddle();
 	}
 
 	public Camera getCamera() {
 		return camera;
 	}
 
-	private Player createPlayer(World world) {
-		CircleShape playerShape = new CircleShape();
-		playerShape.setRadius(Constants.PLAYER_WIDTH / 2);
-		PhysicsModel playerModel = new PhysicsModel(world, 0, 5, playerShape,
-				true, BodyDef.BodyType.DynamicBody, 0.1f);
-		return new Player(playerModel);
-	}
+    private Player createPlayer(World world, Cable cable) {
+        CircleShape playerShape = new CircleShape();
+        playerShape.setRadius(Constants.PLAYER_WIDTH / 2);
+        PhysicsModel playerModel = new PhysicsModel(world, 0, 5, playerShape, true, BodyDef.BodyType.DynamicBody, 0.1f);
+        Player player = new Player(playerModel);
+
+        RevoluteJointDef jointDef = new RevoluteJointDef();
+        jointDef.bodyA = player.getBody();
+        jointDef.bodyB = cable.getBodyList().get(0);
+        world.createJoint(jointDef);
+
+        WeldJointDef weldJointDef = new WeldJointDef();
+        weldJointDef.bodyA = player.getBody();
+        weldJointDef.bodyB = cable.getBodyList().get(cable.getBodyList().size() - 1);
+        Vector2 playerPos = player.getBody().getPosition();
+        weldJointDef.localAnchorA.set(-35, 3);
+        world.createJoint(weldJointDef);
+
+        return player;
+    }
+
+    private Block createBlock(World world, int x) {
+        PolygonShape blockShape = new PolygonShape();
+        blockShape.setAsBox(Constants.BLOCK_WIDTH / 2, Constants.BLOCK_HEIGHT / 2);
+        PhysicsModel blockModel = new PhysicsModel(world, x, 0, blockShape, true, BodyDef.BodyType.StaticBody, 1.0f);
+        return new Block(blockModel);
+    }
 
 	@Override
 	public void render(float delta) {
@@ -129,18 +187,21 @@ public class GameScreen extends ResizableScreen {
 		// check here for camera move
 		// call levelGenerator
 
-		// FIXME: move into render loop
-		if (Gdx.input.isKeyPressed(Keys.A)) { // a
-			if (player.getBody().getLinearVelocity().x > -10) {
-				player.moveLeft();
-			}
-		}
+        cableRender.render(cable);
 
-		if (Gdx.input.isKeyPressed(Keys.D)) { // d
-			if (player.getBody().getLinearVelocity().x < 10) {
-				player.moveRight();
-			}
-		}
+        // FIXME: move into render loop
+        if (Gdx.input.isKeyPressed(Keys.A)) { // a
+            if (player.getBody().getLinearVelocity().x > -10) {
+                player.moveLeft();
+            }
+        }
+
+        if (Gdx.input.isKeyPressed(Keys.D)) { // d
+            if (player.getBody().getLinearVelocity().x < 10) {
+                player.moveRight();
+            }
+        }
+        debugRenderer.render(level.getWorld(), debugMatrix);
 	}
 
 	@Override

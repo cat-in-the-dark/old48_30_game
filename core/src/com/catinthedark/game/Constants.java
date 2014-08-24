@@ -28,4 +28,7 @@ public class Constants {
 			* WALKING_FORCE, 0f);
 
 	public static final float ANIMATION_SPEED = 0.1f;
+
+    public static final int CABLE_STEPS = 100;
+    public static final int CABLE_THICK = 5;
 }
