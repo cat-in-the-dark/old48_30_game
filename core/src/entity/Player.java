@@ -67,12 +67,12 @@ public class Player {
 	}
 
 	public boolean isInAttack() {
-		return System.currentTimeMillis() - attackBeganAt < 1400;
+		return System.currentTimeMillis() - attackBeganAt < 1000;
 	}
 
 	public void shot() {
 		long now = System.currentTimeMillis();
-		if (now - attackBeganAt > 1400) {
+		if (now - attackBeganAt > 1000) {
 			// new attack
 			attackBeganAt = now;
 		}

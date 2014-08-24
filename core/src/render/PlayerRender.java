@@ -88,33 +88,64 @@ public class PlayerRender {
 
 		// draw shot
 		if (player.isInAttack()) {
-			switch (player.getDirY()) {
-			case CROSSHAIR_UP:
-				batch.draw(Assets.textures.shot,
-						(playerPos.x + Constants.PLAYER_HEIGHT / 2)
-								* conf.UNIT_SIZE,
-						(playerPos.y - Constants.PLAYER_WIDTH / 2)
-								* conf.UNIT_SIZE + 16, 0, 0,
-						256, 32, 1, 1, 45, 0, 0, 1, 1, false, false);
-				break;
-			case CROSSHAIR_MIDDLE:
-				batch.draw(
-						Assets.textures.shot,
-						(playerPos.x + Constants.PLAYER_HEIGHT / 2)
-								* conf.UNIT_SIZE,
-						(playerPos.y - Constants.PLAYER_WIDTH / 2)
-								* conf.UNIT_SIZE
-								+ 16,
-						256, 32);
-				break;
-			case CROSSHAIR_DOWN:
-				batch.draw(Assets.textures.shot,
-						(playerPos.x + Constants.PLAYER_HEIGHT / 2)
-								* conf.UNIT_SIZE,
-						(playerPos.y - Constants.PLAYER_WIDTH / 2)
-								* conf.UNIT_SIZE + 16, 0, 0,
-						256, 32, 1, 1, -45, 0, 0, 1, 1, false, false);
-				break;
+			if (player.getDirX() == DirectionX.RIGHT) {
+				switch (player.getDirY()) {
+				case CROSSHAIR_UP:
+					batch.draw(Assets.textures.shot,
+							(playerPos.x + Constants.PLAYER_HEIGHT / 2)
+									* conf.UNIT_SIZE + 3,
+							(playerPos.y - Constants.PLAYER_WIDTH / 2)
+									* conf.UNIT_SIZE + 38, 0, 0,
+							256, 32, 1, 1, 45, 0, 0, 1, 1, false, false);
+					break;
+				case CROSSHAIR_MIDDLE:
+					batch.draw(
+							Assets.textures.shot,
+							(playerPos.x + Constants.PLAYER_HEIGHT / 2)
+									* conf.UNIT_SIZE,
+							(playerPos.y - Constants.PLAYER_WIDTH / 2)
+									* conf.UNIT_SIZE
+									+ 20,
+							256, 32);
+					break;
+				case CROSSHAIR_DOWN:
+					batch.draw(Assets.textures.shot,
+							(playerPos.x + Constants.PLAYER_HEIGHT / 2)
+									* conf.UNIT_SIZE - 15,
+							(playerPos.y - Constants.PLAYER_WIDTH / 2)
+									* conf.UNIT_SIZE + 5, 0, 0,
+							256, 32, 1, 1, -45, 0, 0, 1, 1, false, false);
+					break;
+				}
+			} else {
+				switch (player.getDirY()) {
+				case CROSSHAIR_UP:
+					batch.draw(Assets.textures.shot,
+							(playerPos.x - Constants.PLAYER_HEIGHT / 2)
+									* conf.UNIT_SIZE - 5,
+							(playerPos.y - Constants.PLAYER_WIDTH / 2)
+									* conf.UNIT_SIZE + 42, 0, 0,
+							-256, 32, 1, 1, -45, 0, 0, 1, 1, false, false);
+					break;
+				case CROSSHAIR_MIDDLE:
+					batch.draw(
+							Assets.textures.shot,
+							(playerPos.x - Constants.PLAYER_HEIGHT / 2)
+									* conf.UNIT_SIZE ,
+							(playerPos.y - Constants.PLAYER_WIDTH / 2)
+									* conf.UNIT_SIZE
+									+ 20,
+							-256, 32);
+					break;
+				case CROSSHAIR_DOWN:
+					batch.draw(Assets.textures.shot,
+							(playerPos.x - Constants.PLAYER_HEIGHT / 2)
+									* conf.UNIT_SIZE  + 13,
+							(playerPos.y - Constants.PLAYER_WIDTH / 2)
+									* conf.UNIT_SIZE + 3, 0, 0,
+							-256, 32, 1, 1, 45, 0, 0, 1, 1, false, false);
+					break;
+				}
 			}
 		}
 
