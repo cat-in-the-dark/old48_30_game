@@ -1,6 +1,7 @@
 package render;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Bezier;
@@ -22,10 +23,12 @@ public class CableRender {
     private final Config conf;
     private final Vector2[] points = new Vector2[Constants.CABLE_STEPS];
     private ShapeRenderer shapeRenderer;
+    private final OrthographicCamera camera;
 
-    public CableRender(Config conf) {
+    public CableRender(Config conf, OrthographicCamera camera) {
         this.conf = conf;
         shapeRenderer = new ShapeRenderer();
+        this.camera = camera;
         shapeRenderer.setColor(0, 0, 0, 0.5f);
     }
 
@@ -45,6 +48,7 @@ public class CableRender {
             romSpline.valueAt(points[i], ((float) i) / ((float) Constants.CABLE_STEPS - 1));
         }
 
+        shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         for(int i = 0; i < Constants.CABLE_STEPS - 1; ++i)
         {

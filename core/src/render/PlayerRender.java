@@ -1,5 +1,6 @@
 package render;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -14,12 +15,15 @@ import entity.Player;
 public class PlayerRender {
 	private final Config conf;
 	private final SpriteBatch batch = new SpriteBatch();
+    private final OrthographicCamera camera;
 
-	public PlayerRender(Config conf) {
+	public PlayerRender(Config conf, OrthographicCamera camera) {
 		this.conf = conf;
+        this.camera = camera;
 	}
 
 	public void render(Player player) {
+        batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 
 		Vector2 playerPos = player.getBody().getPosition();

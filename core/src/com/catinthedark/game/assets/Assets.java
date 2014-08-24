@@ -48,7 +48,16 @@ public class Assets {
 		public TextureRegion heartReg;
 		public TextureRegion hudWireReg;
 		public TextureRegion playerReg;
-		public TextureRegion blockReg;
+		public TextureRegion[][] groundReg;
+
+        public TextureRegion underground;
+        public TextureRegion grass;
+        public TextureRegion grass_shadow;
+        public TextureRegion grass_slope_slope;
+        public TextureRegion grass_slope_left_shadow;
+        public TextureRegion grass_slope_right;
+        public TextureRegion grass_slope_right_shadow;
+        public TextureRegion empty;
 
 		public Texture shot;
 		public TextureRegion[][] playerFrames;
@@ -81,8 +90,17 @@ public class Assets {
 			backgroundFar = new OrthogonalTiledMapRenderer(backgroundFarMap,
 					1 / 32f);
 
-			Texture block = new Texture(Gdx.files.internal("texture/block.png"));
-			blockReg = new TextureRegion(block);
+			Texture ground = new Texture(Gdx.files.internal("texture/ground.png"));
+			groundReg = TextureRegion.split(ground, 32, 32);  // 10 x 4
+            underground = groundReg[3][0];
+            grass = groundReg[1][0];
+            grass_shadow = groundReg[2][0];
+            grass_slope_slope = groundReg[0][1];
+            grass_slope_left_shadow = groundReg[1][1];
+            grass_slope_right = groundReg[0][6];
+            grass_slope_right_shadow = groundReg[1][6];
+            empty = groundReg[0][0];
+
 			shot = new Texture(Gdx.files.internal("texture/shot.png"));
 
 			playerFrames = TextureRegion.split(

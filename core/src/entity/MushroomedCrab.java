@@ -9,14 +9,18 @@ import com.catinthedark.game.physics.PhysicsModel;
  * Created by Ilya on 24.08.2014.
  */
 public class MushroomedCrab implements Entity {
-    private DirectionX dirX;
-    private DirectionY dirY;
-    private float stateTime;
-    private boolean isStay = true;
-    private boolean isMoving;
+	private DirectionX dirX =  DirectionX.RIGHT;
+	private DirectionY dirY;
     private float lastShutTime = 0f;
+	private float stateTime;
+	private boolean isStay = true;
+	private boolean isMoving;
 
     private PhysicsModel model;
+
+    public MushroomedCrab(PhysicsModel model) {
+        this.model = model;
+    }
 
     @Override
     public Body getBody() {

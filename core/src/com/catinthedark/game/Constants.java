@@ -11,6 +11,9 @@ public class Constants {
 	public static final float PLAYER_WIDTH = 2.0f;
 	public static final float PLAYER_HEIGHT = 2.0f;
 
+	public static final float CRUB_WIDTH = 2.0f;
+	public static final float CRUB_HEIGHT = 2.0f;
+
 	public static final float MUSHROOMED_CRAB_WIDTH = 2.0f;
 	public static final float MUSHROOMED_CRAB_HEIGHT = 2.0f;
 
@@ -37,5 +40,5 @@ public class Constants {
     public static final float MUSHROOMED_CRAB_SHUT_DELAY = 0.5f;
     public static float MAX_DISTANCE_CAMERA_AHEAD = 4.0f;
 	public static float BACK_CAMERA_SPEED = 0.05f;
-	public static float MAIN_CAMERA_SPEED = 0.2f;
+	public static float MAIN_CAMERA_SPEED = 5.0f;
 }

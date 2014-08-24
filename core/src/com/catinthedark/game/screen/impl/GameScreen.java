@@ -39,12 +39,12 @@ import entity.Player;
 
 public class GameScreen extends ResizableScreen {
 
-	private final Camera camera;
+	private final OrthographicCamera camera;
 	private final Hud hud;
 	private final HudRenderer hudRenderer;
 	private final PlayerRender playerRenderer;
 	private final LevelRender levelRender;
-	private final LevelGenerator levelGenerator = new LevelGenerator();
+	private final LevelGenerator levelGenerator;
 	private final BlocksRender blocksRender;
 	private final CableRender cableRender;
 	private final HitTester hitTester;
@@ -75,19 +75,21 @@ public class GameScreen extends ResizableScreen {
 
 		hud = new Hud(10);
 		hudRenderer = new HudRenderer(conf);
-		hud.addMeters(0);
+		hud.setLevel(1);
 
-		playerRenderer = new PlayerRender(conf);
+		playerRenderer = new PlayerRender(conf, camera);
 
-		blocksRender = new BlocksRender(conf);
+		blocksRender = new BlocksRender(conf, camera);
 
-		level = new Level(conf, Constants.EASY);
-		levelRender = new LevelRender();
+		level = new Level(conf, Constants.EASY, camera);
+		levelRender = new LevelRender(conf, camera);
+
+		levelGenerator = new LevelGenerator(conf);
 		levelGenerator.generateLevel(level);
 
 		hitTester = new HitTester(level);
 
-		cableRender = new CableRender(conf);
+		cableRender = new CableRender(conf, camera);
 
 		debugRenderer = new Box2DDebugRenderer();
 		debugMatrix = new Matrix4(camera.combined);
@@ -175,11 +177,9 @@ public class GameScreen extends ResizableScreen {
 		hudRenderer.render(hud);
 		playerRenderer.render(player);
 
-		levelRender.render(level, delta);
 		// only for dev
 		blocksRender.render(level.getBlockList());
 
-		// check here for camera move
 		// call levelGenerator
 
 		cableRender.render(cable);
@@ -197,6 +197,9 @@ public class GameScreen extends ResizableScreen {
 			}
 		}
 		debugRenderer.render(level.getWorld(), debugMatrix);
+
+		levelGenerator.updateLevel(level, camera);
+		levelRender.render(level, delta);
 
 		if (needMoveCamera())
 			moveMainCamera();

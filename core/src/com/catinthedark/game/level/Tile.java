@@ -5,8 +5,8 @@ package com.catinthedark.game.level;
  */
 public class Tile {
     public final TileType type;
-    private float x;
-    private float y;
+    public float x;
+    public float y;
 
     /**
      *
@@ -14,7 +14,7 @@ public class Tile {
      * @param yTilePos
      * @param type
      */
-    public Tile(int xTilePos, int yTilePos, TileType type) {
+    public Tile(float xTilePos, float yTilePos, TileType type) {
         if (type == null) {
             throw new RuntimeException("Cannot create tile without type");
         }
@@ -22,6 +22,16 @@ public class Tile {
         this.x = xTilePos;
         this.y = yTilePos;
         this.type = type;
+    }
+
+    public Tile(Tile tile) {
+        if (tile.type == null) {
+            throw new RuntimeException("Cannot create tile without type");
+        }
+
+        this.x = tile.getX();
+        this.y = tile.getY();
+        this.type = tile.type;
     }
 
     public float getX() {

@@ -16,12 +16,18 @@ public class TilePresetFactory {
 
     public TilePresetFactory() {
         this.rawTilePresetsEasy = new ArrayList<int[][]>() {{
+            add(new int[][]{{7, 2, 2}, {2, 2, 2}});
+            add(new int[][]{{1, 7, 1}, {2, 2, 2}, {0, 0, 0}});
+        }};
+
+        this.rawTilePresetsMedium = new ArrayList<int[][]>() {{
             add(new int[][]{{1, 1, 1}, {2, 2, 2}});
             add(new int[][]{{1, 1, 1}, {2, 2, 2}, {0, 0, 0}});
         }};
-
-        this.rawTilePresetsMedium = new ArrayList<int[][]>();
-        this.rawTilePresetsHard = new ArrayList<int[][]>();
+        this.rawTilePresetsHard = new ArrayList<int[][]>() {{
+            add(new int[][]{{1, 1, 1}, {2, 2, 2}});
+            add(new int[][]{{1, 1, 1}, {2, 2, 2}, {0, 0, 0}});
+        }};
 
         this.tilePresets = new HashMap<Integer, List<TilePreset>>();
         this.tilePresets.put(Constants.EASY, new ArrayList<TilePreset>());
@@ -41,13 +47,21 @@ public class TilePresetFactory {
         }
     }
 
-    public TilePreset build(int difficult){
+    public List<Tile> build(int difficult, float presetX, float presetY){
         if (tilePresets.get(difficult).size() == 0) {
             throw new RuntimeException("There is no tile preset for this difficult " + Integer.toString(difficult));
         }
 
         Random random = new Random();
         int i = random.nextInt(tilePresets.get(difficult).size());
-        return tilePresets.get(difficult).get(i);
+        TilePreset tilePreset = tilePresets.get(difficult).get(i);
+        List<Tile> tileList = new ArrayList<Tile>();
+        for (Tile tile: tilePreset.tiles) {
+            Tile newTile = new Tile(tile);
+            newTile.x = tile.getX() + presetX;
+            newTile.y = tile.getY() + presetY;
+            tileList.add(newTile);
+        }
+        return tileList;
     }
 }
