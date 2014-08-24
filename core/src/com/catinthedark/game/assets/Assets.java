@@ -27,11 +27,17 @@ public class Assets {
 
 	public static class Audios implements Initable {
 		public Sound shot;
+		public Sound jump;
+		public Sound landing;
 
 		@Override
 		public void init(Config conf) {
 			shot = Gdx.audio
 					.newSound(Gdx.files.internal("sound/shot_sfx.mp3"));
+			jump = Gdx.audio
+					.newSound(Gdx.files.internal("sound/jump_sfx.wav"));
+			landing = Gdx.audio
+					.newSound(Gdx.files.internal("sound/landing_sfx.wav"));
 
 		}
 

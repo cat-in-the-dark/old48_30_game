@@ -45,29 +45,32 @@ public class GameScreen extends ResizableScreen {
 	private final PlayerRender playerRenderer;
 	private final LevelRender levelRender;
 	private final LevelGenerator levelGenerator = new LevelGenerator();
-    private final BlocksRender blocksRender;
-    private final CableRender cableRender;
-    private final HitTester hitTester;
+	private final BlocksRender blocksRender;
+	private final CableRender cableRender;
+	private final HitTester hitTester;
 
-    private Player player;
-    private Level level;
-    private List<Block> blockList;
-    private Cable cable;
+	private Player player;
+	private Level level;
+	private List<Block> blockList;
+	private Cable cable;
 
 	private final OrthographicCamera backgroundFarCamera = new OrthographicCamera(
 			conf.VIEW_PORT_WIDTH, conf.VIEW_PORT_HEIGHT);
 	private final int[] layers = new int[] { 0 };
 
-    private ShapeRenderer shapeRenderer;
+	private ShapeRenderer shapeRenderer;
 
-    private Box2DDebugRenderer debugRenderer;
-    Matrix4 debugMatrix;
+	private Box2DDebugRenderer debugRenderer;
+	Matrix4 debugMatrix;
 
-    public GameScreen(Config conf) {
+	public GameScreen(Config conf) {
 		super(conf);
 
-		this.camera = new OrthographicCamera(conf.VIEW_PORT_WIDTH,
-				conf.VIEW_PORT_HEIGHT);
+		this.camera = new OrthographicCamera(conf.VIEW_PORT_WIDTH
+				* conf.UNIT_SIZE,
+				conf.VIEW_PORT_HEIGHT * conf.UNIT_SIZE);
+		this.camera.position.x = conf.VIEW_PORT_WIDTH * conf.UNIT_SIZE / 2;
+		this.camera.position.y = conf.VIEW_PORT_HEIGHT * conf.UNIT_SIZE / 2;
 		this.camera.update();
 
 		hud = new Hud(10);
@@ -84,61 +87,65 @@ public class GameScreen extends ResizableScreen {
 
 		hitTester = new HitTester(level);
 
-        cableRender = new CableRender(conf);
+		cableRender = new CableRender(conf);
 
-        debugRenderer = new Box2DDebugRenderer();
-        debugMatrix=new Matrix4(camera.combined);
+		debugRenderer = new Box2DDebugRenderer();
+		debugMatrix = new Matrix4(camera.combined);
 
 		backgroundFarCamera.position.set(new float[] {
 				conf.VIEW_PORT_WIDTH / 2,
 				conf.VIEW_PORT_HEIGHT / 2, 0 });
 		backgroundFarCamera.update();
 
-        blockList = new ArrayList<Block>();
-        for (int i = 0; i < conf.VIEW_PORT_WIDTH / 2; i++) {
-            blockList.add(createBlock(level.getWorld(), i));
-        }
+		blockList = new ArrayList<Block>();
+		for (int i = 0; i < conf.VIEW_PORT_WIDTH / 2; i++) {
+			blockList.add(createBlock(level.getWorld(), i));
+		}
 
-        cable = new Cable(level.getWorld(), new Vector2(5, 5), 1.0f, 40);
+		cable = new Cable(level.getWorld(), new Vector2(5, 5), 1.0f, 40);
 
-        player = createPlayer(level.getWorld(), cable);
-        player.getModel().getFixture().setFriction(Constants.FRICTION);
+		player = createPlayer(level.getWorld(), cable);
+		player.getModel().getFixture().setFriction(Constants.FRICTION);
 
-        player.moveRight();
-        player.crosshairMiddle();
+		player.moveRight();
+		player.crosshairMiddle();
 	}
 
 	public Camera getCamera() {
 		return camera;
 	}
 
-    private Player createPlayer(World world, Cable cable) {
-        CircleShape playerShape = new CircleShape();
-        playerShape.setRadius(Constants.PLAYER_WIDTH / 2);
-        PhysicsModel playerModel = new PhysicsModel(world, 0, 5, playerShape, true, BodyDef.BodyType.DynamicBody, 0.1f);
-        Player player = new Player(playerModel);
+	private Player createPlayer(World world, Cable cable) {
+		CircleShape playerShape = new CircleShape();
+		playerShape.setRadius(Constants.PLAYER_WIDTH / 2);
+		PhysicsModel playerModel = new PhysicsModel(world, 0, 5, playerShape,
+				true, BodyDef.BodyType.DynamicBody, 0.1f);
+		Player player = new Player(playerModel);
 
-        RevoluteJointDef jointDef = new RevoluteJointDef();
-        jointDef.bodyA = player.getBody();
-        jointDef.bodyB = cable.getBodyList().get(0);
-        world.createJoint(jointDef);
+		RevoluteJointDef jointDef = new RevoluteJointDef();
+		jointDef.bodyA = player.getBody();
+		jointDef.bodyB = cable.getBodyList().get(0);
+		world.createJoint(jointDef);
 
-        WeldJointDef weldJointDef = new WeldJointDef();
-        weldJointDef.bodyA = player.getBody();
-        weldJointDef.bodyB = cable.getBodyList().get(cable.getBodyList().size() - 1);
-        Vector2 playerPos = player.getBody().getPosition();
-        weldJointDef.localAnchorA.set(-35, 3);
-        world.createJoint(weldJointDef);
+		WeldJointDef weldJointDef = new WeldJointDef();
+		weldJointDef.bodyA = player.getBody();
+		weldJointDef.bodyB = cable.getBodyList().get(
+				cable.getBodyList().size() - 1);
+		Vector2 playerPos = player.getBody().getPosition();
+		weldJointDef.localAnchorA.set(-35, 3);
+		world.createJoint(weldJointDef);
 
-        return player;
-    }
+		return player;
+	}
 
-    private Block createBlock(World world, int x) {
-        PolygonShape blockShape = new PolygonShape();
-        blockShape.setAsBox(Constants.BLOCK_WIDTH / 2, Constants.BLOCK_HEIGHT / 2);
-        PhysicsModel blockModel = new PhysicsModel(world, x, 0, blockShape, true, BodyDef.BodyType.StaticBody, 1.0f);
-        return new Block(blockModel);
-    }
+	private Block createBlock(World world, int x) {
+		PolygonShape blockShape = new PolygonShape();
+		blockShape.setAsBox(Constants.BLOCK_WIDTH / 2,
+				Constants.BLOCK_HEIGHT / 2);
+		PhysicsModel blockModel = new PhysicsModel(world, x, 0, blockShape,
+				true, BodyDef.BodyType.StaticBody, 1.0f);
+		return new Block(blockModel);
+	}
 
 	@Override
 	public void render(float delta) {
@@ -148,17 +155,17 @@ public class GameScreen extends ResizableScreen {
 		Assets.textures.backgroundFar.setView(backgroundFarCamera);
 		Assets.textures.backgroundFar.render(layers);
 
+		player.update(delta);
+
 		boolean isStayByPhysics = !hitTester.isPlayerFlyes(player);
 
 		if (Gdx.input.isKeyPressed(Keys.SPACE) && isStayByPhysics) {
-			player.update(delta, false);
 			player.jump();
+			player.setOnGround(false);
 		}
 
 		if (isStayByPhysics == true)
-			player.update(delta, true);
-		else
-			player.update(delta);
+			player.setOnGround(true);
 
 		if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.D))
 			player.setMooving(true);
@@ -168,14 +175,6 @@ public class GameScreen extends ResizableScreen {
 		hudRenderer.render(hud);
 		playerRenderer.render(player);
 
-		if (Gdx.input.isKeyPressed(Keys.D)) {
-			backgroundFarCamera.position.set(
-					backgroundFarCamera.position.x + 0.15f,
-					backgroundFarCamera.position.y,
-					backgroundFarCamera.position.z);
-			backgroundFarCamera.update();
-		}
-
 		levelRender.render(level, delta);
 		// only for dev
 		blocksRender.render(level.getBlockList());
@@ -183,21 +182,43 @@ public class GameScreen extends ResizableScreen {
 		// check here for camera move
 		// call levelGenerator
 
-        cableRender.render(cable);
+		cableRender.render(cable);
 
-        // FIXME: move into render loop
-        if (Gdx.input.isKeyPressed(Keys.A)) { // a
-            if (player.getBody().getLinearVelocity().x > -10) {
-                player.moveLeft();
-            }
-        }
+		// FIXME: move into render loop
+		if (Gdx.input.isKeyPressed(Keys.A)) { // a
+			if (player.getBody().getLinearVelocity().x > -10) {
+				player.moveLeft();
+			}
+		}
 
-        if (Gdx.input.isKeyPressed(Keys.D)) { // d
-            if (player.getBody().getLinearVelocity().x < 10) {
-                player.moveRight();
-            }
-        }
-        debugRenderer.render(level.getWorld(), debugMatrix);
+		if (Gdx.input.isKeyPressed(Keys.D)) { // d
+			if (player.getBody().getLinearVelocity().x < 10) {
+				player.moveRight();
+			}
+		}
+		debugRenderer.render(level.getWorld(), debugMatrix);
+
+		if (needMoveCamera())
+			moveMainCamera();
+	}
+
+	private void moveMainCamera() {
+		camera.position.set(camera.position.x + Constants.MAIN_CAMERA_SPEED,
+				camera.position.y, camera.position.z);
+		camera.update();
+
+		backgroundFarCamera.position.set(
+				backgroundFarCamera.position.x + Constants.BACK_CAMERA_SPEED,
+				backgroundFarCamera.position.y,
+				backgroundFarCamera.position.z);
+		backgroundFarCamera.update();
+	}
+
+	private boolean needMoveCamera() {
+		float distance = player.getBody().getPosition().x * conf.UNIT_SIZE
+				- camera.position.x;
+		return distance > Constants.MAX_DISTANCE_CAMERA_AHEAD
+				* conf.UNIT_SIZE;
 	}
 
 	@Override

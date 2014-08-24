@@ -11,7 +11,7 @@ public class Player {
 	private DirectionY dirY;
 	private long attackBeganAt;
 	private float stateTime;
-	private boolean isStay = true;
+	private boolean isOnGround = true;
 	private boolean isMooving;
 
 	private PhysicsModel model;
@@ -40,12 +40,14 @@ public class Player {
 		return stateTime;
 	}
 
-	public boolean isStay() {
-		return isStay;
+	public boolean isOnGround() {
+		return isOnGround;
 	}
 
-	public void setStay(boolean isStay) {
-		this.isStay = isStay;
+	public void setOnGround(boolean isStay) {
+		if (isOnGround == false)
+			Assets.audios.landing.play();
+		isOnGround = isStay;
 	}
 
 	public void moveLeft() {
@@ -65,6 +67,7 @@ public class Player {
 	public void jump() {
 		getBody().applyLinearImpulse(Constants.JUMP_IMPULSE,
 				getBody().getPosition(), true);
+		Assets.audios.jump.play(1.0f);
 	}
 
 	public boolean isInAttack() {
@@ -92,11 +95,6 @@ public class Player {
 
 	public void crosshairMiddle() {
 		dirY = DirectionY.CROSSHAIR_MIDDLE;
-	}
-
-	public void update(float delta, boolean isStay) {
-		stateTime += delta;
-		this.isStay = isStay;
 	}
 
 	public void update(float delta) {

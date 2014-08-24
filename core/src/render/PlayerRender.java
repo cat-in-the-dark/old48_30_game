@@ -47,43 +47,44 @@ public class PlayerRender {
 					(playerPos.y - Constants.PLAYER_WIDTH / 2) * conf.UNIT_SIZE,
 					Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
 					Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
-			batch.end();
-			return;
-		}
+		} else {
 
-		if (player.isStay()) {
+			if (player.isOnGround()) {
 
-			TextureRegion frame = null;
-			// если стоит
-			switch (player.getDirY()) {
-			case CROSSHAIR_UP:
-				frame = frames[0][12];
-				break;
-			case CROSSHAIR_MIDDLE:
-				frame = frames[0][11];
-				break;
-			case CROSSHAIR_DOWN:
-				frame = frames[0][13];
-				break;
+				TextureRegion frame = null;
+				// если стоит
+				switch (player.getDirY()) {
+				case CROSSHAIR_UP:
+					frame = frames[0][12];
+					break;
+				case CROSSHAIR_MIDDLE:
+					frame = frames[0][11];
+					break;
+				case CROSSHAIR_DOWN:
+					frame = frames[0][13];
+					break;
 
+				}
+
+				batch.draw(
+						frame,
+						(playerPos.x - Constants.PLAYER_HEIGHT / 2)
+								* conf.UNIT_SIZE,
+						(playerPos.y - Constants.PLAYER_WIDTH / 2)
+								* conf.UNIT_SIZE,
+						Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
+						Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
+			} else {// летим
+				batch.draw(
+						jumpAnimation.getKeyFrame(player
+								.getStateTime()),
+						(playerPos.x - Constants.PLAYER_HEIGHT / 2)
+								* conf.UNIT_SIZE,
+						(playerPos.y - Constants.PLAYER_WIDTH / 2)
+								* conf.UNIT_SIZE,
+						Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
+						Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
 			}
-
-			batch.draw(
-					frame,
-					(playerPos.x - Constants.PLAYER_HEIGHT / 2)
-							* conf.UNIT_SIZE,
-					(playerPos.y - Constants.PLAYER_WIDTH / 2) * conf.UNIT_SIZE,
-					Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
-					Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
-		} else {// летим
-			batch.draw(
-					jumpAnimation.getKeyFrame(player
-							.getStateTime()),
-					(playerPos.x - Constants.PLAYER_HEIGHT / 2)
-							* conf.UNIT_SIZE,
-					(playerPos.y - Constants.PLAYER_WIDTH / 2) * conf.UNIT_SIZE,
-					Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
-					Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
 		}
 
 		// draw shot
@@ -131,7 +132,7 @@ public class PlayerRender {
 					batch.draw(
 							Assets.textures.shot,
 							(playerPos.x - Constants.PLAYER_HEIGHT / 2)
-									* conf.UNIT_SIZE ,
+									* conf.UNIT_SIZE,
 							(playerPos.y - Constants.PLAYER_WIDTH / 2)
 									* conf.UNIT_SIZE
 									+ 20,
@@ -140,7 +141,7 @@ public class PlayerRender {
 				case CROSSHAIR_DOWN:
 					batch.draw(Assets.textures.shot,
 							(playerPos.x - Constants.PLAYER_HEIGHT / 2)
-									* conf.UNIT_SIZE  + 13,
+									* conf.UNIT_SIZE + 13,
 							(playerPos.y - Constants.PLAYER_WIDTH / 2)
 									* conf.UNIT_SIZE + 3, 0, 0,
 							-256, 32, 1, 1, 45, 0, 0, 1, 1, false, false);
