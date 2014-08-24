@@ -85,7 +85,7 @@ public class Assets {
                     Gdx.files.internal("texture/startGameTexture.jpg"));
 
             gameOverTex = new Texture(
-                    Gdx.files.internal("texture/gameOverTexture.jpg"));
+                    Gdx.files.internal("texture/gameoverTexture.jpg"));
 
             winTex = new Texture(
                     Gdx.files.internal("texture/winTexture.jpg"));
