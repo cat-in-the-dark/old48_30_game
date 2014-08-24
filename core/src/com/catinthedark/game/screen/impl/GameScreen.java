@@ -243,6 +243,10 @@ public class GameScreen extends ResizableScreen {
 
 		if (needMoveCamera())
 			moveMainCamera();
+
+		if (player.getBody().getPosition().y < 0) {
+			next();
+		}
 	}
 
 	private void moveMainCamera() {
@@ -252,6 +256,12 @@ public class GameScreen extends ResizableScreen {
 		System.out.println(walkedDistance);
 		hud.addMeters((int) (walkedDistance * 100)
 				/ Constants.DISTANCE_MAX_EASY);
+		System.out.println(walkedDistance);
+		hud.setMeters((int) ((walkedDistance * 100) / Constants.DISTANCE_MAX_EASY));
+
+		if (walkedDistance >= Constants.DISTANCE_MAX_EASY) {
+			next();
+		}
 
 		camera.position.set(camera.position.x + Constants.MAIN_CAMERA_SPEED,
 				camera.position.y, camera.position.z);
