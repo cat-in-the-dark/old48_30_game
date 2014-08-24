@@ -11,7 +11,7 @@ public class TitleScreen extends ResizableScreen {
 	private final int timeToLive;
 	private final boolean infinite;
 
-	private final SpriteBatch spriteBatch = new SpriteBatch();
+	protected final SpriteBatch spriteBatch = new SpriteBatch();
 	private float timeLaps;
 
 	private final Camera camera;

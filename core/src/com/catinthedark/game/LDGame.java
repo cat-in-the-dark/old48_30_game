@@ -23,17 +23,33 @@ public class LDGame extends Game {
         TitleScreen startGame = new TitleScreen(conf, Assets.textures.startGameTex, 0);
         startGame.bindings.bindNext(Input.Keys.ENTER);
 
-        TitleScreen gameOver = new TitleScreen(conf, Assets.textures.gameOverTex, 0);
+        TitleScreen gameOver = new TitleScreen(conf, Assets.textures.gameOverTex, 0){
+            @Override
+            public void render(float delta){
+                super.render(delta);
+                spriteBatch.begin();
+                Assets.fonts.hudFont.draw(spriteBatch, "Score: " + GameScore.getInstance().getScore(), conf.VIEW_PORT_WIDTH, conf.VIEW_PORT_HEIGHT);
+                spriteBatch.end();
+            }
+        };
         gameOver.bindings.bindNext(Input.Keys.ESCAPE);
 
-        TitleScreen gameWin = new TitleScreen(conf, Assets.textures.winTex, 0);
+        TitleScreen gameWin = new TitleScreen(conf, Assets.textures.winTex, 0){
+            @Override
+            public void render(float delta){
+                super.render(delta);
+                spriteBatch.begin();
+                Assets.fonts.hudFont.draw(spriteBatch, "Score: " + GameScore.getInstance().getScore(), conf.VIEW_PORT_WIDTH, conf.VIEW_PORT_HEIGHT);
+                spriteBatch.end();
+            }
+        };
         gameWin.bindings.bindNext(Input.Keys.ESCAPE);
 
 		chain.add(new TitleScreen(conf, Assets.textures.logoTex, 1000));
         chain.add(startGame);
-		chain.add(new GameScreen(conf));
-        chain.add(gameOver);
+        chain.add(new GameScreen(conf));
         chain.add(gameWin);
+        chain.add(gameOver);
 		chain.gotoFrame(0);
 
 	}

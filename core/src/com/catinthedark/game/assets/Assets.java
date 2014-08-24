@@ -88,7 +88,7 @@ public class Assets {
                     Gdx.files.internal("texture/gameOverTexture.jpg"));
 
             winTex = new Texture(
-                    Gdx.files.internal("texture/gameOverTexture.jpg"));
+                    Gdx.files.internal("texture/winTexture.jpg"));
 
 			Texture heart = new
 					Texture(Gdx.files.internal("texture/heart.png"));
