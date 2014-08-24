@@ -36,7 +36,7 @@ public class LDGame extends Game {
 		chain.add(new TitleScreen(conf, Assets.textures.logoTex, 1000));
         chain.add(startGame);
         chain.add(new GameScreen(conf));
-        chain.add(gameWin);ssw
+        chain.add(gameWin);
         chain.add(gameOver);
         chain.gotoFrame(0);
     }
