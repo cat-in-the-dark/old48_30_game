@@ -11,11 +11,10 @@ import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.utils.Array;
 import com.catinthedark.game.level.Level;
 import com.catinthedark.game.level.Tile;
+import com.catinthedark.game.level.TileType;
 
-import entity.Block;
 import entity.Bullet;
 import entity.DirectionX;
-import entity.DirectionY;
 import entity.MushroomedCrab;
 import entity.Player;
 
@@ -35,7 +34,11 @@ public class HitTester {
 
 				List<Body> bodyList = new ArrayList<Body>();
 				for (Tile tile : level.tiles) {
-					bodyList.add(tile.body);
+                    if (tile.type == TileType.GRASS
+                            || tile.type == TileType.GRASS_SLOPE_LEFT
+                            || tile.type == TileType.GRASS_SLOPE_RIGHT) {
+                        bodyList.add(tile.body);
+                    }
 				}
 
 				if (contact.getFixtureA() == player.getModel().getFixture()) {

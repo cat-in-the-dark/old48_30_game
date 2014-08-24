@@ -45,6 +45,10 @@ public class Assets {
 
 	public static class Textures implements Initable {
 		public Texture logoTex;
+        public Texture startGameTex;
+        public Texture gameOverTex;
+        public Texture winTex;
+
 		public TextureRegion heartReg;
 		public TextureRegion hudWireReg;
 		public TextureRegion playerReg;
@@ -72,10 +76,19 @@ public class Assets {
 		public TiledMapRenderer backgroundFar;
 		public TiledMapRenderer background;
 
-		@Override
+        @Override
 		public void init(Config conf) {
 			logoTex = new Texture(
 					Gdx.files.internal("texture/logo.png"));
+
+            startGameTex = new Texture(
+                    Gdx.files.internal("texture/startGameTexture.jpg"));
+
+            gameOverTex = new Texture(
+                    Gdx.files.internal("texture/gameOverTexture.jpg"));
+
+            winTex = new Texture(
+                    Gdx.files.internal("texture/winTexture.jpg"));
 
 			Texture heart = new
 					Texture(Gdx.files.internal("texture/heart.png"));

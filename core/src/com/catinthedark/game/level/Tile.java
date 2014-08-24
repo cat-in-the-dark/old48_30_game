@@ -62,9 +62,9 @@ public class Tile {
             case GRASS_SLOPE_LEFT:
                 blockShape = new PolygonShape();
                 dots = new Vector2[3];
-                dots[0] = new Vector2(0, Constants.BLOCK_HEIGHT);
-                dots[1] = new Vector2(Constants.BLOCK_WIDTH, 0);
-                dots[2] = new Vector2(Constants.BLOCK_WIDTH, Constants.BLOCK_HEIGHT);
+                dots[0] = new Vector2(Constants.BLOCK_WIDTH / 2, Constants.BLOCK_HEIGHT / 2);
+                dots[1] = new Vector2(Constants.BLOCK_WIDTH / 2, -1 * Constants.BLOCK_HEIGHT / 2);
+                dots[2] = new Vector2(-1 * Constants.BLOCK_WIDTH, -1 * Constants.BLOCK_HEIGHT);
                 blockShape.set(dots);
                 this.shape = blockShape;
                 fixture = body.createFixture(this.shape, 0);
@@ -72,9 +72,9 @@ public class Tile {
             case GRASS_SLOPE_RIGHT:
                 blockShape = new PolygonShape();
                 dots = new Vector2[3];
-                dots[0] = new Vector2(0, 0);
-                dots[1] = new Vector2(0, Constants.BLOCK_HEIGHT);
-                dots[2] = new Vector2(Constants.BLOCK_WIDTH, Constants.BLOCK_HEIGHT);
+                dots[0] = new Vector2(-1 * Constants.BLOCK_WIDTH / 2, Constants.BLOCK_HEIGHT / 2);
+                dots[1] = new Vector2(-1 * Constants.BLOCK_WIDTH / 2, -1 * Constants.BLOCK_HEIGHT / 2);
+                dots[2] = new Vector2(Constants.BLOCK_WIDTH / 2, -1 * Constants.BLOCK_HEIGHT / 2);
                 blockShape.set(dots);
                 this.shape = blockShape;
                 fixture = body.createFixture(this.shape, 0);
