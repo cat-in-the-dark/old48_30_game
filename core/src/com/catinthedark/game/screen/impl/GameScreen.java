@@ -81,7 +81,7 @@ public class GameScreen extends ResizableScreen {
 
 		blocksRender = new BlocksRender(conf, camera);
 
-		level = new Level(conf, Constants.EASY);
+		level = new Level(conf, Constants.EASY, camera);
 		levelRender = new LevelRender();
 		levelGenerator.generateLevel(level);
 
@@ -197,6 +197,10 @@ public class GameScreen extends ResizableScreen {
 			}
 		}
 		debugRenderer.render(level.getWorld(), debugMatrix);
+
+        levelGenerator.updateLevel(level, camera);
+
+        level.render(delta);
 
 		if (needMoveCamera())
 			moveMainCamera();
