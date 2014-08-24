@@ -74,11 +74,10 @@ public class GameScreen extends ResizableScreen {
 		blocksRender = new BlocksRender(conf, camera);
 
 		level = new Level(conf, Constants.EASY, camera);
-		levelRender = new LevelRender(conf, camera);
-
         this.aiManager = new AIManager();
+        levelRender = new LevelRender(conf, camera);
 
-		levelGenerator = new LevelGenerator(conf);
+        levelGenerator = new LevelGenerator(conf, level);
 		levelGenerator.generateLevel(level);
 
 		hitTester = new HitTester(level);

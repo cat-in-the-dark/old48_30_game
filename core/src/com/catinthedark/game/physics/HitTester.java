@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.catinthedark.game.level.Level;
 
+import com.catinthedark.game.level.Tile;
 import entity.Block;
 import entity.Player;
 
@@ -27,8 +28,8 @@ public class HitTester {
 			if (contact.isTouching()) {
 
 				List<Body> bodyList = new ArrayList<Body>();
-				for (Block block : level.getBlockList()) {
-					bodyList.add(block.getBody());
+				for (Tile tile : level.tiles) {
+					bodyList.add(tile.body);
 				}
 
 				if (contact.getFixtureA() == player.getModel().getFixture()) {

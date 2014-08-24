@@ -19,8 +19,8 @@ public class LevelGenerator {
 	private final Config conf;
     private float lastPresetX = 0;
 
-	public LevelGenerator(Config conf) {
-		this.factory = new TilePresetFactory();
+	public LevelGenerator(Config conf, Level level) {
+		this.factory = new TilePresetFactory(level.getWorld());
 		this.conf = conf;
 	}
 
