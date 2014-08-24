@@ -9,6 +9,7 @@ import com.catinthedark.game.assets.Assets;
 import com.catinthedark.game.level.Level;
 import com.catinthedark.game.level.Tile;
 
+import entity.Bullet;
 import entity.MushroomedCrab;
 
 /**
@@ -20,6 +21,7 @@ public class LevelRender {
 	private final Camera camera;
 	private final Config conf;
 	private final MushroomedCrabRender crabRender;
+	private final MushShotRenderer bulletRenderer = new MushShotRenderer();
 
 	public LevelRender(Config conf, Camera camera) {
 		this.camera = camera;
@@ -61,13 +63,19 @@ public class LevelRender {
 				region = Assets.textures.empty;
 				break;
 			}
-			batch.draw(region, (tile.body.getPosition().x - Constants.BLOCK_WIDTH / 2)* 32,
-                    (tile.body.getPosition().y - Constants.BLOCK_HEIGHT / 2)* 32);
+			batch.draw(
+					region,
+					(tile.body.getPosition().x - Constants.BLOCK_WIDTH / 2) * 32,
+					(tile.body.getPosition().y - Constants.BLOCK_HEIGHT / 2) * 32);
 		}
 
 		// render crabs
 		for (MushroomedCrab crab : level.getCrabs())
 			crabRender.render(crab, batch);
+
+		// render bullets
+		for (Bullet bullet : level.getBullets())
+			bulletRenderer.render(batch, bullet);
 
 		batch.end();
 	}

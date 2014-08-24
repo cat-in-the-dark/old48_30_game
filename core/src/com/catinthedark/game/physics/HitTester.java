@@ -10,12 +10,11 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.utils.Array;
 import com.catinthedark.game.level.Level;
-
 import com.catinthedark.game.level.Tile;
 import com.catinthedark.game.level.TileType;
-import entity.Block;
+
+import entity.Bullet;
 import entity.DirectionX;
-import entity.DirectionY;
 import entity.MushroomedCrab;
 import entity.Player;
 
@@ -50,6 +49,42 @@ public class HitTester {
 					if (bodyList.contains(contact.getFixtureA().getBody()))
 						return false;
 				}
+			}
+		}
+
+		return true;
+	}
+
+	public boolean processContactFixture(Fixture fixture, Level level) {
+		for (MushroomedCrab crab : level.getCrabs())
+			if (crab.getBody().getFixtureList().get(0) == fixture) {
+				return true;
+			}
+
+		for (Bullet bullet : level.getBullets()) {
+			if (bullet.getBody().getFixtureList().size != 0)
+				if (bullet.getBody().getFixtureList().get(0) == fixture) {
+					level.getWorld().destroyBody(bullet.getBody());
+					return true;
+				}
+		}
+
+		return false;
+	}
+
+	public boolean isPlayerOnDamage(Player player) {
+		Array<Contact> contactList = level.getWorld().getContactList();
+		for (int i = 0; i < contactList.size; i++) {
+			Contact contact = contactList.get(i);
+			if (contact.isTouching()) {
+				if (contact.getFixtureA() == player.getBody().getFixtureList()
+						.get(0))
+					return processContactFixture(contact.getFixtureB(), level);
+				else if (contact.getFixtureB() == player.getBody()
+						.getFixtureList().get(0))
+					return processContactFixture(contact.getFixtureA(), level);
+
+				return false;
 			}
 		}
 
@@ -97,7 +132,7 @@ public class HitTester {
 				for (MushroomedCrab crab : crabs) {
 					if (crab.getBody() == fixture.getBody()) {
 						suffered.add(crab);
-						System.out.print("add");
+						return -1;
 					}
 				}
 

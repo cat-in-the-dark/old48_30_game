@@ -20,8 +20,11 @@ import com.catinthedark.game.level.LevelGenerator;
 import com.catinthedark.game.physics.HitTester;
 import com.catinthedark.game.physics.PhysicsModel;
 import com.catinthedark.game.screen.ResizableScreen;
+
 import entity.Block;
+import entity.Bullet;
 import entity.Cable;
+import entity.Mushroom;
 import entity.MushroomedCrab;
 import entity.Player;
 import render.*;
@@ -43,7 +46,7 @@ public class GameScreen extends ResizableScreen {
 
 	private Player player;
 	private Level level;
-    private AIManager aiManager;
+	private AIManager aiManager;
 	private List<Block> blockList;
 	private Cable cable;
 
@@ -55,6 +58,8 @@ public class GameScreen extends ResizableScreen {
 
 	private Box2DDebugRenderer debugRenderer;
 	Matrix4 debugMatrix;
+
+    public float walkedDistance = 0;
 
 	public GameScreen(Config conf) {
 		super(conf);
@@ -75,10 +80,10 @@ public class GameScreen extends ResizableScreen {
 		blocksRender = new BlocksRender(conf, camera);
 
 		level = new Level(conf, Constants.EASY, camera);
-        this.aiManager = new AIManager();
-        levelRender = new LevelRender(conf, camera);
+		this.aiManager = new AIManager();
+		levelRender = new LevelRender(conf, camera);
 
-        levelGenerator = new LevelGenerator(conf, level);
+		levelGenerator = new LevelGenerator(conf, level);
 		levelGenerator.generateLevel(level);
 
 		hitTester = new HitTester(level);
@@ -152,7 +157,12 @@ public class GameScreen extends ResizableScreen {
 		Assets.textures.backgroundFar.render(layers);
 
 		player.update(delta);
-        level.update(delta);
+		level.update(delta);
+
+		if (hitTester.isPlayerOnDamage(player)) {
+			System.out.print("damage");
+			hud.decHealth();
+		}
 
 		boolean isStayByPhysics = !hitTester.isPlayerFlyes(player);
 
@@ -175,13 +185,24 @@ public class GameScreen extends ResizableScreen {
 			for (MushroomedCrab crab : damaged) {
 				System.out.println("healt:" + crab.healt);
 				crab.healt -= 10;
-				if (crab.healt < 0){
+				if (crab.healt < 0) {
 					level.deleteEntity(crab);
-					level.getWorld().destroyBody(crab.getBody());
 				}
 			}
 
 		}
+		// update mushrooms
+		List<Mushroom> forDelete = new ArrayList<Mushroom>();
+		for (Bullet b : level.getBullets()) {
+			Mushroom mush = (Mushroom) b;
+			mush.update(delta);
+			if (mush.getStateTime() > 2) {
+				forDelete.add(mush);
+				level.getWorld().destroyBody(mush.getBody());
+			}
+		}
+
+		level.getBullets().removeAll(forDelete);
 
 		hudRenderer.render(hud);
 		playerRenderer.render(player);
@@ -210,13 +231,19 @@ public class GameScreen extends ResizableScreen {
 		levelRender.render(level, delta);
 
 		debugRenderer.render(level.getWorld(), debugMatrix);
-        aiManager.update(level);
+		aiManager.update(level);
 
 		if (needMoveCamera())
 			moveMainCamera();
 	}
 
 	private void moveMainCamera() {
+
+        walkedDistance += Constants.MAIN_CAMERA_SPEED;
+
+        System.out.println(walkedDistance);
+        hud.addMeters((int)(walkedDistance  * 100) / Constants.DISTANCE_MAX_EASY);
+
 		camera.position.set(camera.position.x + Constants.MAIN_CAMERA_SPEED,
 				camera.position.y, camera.position.z);
 		camera.update();
