@@ -5,12 +5,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.catinthedark.game.Config;
 import com.catinthedark.game.Constants;
+import com.catinthedark.game.assets.Assets;
 import com.catinthedark.game.physics.PhysicsModel;
 
 import entity.Block;
@@ -56,5 +58,37 @@ public class Level {
 	}
 
 	private void renderTiles(float delta, SpriteBatch batch) {
+        batch.begin();
+        for (Tile tile : tiles) {
+            TextureRegion region;
+            switch (tile.type) {
+                case GRASS:
+                    region = Assets.textures.grass;
+                    break;
+                case GRASS_SHADOW:
+                    region = Assets.textures.grass_shadow;
+                    break;
+                case UNDERGROUND:
+                    region = Assets.textures.underground;
+                    break;
+                case GRASS_SLOPE_LEFT:
+                    region = Assets.textures.grass_slope_slope;
+                    break;
+                case GRASS_SLOPE_LEFT_SHADOW:
+                    region = Assets.textures.grass_slope_left_shadow;
+                    break;
+                case GRASS_SLOPE_RIGHT:
+                    region = Assets.textures.grass_slope_right;
+                    break;
+                case GRASS_SLOPE_RIGHT_SHADOW:
+                    region = Assets.textures.grass_slope_right_shadow;
+                    break;
+                default:
+                    region = Assets.textures.empty;
+                    break;
+            }
+            batch.draw(region, tile.getX() * 32, tile.getY() * 32);
+        }
+        batch.end();
 	}
 }

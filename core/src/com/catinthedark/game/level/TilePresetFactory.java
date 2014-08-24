@@ -20,8 +20,14 @@ public class TilePresetFactory {
             add(new int[][]{{1, 1, 1}, {2, 2, 2}, {0, 0, 0}});
         }};
 
-        this.rawTilePresetsMedium = new ArrayList<int[][]>();
-        this.rawTilePresetsHard = new ArrayList<int[][]>();
+        this.rawTilePresetsMedium = new ArrayList<int[][]>() {{
+            add(new int[][]{{1, 1, 1}, {2, 2, 2}});
+            add(new int[][]{{1, 1, 1}, {2, 2, 2}, {0, 0, 0}});
+        }};
+        this.rawTilePresetsHard = new ArrayList<int[][]>() {{
+            add(new int[][]{{1, 1, 1}, {2, 2, 2}});
+            add(new int[][]{{1, 1, 1}, {2, 2, 2}, {0, 0, 0}});
+        }};
 
         this.tilePresets = new HashMap<Integer, List<TilePreset>>();
         this.tilePresets.put(Constants.EASY, new ArrayList<TilePreset>());

@@ -39,7 +39,7 @@ import entity.Player;
 
 public class GameScreen extends ResizableScreen {
 
-	private final Camera camera;
+	private final OrthographicCamera camera;
 	private final Hud hud;
 	private final HudRenderer hudRenderer;
 	private final PlayerRender playerRenderer;
@@ -77,9 +77,9 @@ public class GameScreen extends ResizableScreen {
 		hudRenderer = new HudRenderer(conf);
 		hud.addMeters(0);
 
-		playerRenderer = new PlayerRender(conf);
+		playerRenderer = new PlayerRender(conf, camera);
 
-		blocksRender = new BlocksRender(conf);
+		blocksRender = new BlocksRender(conf, camera);
 
 		level = new Level(conf, Constants.EASY);
 		levelRender = new LevelRender();
@@ -87,7 +87,7 @@ public class GameScreen extends ResizableScreen {
 
 		hitTester = new HitTester(level);
 
-		cableRender = new CableRender(conf);
+		cableRender = new CableRender(conf, camera);
 
 		debugRenderer = new Box2DDebugRenderer();
 		debugMatrix = new Matrix4(camera.combined);
