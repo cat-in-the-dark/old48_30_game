@@ -70,6 +70,10 @@ public class Level {
 		list.add(entity);
 	}
 
+	public void deleteEntity(Entity entity) {
+		entities.get(entity.getClass()).remove(entity);
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<MushroomedCrab> getCrabs() {
 		List<Entity> crabs = entities.get(MushroomedCrab.class);

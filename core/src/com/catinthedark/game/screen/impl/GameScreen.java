@@ -35,6 +35,7 @@ import com.catinthedark.game.screen.ResizableScreen;
 
 import entity.Block;
 import entity.Cable;
+import entity.MushroomedCrab;
 import entity.Player;
 
 public class GameScreen extends ResizableScreen {
@@ -174,6 +175,20 @@ public class GameScreen extends ResizableScreen {
 		else
 			player.setMooving(false);
 
+		if (player.isInAttack()) {
+			List<MushroomedCrab> damaged =
+					hitTester.getCrubsOnSuffering(player);
+			for (MushroomedCrab crab : damaged) {
+				System.out.println("healt:" + crab.healt);
+				crab.healt -= 10;
+				if (crab.healt < 0){
+					level.deleteEntity(crab);
+					level.getWorld().destroyBody(crab.getBody());
+				}
+			}
+
+		}
+
 		hudRenderer.render(hud);
 		playerRenderer.render(player);
 
@@ -196,10 +211,11 @@ public class GameScreen extends ResizableScreen {
 				player.moveRight();
 			}
 		}
-		debugRenderer.render(level.getWorld(), debugMatrix);
 
 		levelGenerator.updateLevel(level, camera);
 		levelRender.render(level, delta);
+
+		debugRenderer.render(level.getWorld(), debugMatrix);
 
 		if (needMoveCamera())
 			moveMainCamera();
