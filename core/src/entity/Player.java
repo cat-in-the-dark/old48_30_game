@@ -11,7 +11,7 @@ public class Player {
 	private DirectionY dirY;
 	private long attackBeganAt;
 	private float stateTime;
-	private boolean isStay = true;
+	private boolean isOnGround = true;
 	private boolean isMooving;
 
 	private PhysicsModel model;
@@ -40,12 +40,12 @@ public class Player {
 		return stateTime;
 	}
 
-	public boolean isStay() {
-		return isStay;
+	public boolean isOnGround() {
+		return isOnGround;
 	}
 
-	public void setStay(boolean isStay) {
-		this.isStay = isStay;
+	public void setOnGround(boolean isStay) {
+		this.isOnGround = isStay;
 	}
 
 	public void moveLeft() {
@@ -96,7 +96,7 @@ public class Player {
 
 	public void update(float delta, boolean isStay) {
 		stateTime += delta;
-		this.isStay = isStay;
+		this.isOnGround = isStay;
 	}
 
 	public void update(float delta) {
