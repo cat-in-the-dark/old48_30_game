@@ -45,7 +45,9 @@ public class Player {
 	}
 
 	public void setOnGround(boolean isStay) {
-		this.isOnGround = isStay;
+		if (isOnGround == false)
+			Assets.audios.landing.play();
+		isOnGround = isStay;
 	}
 
 	public void moveLeft() {
@@ -93,11 +95,6 @@ public class Player {
 
 	public void crosshairMiddle() {
 		dirY = DirectionY.CROSSHAIR_MIDDLE;
-	}
-
-	public void update(float delta, boolean isStay) {
-		stateTime += delta;
-		this.isOnGround = isStay;
 	}
 
 	public void update(float delta) {
