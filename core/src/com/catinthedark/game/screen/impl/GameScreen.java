@@ -56,6 +56,8 @@ public class GameScreen extends ResizableScreen {
 	private Box2DDebugRenderer debugRenderer;
 	Matrix4 debugMatrix;
 
+    public float walkedDistance = 0;
+
 	public GameScreen(Config conf) {
 		super(conf);
 
@@ -217,6 +219,12 @@ public class GameScreen extends ResizableScreen {
 	}
 
 	private void moveMainCamera() {
+
+        walkedDistance += Constants.MAIN_CAMERA_SPEED;
+
+        System.out.println(walkedDistance);
+        hud.addMeters((int)(walkedDistance  * 100) / Constants.DISTANCE_MAX_EASY);
+
 		camera.position.set(camera.position.x + Constants.MAIN_CAMERA_SPEED,
 				camera.position.y, camera.position.z);
 		camera.update();
