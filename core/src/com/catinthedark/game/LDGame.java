@@ -1,6 +1,7 @@
 package com.catinthedark.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Input;
 import com.catinthedark.game.assets.Assets;
 import com.catinthedark.game.screen.ScreenChain;
 import com.catinthedark.game.screen.TitleScreen;
@@ -19,8 +20,20 @@ public class LDGame extends Game {
 
 		ScreenChain chain = new ScreenChain(this);
 
+        TitleScreen startGame = new TitleScreen(conf, Assets.textures.startGameTex, 0);
+        startGame.bindings.bindNext(Input.Keys.ENTER);
+
+        TitleScreen gameOver = new TitleScreen(conf, Assets.textures.gameOverTex, 0);
+        gameOver.bindings.bindNext(Input.Keys.ESCAPE);
+
+        TitleScreen gameWin = new TitleScreen(conf, Assets.textures.winTex, 0);
+        gameWin.bindings.bindNext(Input.Keys.ESCAPE);
+
 		chain.add(new TitleScreen(conf, Assets.textures.logoTex, 1000));
+        chain.add(startGame);
 		chain.add(new GameScreen(conf));
+        chain.add(gameOver);
+        chain.add(gameWin);
 		chain.gotoFrame(0);
 
 	}
