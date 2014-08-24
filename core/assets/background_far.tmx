@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="32" height="1" tilewidth="512" tileheight="640">
- <tileset firstgid="1" name="background_far" tilewidth="512" tileheight="640">
-  <image source="texture/background_far.png" width="2048" height="640"/>
+<map version="1.0" orientation="orthogonal" width="1" height="1" tilewidth="2048" tileheight="640">
+ <tileset firstgid="1" name="background" tilewidth="2048" tileheight="640">
+  <image source="texture/background.png" width="2048" height="640"/>
  </tileset>
- <layer name="Слой тайлов 1" width="32" height="1">
+ <layer name="Слой тайлов 1" width="1" height="1">
   <data encoding="base64" compression="zlib">
-   eJxjZGBgYAJiZihmgWKQGCMSZoJiFhwYXR26eYw4MAAVUABN
+   eJxjZGBgAAAACAAC
   </data>
  </layer>
 </map>

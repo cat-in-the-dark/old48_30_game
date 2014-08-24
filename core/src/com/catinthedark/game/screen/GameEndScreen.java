@@ -17,7 +17,7 @@ public class GameEndScreen extends TitleScreen {
     public void render(float delta){
         super.render(delta);
         spriteBatch.begin();
-        Assets.fonts.hudFont.draw(spriteBatch, "Score: " + GameScore.getInstance().getScore(), conf.VIEW_PORT_WIDTH * conf.UNIT_SIZE / 2f - 70, conf.VIEW_PORT_HEIGHT * conf.UNIT_SIZE /2f);
+        Assets.fonts.hudFont.draw(spriteBatch, "Score: " + GameScore.getInstance().getScore(), conf.VIEW_PORT_WIDTH * conf.UNIT_SIZE - 160f, conf.VIEW_PORT_HEIGHT * conf.UNIT_SIZE - 70f);
         spriteBatch.end();
     }
 }
