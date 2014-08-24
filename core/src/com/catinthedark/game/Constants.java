@@ -11,6 +11,9 @@ public class Constants {
 	public static final float PLAYER_WIDTH = 2.0f;
 	public static final float PLAYER_HEIGHT = 2.0f;
 
+	public static final float CRUB_WIDTH = 2.0f;
+	public static final float CRUB_HEIGHT = 2.0f;
+
 	public static final float MUSHROOMED_CRAB_WIDTH = 2.0f;
 	public static final float MUSHROOMED_CRAB_HEIGHT = 2.0f;
 

@@ -44,7 +44,7 @@ public class GameScreen extends ResizableScreen {
 	private final HudRenderer hudRenderer;
 	private final PlayerRender playerRenderer;
 	private final LevelRender levelRender;
-	private final LevelGenerator levelGenerator = new LevelGenerator();
+	private final LevelGenerator levelGenerator;
 	private final BlocksRender blocksRender;
 	private final CableRender cableRender;
 	private final HitTester hitTester;
@@ -82,7 +82,9 @@ public class GameScreen extends ResizableScreen {
 		blocksRender = new BlocksRender(conf, camera);
 
 		level = new Level(conf, Constants.EASY, camera);
-		levelRender = new LevelRender(camera);
+		levelRender = new LevelRender(conf, camera);
+
+		levelGenerator = new LevelGenerator(conf);
 		levelGenerator.generateLevel(level);
 
 		hitTester = new HitTester(level);

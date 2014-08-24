@@ -11,6 +11,7 @@ import com.catinthedark.game.Config;
 import com.catinthedark.game.Constants;
 import com.catinthedark.game.assets.Assets;
 import com.catinthedark.game.physics.PhysicsModel;
+
 import entity.Block;
 import entity.Entity;
 import entity.MushroomedCrab;
@@ -57,5 +58,22 @@ public class Level {
 
 	public World getWorld() {
 		return world;
+	}
+
+	public void addEntity(Entity entity) {
+		List<Entity> list = entities.get(entity.getClass());
+		if (list == null) {
+			list = new ArrayList<Entity>();
+			entities.put(entity.getClass(), list);
+		}
+
+		list.add(entity);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<MushroomedCrab> getCrabs() {
+		List<Entity> crabs = entities.get(MushroomedCrab.class);
+		return (List<MushroomedCrab>) (crabs == null ? Collections.emptyList()
+				: crabs);
 	}
 }
