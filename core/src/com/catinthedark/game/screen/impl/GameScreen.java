@@ -75,7 +75,7 @@ public class GameScreen extends ResizableScreen {
 
 		hud = new Hud(10);
 		hudRenderer = new HudRenderer(conf);
-		hud.addMeters(0);
+		hud.setLevel(1);
 
 		playerRenderer = new PlayerRender(conf, camera);
 
