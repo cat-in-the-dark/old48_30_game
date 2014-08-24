@@ -1,5 +1,6 @@
 package com.catinthedark.game.level;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -27,6 +28,9 @@ public class Level {
     private Map<Class, List<Entity>> entities = new HashMap<Class, List<Entity>>();
     private Class[] entities_classes = {MushroomedCrab.class};
 
+    private final SpriteBatch batch;
+    private final OrthographicCamera camera;
+
 	private Block createBlock(int x) {
 		PolygonShape blockShape = new PolygonShape();
 		blockShape.setAsBox(Constants.BLOCK_WIDTH / 2,
@@ -36,7 +40,9 @@ public class Level {
 		return new Block(blockModel);
 	}
 
-	public Level(Config conf, int difficult) {
+	public Level(Config conf, int difficult, OrthographicCamera camera) {
+        batch = new SpriteBatch();
+        this.camera = camera;
 		world = new World(new Vector2(0, Constants.WORLD_GRAVITY), true);
 		blockList = new ArrayList<Block>();
 		for (int i = 0; i < conf.VIEW_PORT_WIDTH; i++)
@@ -58,11 +64,12 @@ public class Level {
 		return world;
 	}
 
-	public void render(float delta, SpriteBatch batch) {
-		renderTiles(delta, batch);
+	public void render(float delta) {
+		renderTiles(delta);
 	}
 
-	private void renderTiles(float delta, SpriteBatch batch) {
+	private void renderTiles(float delta) {
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
         for (Tile tile : tiles) {
             TextureRegion region;
