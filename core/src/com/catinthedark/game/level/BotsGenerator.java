@@ -26,7 +26,7 @@ public class BotsGenerator {
 		PhysicsModel crubModel = new PhysicsModel(level.getWorld(), posX
 				/ 32, posY / 32,
 				crubShape,
-				true, BodyDef.BodyType.DynamicBody, 0.1f);
+				true, BodyDef.BodyType.DynamicBody, 1.0f);
 		MushroomedCrab mush = new MushroomedCrab(crubModel);
 
 		if (new Random().nextInt() % 2 == 0)
@@ -38,7 +38,7 @@ public class BotsGenerator {
 	}
 
 	public void step(float delta, Player player) {
-		if (lastGen > 3) {
+		if (lastGen > 7) {
 			level.addEntity(createCrub(level,
 					player.getBody().getPosition().x * 32
 							+ new Random().nextInt(200), 600));
