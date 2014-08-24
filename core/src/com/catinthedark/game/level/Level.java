@@ -1,9 +1,5 @@
 package com.catinthedark.game.level;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -14,8 +10,11 @@ import com.catinthedark.game.Config;
 import com.catinthedark.game.Constants;
 import com.catinthedark.game.assets.Assets;
 import com.catinthedark.game.physics.PhysicsModel;
-
 import entity.Block;
+import entity.Entity;
+import entity.MushroomedCrab;
+
+import java.util.*;
 
 /**
  * Created by Ilya on 23.08.2014.
@@ -25,6 +24,8 @@ public class Level {
 	public final int difficult;
 	private World world;
 	private List<Block> blockList;
+    private Map<Class, List<Entity>> entities = new HashMap<Class, List<Entity>>();
+    private Class[] entities_classes = {MushroomedCrab.class};
 
 	private Block createBlock(int x) {
 		PolygonShape blockShape = new PolygonShape();
@@ -43,6 +44,10 @@ public class Level {
 
 		this.difficult = difficult;
 		this.tiles = new LinkedList<Tile>();
+
+        for (Class klass : entities_classes) {
+            entities.put(klass, new ArrayList<Entity>());
+        }
 	}
 
 	public List<Block> getBlockList() {
