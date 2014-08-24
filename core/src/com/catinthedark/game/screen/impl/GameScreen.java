@@ -175,7 +175,6 @@ public class GameScreen extends ResizableScreen {
 		hudRenderer.render(hud);
 		playerRenderer.render(player);
 
-		levelRender.render(level, delta);
 		// only for dev
 		blocksRender.render(level.getBlockList());
 
