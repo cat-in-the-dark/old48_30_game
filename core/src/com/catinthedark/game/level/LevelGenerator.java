@@ -18,9 +18,10 @@ import entity.MushroomedCrab;
 public class LevelGenerator {
 	private final TilePresetFactory factory;
 	private final Config conf;
+    private float lastPresetX = 0;
 
-	public LevelGenerator(Config conf) {
-		this.factory = new TilePresetFactory();
+	public LevelGenerator(Config conf, Level level) {
+		this.factory = new TilePresetFactory(level.getWorld());
 		this.conf = conf;
 	}
 
@@ -36,10 +37,12 @@ public class LevelGenerator {
 	}
 
 	public void generateLevel(Level level) {
-		TilePreset preset = factory.build(level.difficult);
-		level.tiles.addAll(preset.tiles);
 		level.addEntity(createCrub(level, 200, 100));
 		level.addEntity(createCrub(level, 250, 100));
+
+		List<Tile> preset = factory.build(level.difficult, lastPresetX, 0);
+		level.tiles.addAll(preset);
+        lastPresetX = preset.get(preset.size() - 1).getX() + Constants.BLOCK_WIDTH;
 	}
 
 	public void updateLevel(Level level, Camera camera) {
@@ -49,8 +52,9 @@ public class LevelGenerator {
 				+ camera.viewportWidth / 2f;
 
 		if (tiles.get(tiles.size() - 1).getX() * Constants.tileSize < levelRightEdge) {
-			TilePreset preset = factory.build(level.difficult);
-			tiles.addAll(preset.tiles);
+			List<Tile> preset = factory.build(level.difficult, lastPresetX, 0);
+			tiles.addAll(preset);
+            lastPresetX = preset.get(preset.size() - 1).getX() + Constants.BLOCK_WIDTH;
 		}
 	}
 }

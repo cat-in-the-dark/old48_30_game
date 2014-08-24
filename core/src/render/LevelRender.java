@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.catinthedark.game.Config;
+import com.catinthedark.game.Constants;
 import com.catinthedark.game.assets.Assets;
 import com.catinthedark.game.level.Level;
 import com.catinthedark.game.level.Tile;
@@ -60,7 +61,8 @@ public class LevelRender {
 				region = Assets.textures.empty;
 				break;
 			}
-			batch.draw(region, tile.getX() * 32, tile.getY() * 32);
+			batch.draw(region, (tile.body.getPosition().x - Constants.BLOCK_WIDTH / 2)* 32,
+                    (tile.body.getPosition().y - Constants.BLOCK_HEIGHT / 2)* 32);
 		}
 
 		// render crabs

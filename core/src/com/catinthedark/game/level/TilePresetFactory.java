@@ -1,5 +1,6 @@
 package com.catinthedark.game.level;
 
+import com.badlogic.gdx.physics.box2d.World;
 import com.catinthedark.game.Constants;
 
 import java.util.*;
@@ -11,13 +12,15 @@ public class TilePresetFactory {
     private final List<int[][]> rawTilePresetsEasy;
     private final List<int[][]> rawTilePresetsMedium;
     private final List<int[][]> rawTilePresetsHard;
+    private final World world;
 
     private final Map<Integer, List<TilePreset>> tilePresets;
 
-    public TilePresetFactory() {
+    public TilePresetFactory(World world) {
+        this.world = world;
         this.rawTilePresetsEasy = new ArrayList<int[][]>() {{
-            add(new int[][]{{1, 1, 1}, {2, 2, 2}});
-            add(new int[][]{{1, 1, 1}, {2, 2, 2}, {0, 0, 0}});
+            add(new int[][]{{7, 2, 7}, {2, 2, 7}});
+            add(new int[][]{{1, 7, 1}, {2, 2, 2}, {0, 0, 0}});
         }};
 
         this.rawTilePresetsMedium = new ArrayList<int[][]>() {{
@@ -47,13 +50,21 @@ public class TilePresetFactory {
         }
     }
 
-    public TilePreset build(int difficult){
+    public List<Tile> build(int difficult, float presetX, float presetY){
         if (tilePresets.get(difficult).size() == 0) {
             throw new RuntimeException("There is no tile preset for this difficult " + Integer.toString(difficult));
         }
 
         Random random = new Random();
         int i = random.nextInt(tilePresets.get(difficult).size());
-        return tilePresets.get(difficult).get(i);
+        TilePreset tilePreset = tilePresets.get(difficult).get(i);
+        List<Tile> tileList = new ArrayList<Tile>();
+        for (Tile tile: tilePreset.tiles) {
+            float newX = tile.getX() + presetX;
+            float newY = tile.getY() + presetY;
+            Tile newTile = new Tile(tile, newX, newY, world);
+            tileList.add(newTile);
+        }
+        return tileList;
     }
 }

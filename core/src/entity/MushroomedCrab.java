@@ -11,7 +11,7 @@ import com.catinthedark.game.physics.PhysicsModel;
 public class MushroomedCrab implements Entity {
 	private DirectionX dirX = DirectionX.RIGHT;
 	private DirectionY dirY;
-	private long attackBeganAt;
+	private float lastShutTime = 0f;
 	private float stateTime;
 	private boolean isStay = true;
 	private boolean isMoving;
@@ -58,8 +58,20 @@ public class MushroomedCrab implements Entity {
 	}
 
 	@Override
-	public void shot() {
+	public Bullet shot() {
+		if (lastShutTime > Constants.MUSHROOMED_CRAB_SHUT_DELAY) {
+			lastShutTime = 0f;
+			switch (getDirX()) {
+			case RIGHT:
+				return new Mushroom(DirectionX.RIGHT,
+						DirectionY.CROSSHAIR_MIDDLE);
+			case LEFT:
+				return new Mushroom(DirectionX.LEFT,
+						DirectionY.CROSSHAIR_MIDDLE);
+			}
+		}
 
+		return null;
 	}
 
 	@Override
@@ -74,12 +86,6 @@ public class MushroomedCrab implements Entity {
 	@Override
 	public void setMoving(boolean isMoving) {
 		this.isMoving = isMoving;
-	}
-
-	@Override
-	public void update(float delta, boolean isStay) {
-		stateTime += delta;
-		this.isStay = isStay;
 	}
 
 	@Override
