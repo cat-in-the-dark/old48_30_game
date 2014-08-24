@@ -13,9 +13,9 @@ public class MushroomedCrab implements Entity {
 	private DirectionY dirY;
 	private float lastShutTime = 0f;
 	private float stateTime;
-	private boolean isStay = true;
 	private boolean isMoving;
 	public int healt = 100;
+	private boolean shutting = false;
 
 	private PhysicsModel model;
 
@@ -60,17 +60,20 @@ public class MushroomedCrab implements Entity {
 	@Override
 	public Bullet shot() {
 		if (lastShutTime > Constants.MUSHROOMED_CRAB_SHUT_DELAY) {
+			System.out.println("Shut");
 			lastShutTime = 0f;
 			switch (getDirX()) {
 			case RIGHT:
+				shutting = true;
 				return new Mushroom(DirectionX.RIGHT,
 						DirectionY.CROSSHAIR_MIDDLE);
 			case LEFT:
+				shutting = true;
 				return new Mushroom(DirectionX.LEFT,
 						DirectionY.CROSSHAIR_MIDDLE);
 			}
 		}
-
+		shutting = false;
 		return null;
 	}
 
@@ -84,6 +87,11 @@ public class MushroomedCrab implements Entity {
 	}
 
 	@Override
+	public boolean isShutting() {
+		return shutting;
+	}
+
+	@Override
 	public void setMoving(boolean isMoving) {
 		this.isMoving = isMoving;
 	}
@@ -91,5 +99,6 @@ public class MushroomedCrab implements Entity {
 	@Override
 	public void update(float delta) {
 		stateTime += delta;
+		lastShutTime += delta;
 	}
 }
