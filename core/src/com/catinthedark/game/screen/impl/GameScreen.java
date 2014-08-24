@@ -1,5 +1,6 @@
 package com.catinthedark.game.screen.impl;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import render.BlocksRender;
 import render.HudRenderer;
 import render.LevelRender;
@@ -59,8 +60,6 @@ public class GameScreen extends ResizableScreen {
 	private final OrthographicCamera backgroundFarCamera = new OrthographicCamera(
 			conf.VIEW_PORT_WIDTH, conf.VIEW_PORT_HEIGHT);
 	private final int[] layers = new int[] { 0 };
-
-	private SpriteBatch batch = new SpriteBatch();
 
     private ShapeRenderer shapeRenderer;
 
