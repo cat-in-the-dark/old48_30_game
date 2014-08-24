@@ -2,12 +2,14 @@ package render;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.catinthedark.game.Config;
 import com.catinthedark.game.Constants;
 import com.catinthedark.game.assets.Assets;
 
+import entity.DirectionX;
 import entity.Player;
 
 public class PlayerRender {
@@ -21,35 +23,43 @@ public class PlayerRender {
 	public void render(Player player) {
 		batch.begin();
 
-		switch (player.getDirX()) {
-		case LEFT:
-			Assets.fonts.hudFont.draw(batch, "left", 200, 200);
-			break;
-
-		case RIGHT:
-			Assets.fonts.hudFont.draw(batch, "right", 200, 200);
-			break;
-		}
-
-		switch (player.getDirY()) {
-		case CROSSHAIR_UP:
-			Assets.fonts.hudFont.draw(batch, "cross up", 200, 230);
-			break;
-
-		case CROSSHAIR_MIDDLE:
-			Assets.fonts.hudFont.draw(batch, "cross middle", 200, 230);
-			break;
-		case CROSSHAIR_DOWN:
-			Assets.fonts.hudFont.draw(batch, "cross down", 200, 230);
-			break;
-		}
-
 		Vector2 playerPos = player.getBody().getPosition();
-		batch.draw(Assets.textures.playerReg,
-				(playerPos.x - Constants.PLAYER_HEIGHT / 2) * conf.UNIT_SIZE,
-				(playerPos.y - Constants.PLAYER_WIDTH / 2) * conf.UNIT_SIZE,
-				Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
-				Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
+		TextureRegion[][] frames;
+
+		if (player.getDirX() == DirectionX.RIGHT)
+			frames = Assets.textures.playerFrames;
+		else
+			frames = Assets.textures.playerFramesBack;
+
+		if (player.isStay()) {
+
+			TextureRegion frame = null;
+			// если стоит
+			switch (player.getDirY()) {
+			case CROSSHAIR_UP:
+				frame = frames[0][12];
+				break;
+			case CROSSHAIR_MIDDLE:
+				frame = frames[0][11];
+				break;
+			case CROSSHAIR_DOWN:
+				frame = frames[0][13];
+				break;
+
+			}
+
+			batch.draw(
+					frame,
+					(playerPos.x - Constants.PLAYER_HEIGHT / 2)
+							* conf.UNIT_SIZE,
+					(playerPos.y - Constants.PLAYER_WIDTH / 2) * conf.UNIT_SIZE,
+					Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
+					Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
+		}else{
+			
+		}
+
+		// draw shot
 		if (player.isInAttack()) {
 			switch (player.getDirY()) {
 			case CROSSHAIR_UP:

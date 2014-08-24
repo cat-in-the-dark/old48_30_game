@@ -1,28 +1,29 @@
 package com.catinthedark.game.screen.impl;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.Array;
-import com.catinthedark.game.Config;
-import com.catinthedark.game.Constants;
-import com.catinthedark.game.assets.Assets;
-import com.catinthedark.game.hud.Hud;
-import com.catinthedark.game.level.Level;
-import com.catinthedark.game.physics.PhysicsModel;
-import com.catinthedark.game.screen.ResizableScreen;
-import entity.Block;
-import entity.Player;
 import render.BlocksRender;
 import render.HudRenderer;
 import render.LevelRender;
 import render.PlayerRender;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.World;
+import com.catinthedark.game.Config;
+import com.catinthedark.game.Constants;
+import com.catinthedark.game.assets.Assets;
+import com.catinthedark.game.hud.Hud;
+import com.catinthedark.game.level.Level;
+import com.catinthedark.game.level.LevelGenerator;
+import com.catinthedark.game.physics.HitTester;
+import com.catinthedark.game.physics.PhysicsModel;
+import com.catinthedark.game.screen.ResizableScreen;
+
+import entity.Player;
 
 public class GameScreen extends ResizableScreen {
 
@@ -30,17 +31,16 @@ public class GameScreen extends ResizableScreen {
 	private final Hud hud;
 	private final HudRenderer hudRenderer;
 	private final PlayerRender playerRenderer;
-    private final LevelRender levelRender;
-    private final BlocksRender blocksRender;
-    private Player player;
-    private Level level;
-    private List<Block> blockList;
+	private final LevelRender levelRender;
+	private final LevelGenerator levelGenerator = new LevelGenerator();
+	private final BlocksRender blocksRender;
+	private final HitTester hitTester;
+	private Player player;
+	private Level level;
 
 	private final OrthographicCamera backgroundFarCamera = new OrthographicCamera(
 			conf.VIEW_PORT_WIDTH, conf.VIEW_PORT_HEIGHT);
 	private final int[] layers = new int[] { 0 };
-
-	private SpriteBatch batch = new SpriteBatch();
 
 	public GameScreen(Config conf) {
 		super(conf);
@@ -55,13 +55,16 @@ public class GameScreen extends ResizableScreen {
 
 		playerRenderer = new PlayerRender(conf);
 
-        blocksRender = new BlocksRender(conf);
+		blocksRender = new BlocksRender(conf);
 
-        level = new Level(this, Constants.EASY);
-        levelRender = new LevelRender();
+		level = new Level(conf, Constants.EASY);
+		levelRender = new LevelRender();
+		levelGenerator.generateLevel(level);
 
-        player = createPlayer(level.getWorld());
-        player.getModel().getFixture().setFriction(Constants.FRICTION);
+		hitTester = new HitTester(level);
+
+		player = createPlayer(level.getWorld());
+		player.getModel().getFixture().setFriction(Constants.FRICTION);
 
 		player.moveRight();
 		player.crosshairMiddle();
@@ -70,31 +73,19 @@ public class GameScreen extends ResizableScreen {
 				conf.VIEW_PORT_WIDTH / 2,
 				conf.VIEW_PORT_HEIGHT / 2, 0 });
 		backgroundFarCamera.update();
-
-        blockList = new ArrayList<Block>();
-        for (int i = 0; i < conf.VIEW_PORT_WIDTH; i++) {
-            blockList.add(createBlock(level.getWorld(), i));
-        }
 	}
 
+	public Camera getCamera() {
+		return camera;
+	}
 
-    public Camera getCamera() {
-        return camera;
-    }
-
-    private Player createPlayer(World world) {
-        CircleShape playerShape = new CircleShape();
-        playerShape.setRadius(Constants.PLAYER_WIDTH / 2);
-        PhysicsModel playerModel = new PhysicsModel(world, 0, 5, playerShape, true, BodyDef.BodyType.DynamicBody, 0.1f);
-        return new Player(playerModel);
-    }
-
-    private Block createBlock(World world, int x) {
-        PolygonShape blockShape = new PolygonShape();
-        blockShape.setAsBox(Constants.BLOCK_WIDTH / 2, Constants.BLOCK_HEIGHT / 2);
-        PhysicsModel blockModel = new PhysicsModel(world, x, 0, blockShape, true, BodyDef.BodyType.StaticBody, 1.0f);
-        return new Block(blockModel);
-    }
+	private Player createPlayer(World world) {
+		CircleShape playerShape = new CircleShape();
+		playerShape.setRadius(Constants.PLAYER_WIDTH / 2);
+		PhysicsModel playerModel = new PhysicsModel(world, 0, 5, playerShape,
+				true, BodyDef.BodyType.DynamicBody, 0.1f);
+		return new Player(playerModel);
+	}
 
 	@Override
 	public void render(float delta) {
@@ -104,10 +95,11 @@ public class GameScreen extends ResizableScreen {
 		Assets.textures.backgroundFar.setView(backgroundFarCamera);
 		Assets.textures.backgroundFar.render(layers);
 
+		player.update(delta);
+
 		hudRenderer.render(hud);
 		playerRenderer.render(player);
-		
-		
+
 		if (Gdx.input.isKeyPressed(Keys.D)) {
 			backgroundFarCamera.position.set(
 					backgroundFarCamera.position.x + 0.15f,
@@ -116,21 +108,25 @@ public class GameScreen extends ResizableScreen {
 			backgroundFarCamera.update();
 		}
 
-        levelRender.render(level, delta);
-        blocksRender.render(blockList);
+		levelRender.render(level, delta);
+		// only for dev
+		blocksRender.render(level.getBlockList());
+		
+		//check here for camera move
+		//call levelGenerator
 
-        // FIXME: move into render loop
-        if (Gdx.input.isKeyPressed(Keys.A)) { // a
-            if (player.getBody().getLinearVelocity().x > -10) {
-                player.moveLeft();
-            }
-        }
+		// FIXME: move into render loop
+		if (Gdx.input.isKeyPressed(Keys.A)) { // a
+			if (player.getBody().getLinearVelocity().x > -10) {
+				player.moveLeft();
+			}
+		}
 
-        if (Gdx.input.isKeyPressed(Keys.D)) { // d
-            if (player.getBody().getLinearVelocity().x < 10) {
-                player.moveRight();
-            }
-        }
+		if (Gdx.input.isKeyPressed(Keys.D)) { // d
+			if (player.getBody().getLinearVelocity().x < 10) {
+				player.moveRight();
+			}
+		}
 	}
 
 	@Override
@@ -148,31 +144,10 @@ public class GameScreen extends ResizableScreen {
 			player.crosshairDown();
 		}
 
-		if (keycode == Keys.SPACE) {  // space
-            Array<Contact> contactList = level.getWorld().getContactList();
-            for (int i = 0; i < contactList.size; i++) {
-                Contact contact = contactList.get(i);
-                if (contact.isTouching()) {
-
-                    List<Body> bodyList = new ArrayList<Body>();
-                    for (Block block : blockList) {
-                        bodyList.add(block.getBody());
-                    }
-
-                    if (contact.getFixtureA() == player.getModel().getFixture()) {
-                        if (bodyList.contains(contact.getFixtureB().getBody())) {
-                            player.jump();
-                            break;
-                        }
-                    } else if (contact.getFixtureB() == player.getModel().getFixture()) {
-                        if (bodyList.contains(contact.getFixtureA().getBody())) {
-                            player.jump();
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+		if (keycode == Keys.SPACE) { // space
+			if (!hitTester.isPlayerFlyes(player))
+				player.jump();
+		}
 
 		if (keycode == Keys.ENTER)
 			player.shot();

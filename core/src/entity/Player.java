@@ -9,6 +9,8 @@ public class Player {
 	private DirectionX dirX;
 	private DirectionY dirY;
 	private long attackBeganAt;
+	private float stateTime;
+	private boolean isStay = true;
 
 	private PhysicsModel model;
 
@@ -32,20 +34,35 @@ public class Player {
 		return dirY;
 	}
 
+	public float getStateTime() {
+		return stateTime;
+	}
+
+	public boolean isStay() {
+		return isStay;
+	}
+
+	public void setStay(boolean isStay) {
+		this.isStay = isStay;
+	}
+
 	public void moveLeft() {
 		dirX = DirectionX.LEFT;
-//        getBody().applyForceToCenter(Constants.WALKING_FORCE_LEFT, true);
-        getBody().applyLinearImpulse(Constants.WALKING_FORCE_LEFT, new Vector2(0f, 0f), true);
-    }
+		// getBody().applyForceToCenter(Constants.WALKING_FORCE_LEFT, true);
+		getBody().applyLinearImpulse(Constants.WALKING_FORCE_LEFT,
+				new Vector2(0f, 0f), true);
+	}
 
 	public void moveRight() {
 		dirX = DirectionX.RIGHT;
-        getBody().applyLinearImpulse(Constants.WALKING_FORCE_RIGHT, new Vector2(0f, 0f), true);
-//        getBody().applyForceToCenter(Constants.WALKING_FORCE_RIGHT, true);
+		getBody().applyLinearImpulse(Constants.WALKING_FORCE_RIGHT,
+				new Vector2(0f, 0f), true);
+		// getBody().applyForceToCenter(Constants.WALKING_FORCE_RIGHT, true);
 	}
 
 	public void jump() {
-        getBody().applyLinearImpulse(Constants.JUMP_IMPULSE, getBody().getPosition(), true);
+		getBody().applyLinearImpulse(Constants.JUMP_IMPULSE,
+				getBody().getPosition(), true);
 	}
 
 	public boolean isInAttack() {
@@ -72,6 +89,10 @@ public class Player {
 
 	public void crosshairMiddle() {
 		dirY = DirectionY.CROSSHAIR_MIDDLE;
+	}
+
+	public void update(float delta) {
+		stateTime += delta;
 	}
 
 }

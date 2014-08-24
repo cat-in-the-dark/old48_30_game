@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.catinthedark.game.Config;
+import com.catinthedark.game.Constants;
 
 public class Assets {
 	private interface Initable {
@@ -37,6 +39,8 @@ public class Assets {
 		public TextureRegion blockReg;
 
 		public Texture shot;
+		public TextureRegion[][] playerFrames;
+		public TextureRegion[][] playerFramesBack;
 
 		public TiledMapRenderer backgroundFar;
 		public TiledMapRenderer background;
@@ -61,14 +65,21 @@ public class Assets {
 			backgroundFar = new OrthogonalTiledMapRenderer(backgroundFarMap,
 					1 / 32f);
 
-			Texture player = new Texture(
-					Gdx.files.internal("texture/player.png"));
-			playerReg = new TextureRegion(player);
-
 			Texture block = new Texture(Gdx.files.internal("texture/block.png"));
 			blockReg = new TextureRegion(block);
 			shot = new Texture(Gdx.files.internal("texture/shot.png"));
 
+			playerFrames = TextureRegion.split(
+					new Texture(Gdx.files.internal("texture/man.png")),
+					(int) Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
+					(int) Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
+
+			playerFramesBack = TextureRegion.split(
+					new Texture(Gdx.files.internal("texture/man.png")),
+					(int) Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
+					(int) Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
+			for (TextureRegion reg : playerFramesBack[0])
+				reg.flip(true, false);
 		}
 	}
 
@@ -93,10 +104,15 @@ public class Assets {
 	}
 
 	public static class Animations implements Initable {
+		public Animation playerIdle;
 
 		@Override
 		public void init(Config conf) {
-			// TODO Auto-generated method stub
+			playerIdle = new Animation(Constants.ANIMATION_SPEED,
+					new TextureRegion[] {
+							textures.playerFrames[0][1]
+					});
+			playerIdle.setPlayMode(Animation.PlayMode.NORMAL);
 
 		}
 
