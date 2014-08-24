@@ -17,7 +17,10 @@ public class LDGame extends Game {
 
 		// load game resources
 		Assets.init(conf);
-		
+
+        Assets.audios.music.setVolume(0.7f);
+        Assets.audios.music.play();
+        Assets.audios.music.setLooping(true);
 
 		ScreenChain chain = new ScreenChain(this);
 
@@ -25,10 +28,10 @@ public class LDGame extends Game {
         startGame.bindings.bindNext(Input.Keys.ENTER);
 
         TitleScreen gameOver = new GameEndScreen(conf, Assets.textures.gameOverTex, 0);
-        gameOver.bindings.bindNext(Input.Keys.ESCAPE);
+        gameOver.bindings.bind(Input.Keys.ESCAPE, 1);
 
         TitleScreen gameWin = new GameEndScreen(conf, Assets.textures.winTex, 0);
-        gameWin.bindings.bindNext(Input.Keys.ESCAPE);
+        gameWin.bindings.bind(Input.Keys.ESCAPE, 1);
 
 		chain.add(new TitleScreen(conf, Assets.textures.logoTex, 1000));
         chain.add(startGame);
@@ -36,6 +39,5 @@ public class LDGame extends Game {
         chain.add(gameWin);
         chain.add(gameOver);
 		chain.gotoFrame(0);
-
 	}
 }

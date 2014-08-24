@@ -1,6 +1,7 @@
 package com.catinthedark.game.assets;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,6 +30,7 @@ public class Assets {
 		public Sound shot;
 		public Sound jump;
 		public Sound landing;
+        public Music music;
 
 		@Override
 		public void init(Config conf) {
@@ -39,6 +41,8 @@ public class Assets {
 			landing = Gdx.audio
 					.newSound(Gdx.files.internal("sound/landing_sfx.wav"));
 
+            music = Gdx.audio
+                    .newMusic(Gdx.files.internal("sound/background.mp3"));
 		}
 
 	}
