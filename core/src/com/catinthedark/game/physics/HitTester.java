@@ -59,14 +59,14 @@ public class HitTester {
 		for (MushroomedCrab crab : level.getCrabs())
 			if (crab.getBody().getFixtureList().size != 0)
 				if (crab.getBody().getFixtureList().get(0) == fixture) {
-					level.getWorld().destroyBody(crab.getBody());
+					//level.getWorld().destroyBody(crab.getBody());
 					return true;
 				}
 
 		for (Bullet bullet : level.getBullets()) {
 			if (bullet.getBody().getFixtureList().size != 0)
 				if (bullet.getBody().getFixtureList().get(0) == fixture) {
-					level.getWorld().destroyBody(bullet.getBody());
+					//level.getWorld().destroyBody(bullet.getBody());
 					return true;
 				}
 		}

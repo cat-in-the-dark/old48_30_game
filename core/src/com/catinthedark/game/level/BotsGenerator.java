@@ -38,14 +38,14 @@ public class BotsGenerator {
 	}
 
 	public void step(float delta, Player player) {
-//		if (lastGen > 7) {
-//			level.addEntity(createCrub(level,
-//					player.getBody().getPosition().x * 32
-//							+ new Random().nextInt(200), 600));
-//			lastGen = 0;
-//		}
-//
-//		lastGen += delta;
+		if (lastGen > 5) {
+			level.addEntity(createCrub(level,
+					player.getBody().getPosition().x * 32
+							+ new Random().nextInt(200), 600));
+			lastGen = 0;
+		}
+
+		lastGen += delta;
 
 	}
 }
