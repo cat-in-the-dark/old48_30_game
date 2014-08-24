@@ -53,4 +53,8 @@ public class Hud {
 	public int getMeters() {
 		return meters;
 	}
+
+    public void setMeters(int meters) {
+        this.meters = meters;
+    }
 }
