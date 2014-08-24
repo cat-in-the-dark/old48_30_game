@@ -25,11 +25,8 @@ public class Level {
 	public final int difficult;
 	private World world;
 	private List<Block> blockList;
-    private Map<Class, List<Entity>> entities = new HashMap<Class, List<Entity>>();
-    private Class[] entities_classes = {MushroomedCrab.class};
-
-    private final SpriteBatch batch;
-    private final OrthographicCamera camera;
+	private Map<Class, List<Entity>> entities = new HashMap<Class, List<Entity>>();
+	private Class[] entities_classes = { MushroomedCrab.class };
 
 	private Block createBlock(int x) {
 		PolygonShape blockShape = new PolygonShape();
@@ -41,8 +38,6 @@ public class Level {
 	}
 
 	public Level(Config conf, int difficult, OrthographicCamera camera) {
-        batch = new SpriteBatch();
-        this.camera = camera;
 		world = new World(new Vector2(0, Constants.WORLD_GRAVITY), true);
 		blockList = new ArrayList<Block>();
 		for (int i = 0; i < conf.VIEW_PORT_WIDTH; i++)
@@ -51,9 +46,9 @@ public class Level {
 		this.difficult = difficult;
 		this.tiles = new LinkedList<Tile>();
 
-        for (Class klass : entities_classes) {
-            entities.put(klass, new ArrayList<Entity>());
-        }
+		for (Class klass : entities_classes) {
+			entities.put(klass, new ArrayList<Entity>());
+		}
 	}
 
 	public List<Block> getBlockList() {
@@ -62,45 +57,5 @@ public class Level {
 
 	public World getWorld() {
 		return world;
-	}
-
-	public void render(float delta) {
-		renderTiles(delta);
-	}
-
-	private void renderTiles(float delta) {
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        for (Tile tile : tiles) {
-            TextureRegion region;
-            switch (tile.type) {
-                case GRASS:
-                    region = Assets.textures.grass;
-                    break;
-                case GRASS_SHADOW:
-                    region = Assets.textures.grass_shadow;
-                    break;
-                case UNDERGROUND:
-                    region = Assets.textures.underground;
-                    break;
-                case GRASS_SLOPE_LEFT:
-                    region = Assets.textures.grass_slope_slope;
-                    break;
-                case GRASS_SLOPE_LEFT_SHADOW:
-                    region = Assets.textures.grass_slope_left_shadow;
-                    break;
-                case GRASS_SLOPE_RIGHT:
-                    region = Assets.textures.grass_slope_right;
-                    break;
-                case GRASS_SLOPE_RIGHT_SHADOW:
-                    region = Assets.textures.grass_slope_right_shadow;
-                    break;
-                default:
-                    region = Assets.textures.empty;
-                    break;
-            }
-            batch.draw(region, tile.getX() * 32, tile.getY() * 32);
-        }
-        batch.end();
 	}
 }
