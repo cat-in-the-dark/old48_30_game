@@ -1,5 +1,6 @@
 package com.catinthedark.game.level;
 
+import com.badlogic.gdx.physics.box2d.World;
 import com.catinthedark.game.Constants;
 
 import java.util.*;
@@ -11,12 +12,14 @@ public class TilePresetFactory {
     private final List<int[][]> rawTilePresetsEasy;
     private final List<int[][]> rawTilePresetsMedium;
     private final List<int[][]> rawTilePresetsHard;
+    private final World world;
 
     private final Map<Integer, List<TilePreset>> tilePresets;
 
-    public TilePresetFactory() {
+    public TilePresetFactory(World world) {
+        this.world = world;
         this.rawTilePresetsEasy = new ArrayList<int[][]>() {{
-            add(new int[][]{{7, 2, 2}, {2, 2, 2}});
+            add(new int[][]{{7, 2, 7}, {2, 2, 7}});
             add(new int[][]{{1, 7, 1}, {2, 2, 2}, {0, 0, 0}});
         }};
 
@@ -57,9 +60,9 @@ public class TilePresetFactory {
         TilePreset tilePreset = tilePresets.get(difficult).get(i);
         List<Tile> tileList = new ArrayList<Tile>();
         for (Tile tile: tilePreset.tiles) {
-            Tile newTile = new Tile(tile);
-            newTile.x = tile.getX() + presetX;
-            newTile.y = tile.getY() + presetY;
+            float newX = tile.getX() + presetX;
+            float newY = tile.getY() + presetY;
+            Tile newTile = new Tile(tile, newX, newY, world);
             tileList.add(newTile);
         }
         return tileList;
