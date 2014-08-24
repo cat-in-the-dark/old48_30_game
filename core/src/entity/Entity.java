@@ -17,6 +17,7 @@ public interface Entity {
     public float getStateTime();
     public void update(float delta);
     public boolean isMoving();
+    public boolean isShutting();
     public void setMoving(boolean isMoving);
 }
 

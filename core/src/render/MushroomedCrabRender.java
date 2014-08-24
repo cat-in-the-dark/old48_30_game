@@ -33,6 +33,7 @@ public class MushroomedCrabRender {
 
 	private TextureRegion playAnimation(Entity crab) {
 		float stateTime = crab.getStateTime();
+
 		if (crab.isMoving()) {
 			switch (crab.getDirX()) {
 			case RIGHT:
@@ -43,14 +44,23 @@ public class MushroomedCrabRender {
 						.getKeyFrame(stateTime);
 			}
 		} else {
-			switch (crab.getDirX()) {
-			case RIGHT:
-				return Assets.animations.mushroomedCrabIdleRight
-						.getKeyFrame(stateTime);
-			case LEFT:
-				return Assets.animations.mushroomedCrabIdleLeft
-						.getKeyFrame(stateTime);
-			}
+            if (crab.isShutting()) {
+                switch (crab.getDirX()) {
+                    case RIGHT:
+                        return Assets.animations.mushroomedCrabFireRight.getKeyFrame(stateTime);
+                    case LEFT:
+                        return Assets.animations.mushroomedCrabFireLeft.getKeyFrame(stateTime);
+                }
+            } else {
+                switch (crab.getDirX()) {
+                    case RIGHT:
+                        return Assets.animations.mushroomedCrabIdleRight
+                                .getKeyFrame(stateTime);
+                    case LEFT:
+                        return Assets.animations.mushroomedCrabIdleLeft
+                                .getKeyFrame(stateTime);
+                }
+            }
 		}
 
 		return Assets.animations.mushroomedCrabRunLeft.getKeyFrame(stateTime);

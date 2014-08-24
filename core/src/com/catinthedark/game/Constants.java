@@ -37,7 +37,7 @@ public class Constants {
 	public static final float ANIMATION_SPEED = 0.1f;
     public static final int CABLE_STEPS = 100;
     public static final int CABLE_THICK = 5;
-    public static final float MUSHROOMED_CRAB_SHUT_DELAY = 0.5f;
+    public static final float MUSHROOMED_CRAB_SHUT_DELAY = 1f;
     public static float MAX_DISTANCE_CAMERA_AHEAD = 4.0f;
 	public static float BACK_CAMERA_SPEED = 0.05f;
 	public static float MAIN_CAMERA_SPEED = 5.0f;

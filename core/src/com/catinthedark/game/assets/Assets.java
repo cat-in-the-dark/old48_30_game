@@ -63,6 +63,8 @@ public class Assets {
 		public TextureRegion[][] playerFrames;
 		public TextureRegion[][] playerFramesBack;
 
+        public Texture mushroom;
+
 		public Texture mushroomedCrabSheet;
 		public TextureRegion[][] mushroomedCrabFramesLeft;
 		public TextureRegion[][] mushroomedCrabFramesRight;
@@ -102,6 +104,8 @@ public class Assets {
             empty = groundReg[0][0];
 
 			shot = new Texture(Gdx.files.internal("texture/shot.png"));
+
+            mushroom = new Texture(Gdx.files.internal("texture/mushroom.png"));
 
 			playerFrames = TextureRegion.split(
 					new Texture(Gdx.files.internal("texture/man.png")),
