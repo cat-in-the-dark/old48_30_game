@@ -1,6 +1,7 @@
 package com.catinthedark.game.assets;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
@@ -22,10 +23,12 @@ public class Assets {
 	}
 
 	public static class Audios implements Initable {
+		public Sound shot;
 
 		@Override
 		public void init(Config conf) {
-			// TODO Auto-generated method stub
+			shot = Gdx.audio
+					.newSound(Gdx.files.internal("sound/shot_sfx.mp3"));
 
 		}
 

@@ -3,6 +3,7 @@ package entity;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.catinthedark.game.Constants;
+import com.catinthedark.game.assets.Assets;
 import com.catinthedark.game.physics.PhysicsModel;
 
 public class Player {
@@ -67,14 +68,15 @@ public class Player {
 	}
 
 	public boolean isInAttack() {
-		return System.currentTimeMillis() - attackBeganAt < 1000;
+		return System.currentTimeMillis() - attackBeganAt < 1300;
 	}
 
 	public void shot() {
 		long now = System.currentTimeMillis();
-		if (now - attackBeganAt > 1000) {
+		if (now - attackBeganAt > 1300) {
 			// new attack
 			attackBeganAt = now;
+			Assets.audios.shot.play(2.0f);
 		}
 
 	}

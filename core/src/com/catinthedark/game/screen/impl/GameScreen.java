@@ -1,7 +1,10 @@
 package com.catinthedark.game.screen.impl;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import java.util.ArrayList;
+import java.util.List;
+
 import render.BlocksRender;
+import render.CableRender;
 import render.HudRenderer;
 import render.LevelRender;
 import render.PlayerRender;
@@ -10,17 +13,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
-import com.badlogic.gdx.utils.Array;
 import com.catinthedark.game.Config;
 import com.catinthedark.game.Constants;
 import com.catinthedark.game.assets.Assets;
@@ -30,15 +32,10 @@ import com.catinthedark.game.level.LevelGenerator;
 import com.catinthedark.game.physics.HitTester;
 import com.catinthedark.game.physics.PhysicsModel;
 import com.catinthedark.game.screen.ResizableScreen;
+
 import entity.Block;
 import entity.Cable;
 import entity.Player;
-import render.*;
-
-import entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GameScreen extends ResizableScreen {
 
