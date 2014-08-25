@@ -139,10 +139,12 @@ public class TilePresetFactory {
 
 		this.botsPositionsEasy = new ArrayList<Vector2[]>() {
 			{
-				add(new Vector2[] { new Vector2(4, 4) });
-				add(new Vector2[] { new Vector2(5, 7) });
-				add(new Vector2[] { new Vector2(6, 7) });
-				add(new Vector2[] { new Vector2(4, 4) });
+				add(new Vector2[] { new Vector2(4, 4), new Vector2(8, 4),
+						new Vector2(12, 4) });
+				add(new Vector2[] { new Vector2(5, 7), new Vector2(9, 4) });
+				add(new Vector2[] { new Vector2(6, 7), new Vector2(10, 10) });
+				add(new Vector2[] { new Vector2(8, 4), new Vector2(8, 6),
+						new Vector2(15, 10), new Vector2(23, 8) });
 			}
 		};
 		this.botsPositionsMedium = new ArrayList<Vector2[]>() {

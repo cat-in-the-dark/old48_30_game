@@ -96,9 +96,9 @@ public class GameScreen extends ResizableScreen {
 		return player;
 	}
 
-    private void gameOver() {
-        gotoFrame(4);
-    }
+	private void gameOver() {
+		gotoFrame(4);
+	}
 
 	@Override
 	public void render(float delta) {
@@ -114,11 +114,11 @@ public class GameScreen extends ResizableScreen {
 		if (hitTester.isPlayerOnDamage(player)) {
 			System.out.print("damage");
 			hud.decHealth();
-            player.setDamaged(true);
+			player.setDamaged(true);
 		}
-        if (hud.getHealth() <= 0) {
-            gameOver();
-        }
+		if (hud.getHealth() <= 0) {
+			gameOver();
+		}
 
 		boolean isStayByPhysics = !hitTester.isPlayerFlyes(player);
 
@@ -201,7 +201,7 @@ public class GameScreen extends ResizableScreen {
 		level.getBullets().removeAll(forDelete);
 
 		// add bots
-		//botsGenerator.step(delta, player);
+		// botsGenerator.step(delta, player);
 		levelGenerator.updateLevel(level, camera);
 
 		levelRender.render(level, delta);
@@ -224,15 +224,20 @@ public class GameScreen extends ResizableScreen {
 		if (removedAnimations != null)
 			animations.removeAll(removedAnimations);
 
-        float viewportLeftEdge = camera.position.x / conf.UNIT_SIZE - conf.VIEW_PORT_WIDTH / 2;
-        if (player.getBody().getPosition().x < viewportLeftEdge + 1) {
-            player.getBody().setLinearVelocity(0, player.getBody().getLinearVelocity().y);
-            player.getBody().getPosition().set(viewportLeftEdge + 1, player.getBody().getPosition().y);
-        }
+		float viewportLeftEdge = camera.position.x / conf.UNIT_SIZE
+				- conf.VIEW_PORT_WIDTH / 2;
+		if (player.getBody().getPosition().x < viewportLeftEdge + 1) {
+			player.getBody().setLinearVelocity(0,
+					player.getBody().getLinearVelocity().y);
+			player.getBody()
+					.getPosition()
+					.set(viewportLeftEdge + 1, player.getBody().getPosition().y);
+		}
 
 		// FIXME: move into render loop
 		if (Gdx.input.isKeyPressed(Keys.A)) { // a
-			if (player.getBody().getLinearVelocity().x > -10 && player.getBody().getPosition().x > viewportLeftEdge + 1) {
+			if (player.getBody().getLinearVelocity().x > -10
+					&& player.getBody().getPosition().x > viewportLeftEdge + 1) {
 				player.moveLeft();
 			}
 		}
@@ -340,52 +345,52 @@ public class GameScreen extends ResizableScreen {
 	@Override
 	public void show() {
 
-        walkedDistance = 0;
+		walkedDistance = 0;
 
-        camera = new OrthographicCamera(conf.VIEW_PORT_WIDTH
-                * conf.UNIT_SIZE,
-                conf.VIEW_PORT_HEIGHT * conf.UNIT_SIZE);
-        this.camera.position.x = conf.VIEW_PORT_WIDTH * conf.UNIT_SIZE / 2;
-        this.camera.position.y = conf.VIEW_PORT_HEIGHT * conf.UNIT_SIZE / 2;
-        this.camera.update();
+		camera = new OrthographicCamera(conf.VIEW_PORT_WIDTH
+				* conf.UNIT_SIZE,
+				conf.VIEW_PORT_HEIGHT * conf.UNIT_SIZE);
+		this.camera.position.x = conf.VIEW_PORT_WIDTH * conf.UNIT_SIZE / 2;
+		this.camera.position.y = conf.VIEW_PORT_HEIGHT * conf.UNIT_SIZE / 2;
+		this.camera.update();
 
-        this.backgroundFarCamera  = new OrthographicCamera(
-                conf.VIEW_PORT_WIDTH, conf.VIEW_PORT_HEIGHT);
+		this.backgroundFarCamera = new OrthographicCamera(
+				conf.VIEW_PORT_WIDTH, conf.VIEW_PORT_HEIGHT);
 
-        hud = new Hud(10);
-        hudRenderer = new HudRenderer(conf);
-        hud.setLevel(1);
+		hud = new Hud(20);
+		hudRenderer = new HudRenderer(conf);
+		hud.setLevel(1);
 
-        playerRenderer = new PlayerRender(conf, camera);
+		playerRenderer = new PlayerRender(conf, camera);
 
-        level = new Level(conf, Constants.EASY, camera);
-        this.aiManager = new AIManager();
-        levelRender = new LevelRender(conf, camera);
+		level = new Level(conf, Constants.EASY, camera);
+		this.aiManager = new AIManager();
+		levelRender = new LevelRender(conf, camera);
 
-        levelGenerator = new LevelGenerator(conf, level);
-        levelGenerator.generateLevel(level);
+		levelGenerator = new LevelGenerator(conf, level);
+		levelGenerator.generateLevel(level);
 
-        hitTester = new HitTester(level);
+		hitTester = new HitTester(level);
 
-        cableRender = new CableRender(conf, camera);
+		cableRender = new CableRender(conf, camera);
 
-        botsGenerator = new BotsGenerator(level);
+		botsGenerator = new BotsGenerator(level);
 
-        debugRenderer = new Box2DDebugRenderer();
-        debugMatrix = new Matrix4(camera.combined);
+		debugRenderer = new Box2DDebugRenderer();
+		debugMatrix = new Matrix4(camera.combined);
 
-        backgroundFarCamera.position.set(new float[] {
-                conf.VIEW_PORT_WIDTH / 2,
-                conf.VIEW_PORT_HEIGHT / 2, 0 });
-        backgroundFarCamera.update();
+		backgroundFarCamera.position.set(new float[] {
+				conf.VIEW_PORT_WIDTH / 2,
+				conf.VIEW_PORT_HEIGHT / 2, 0 });
+		backgroundFarCamera.update();
 
-        cable = new Cable(level.getWorld(), new Vector2(5, 5), 1.0f, 40);
+		cable = new Cable(level.getWorld(), new Vector2(5, 5), 1.0f, 40);
 
-        player = createPlayer(level.getWorld(), cable);
-        player.getModel().getFixture().setFriction(Constants.FRICTION);
+		player = createPlayer(level.getWorld(), cable);
+		player.getModel().getFixture().setFriction(Constants.FRICTION);
 
-        player.moveRight();
-        player.crosshairMiddle();
+		player.moveRight();
+		player.crosshairMiddle();
 	}
 
 	@Override
