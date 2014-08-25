@@ -144,6 +144,8 @@ public class GameScreen extends ResizableScreen {
 				if (crab.healt < 0) {
 					level.deleteEntity(crab);
 
+					Assets.audios.crabDeath.play(1.5f);
+
 					final Vector2 pos = new Vector2(crab.getBody()
 							.getPosition().x, crab.getBody().getPosition().y);
 
