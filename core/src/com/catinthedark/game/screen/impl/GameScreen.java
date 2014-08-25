@@ -3,23 +3,22 @@ package com.catinthedark.game.screen.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import render.BlocksRender;
 import render.CableRender;
 import render.HudRenderer;
 import render.LevelRender;
 import render.PlayerRender;
+import render.Renderable;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g3d.Renderable;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
@@ -35,7 +34,6 @@ import com.catinthedark.game.physics.HitTester;
 import com.catinthedark.game.physics.PhysicsModel;
 import com.catinthedark.game.screen.ResizableScreen;
 
-import entity.Block;
 import entity.Bullet;
 import entity.Cable;
 import entity.Mushroom;
@@ -175,11 +173,50 @@ public class GameScreen extends ResizableScreen {
 		if (player.isInAttack()) {
 			List<MushroomedCrab> damaged =
 					hitTester.getCrubsOnSuffering(player);
-			for (MushroomedCrab crab : damaged) {
+			for (final MushroomedCrab crab : damaged) {
 				System.out.println("healt:" + crab.healt);
 				crab.healt -= 10;
 				if (crab.healt < 0) {
 					level.deleteEntity(crab);
+
+					final Vector2 pos = new Vector2(crab.getBody()
+							.getPosition().x, crab.getBody().getPosition().y);
+
+					animations.add(new Renderable() {
+						private float stateTime = 0;
+						private final SpriteBatch batch = new SpriteBatch();
+
+						@Override
+						public boolean render(float delta, Camera camera) {
+
+							batch.setProjectionMatrix(camera.combined);
+							batch.begin();
+							batch.draw(
+									Assets.animations.mushroomedCrabMeltRight
+											.getKeyFrame(stateTime),
+									(pos.x - Constants.MUSHROOMED_CRAB_WIDTH / 2)
+											* conf.UNIT_SIZE,
+									(pos.y - Constants.MUSHROOMED_CRAB_HEIGHT / 2)
+											* conf.UNIT_SIZE,
+									Constants.MUSHROOMED_CRAB_WIDTH
+											* conf.UNIT_SIZE,
+									Constants.MUSHROOMED_CRAB_HEIGHT
+											* conf.UNIT_SIZE);
+
+							batch.end();
+
+							stateTime += delta;
+
+							if (stateTime > Constants.BOT_DEATH_ANIMATION_TIME) {
+								batch.dispose();
+								return false;
+							}
+
+							return true;
+						}
+
+					});
+
 					level.getWorld().destroyBody(crab.getBody());
 				}
 			}
@@ -207,6 +244,20 @@ public class GameScreen extends ResizableScreen {
 		playerRenderer.render(player);
 		cableRender.render(cable);
 		// render animations
+		// lazy list init for perfomance optimizations
+		List<Renderable> removedAnimations = null;
+		for (Renderable animation : animations) {
+			if (!animation.render(delta, camera)) {
+				if (removedAnimations == null) {
+					removedAnimations = new ArrayList<Renderable>();
+				}
+
+				removedAnimations.add(animation);
+			}
+		}
+
+		if (removedAnimations != null)
+			animations.removeAll(removedAnimations);
 
 		// FIXME: move into render loop
 		if (Gdx.input.isKeyPressed(Keys.A)) { // a
@@ -225,9 +276,9 @@ public class GameScreen extends ResizableScreen {
 		aiManager.update(level);
 
 		if (needMoveCamera()) {
-            moveMainCamera();
-            moveBackgroundCamera();
-        }
+			moveMainCamera();
+			moveBackgroundCamera();
+		}
 
 		if (player.getBody().getPosition().y < 0) {
 			next();
@@ -254,19 +305,21 @@ public class GameScreen extends ResizableScreen {
 
 	}
 
-    private void moveBackgroundCamera() {
-        if (backgroundFarCamera.position.x >= conf.VIEW_PORT_WIDTH / 2 + 2 * conf.VIEW_PORT_WIDTH) {
-            backgroundFarCamera.position.set(new float[] {
-                    conf.VIEW_PORT_WIDTH / 2,
-                    conf.VIEW_PORT_HEIGHT / 2, 0 });
-        } else {
-            backgroundFarCamera.position.set(
-                    backgroundFarCamera.position.x + Constants.BACK_CAMERA_SPEED,
-                    backgroundFarCamera.position.y,
-                    backgroundFarCamera.position.z);
-        }
-        backgroundFarCamera.update();
-    }
+	private void moveBackgroundCamera() {
+		if (backgroundFarCamera.position.x >= conf.VIEW_PORT_WIDTH / 2 + 2
+				* conf.VIEW_PORT_WIDTH) {
+			backgroundFarCamera.position.set(new float[] {
+					conf.VIEW_PORT_WIDTH / 2,
+					conf.VIEW_PORT_HEIGHT / 2, 0 });
+		} else {
+			backgroundFarCamera.position.set(
+					backgroundFarCamera.position.x
+							+ Constants.BACK_CAMERA_SPEED,
+					backgroundFarCamera.position.y,
+					backgroundFarCamera.position.z);
+		}
+		backgroundFarCamera.update();
+	}
 
 	private boolean needMoveCamera() {
 		float distance = player.getBody().getPosition().x * conf.UNIT_SIZE

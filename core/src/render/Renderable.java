@@ -1,5 +1,8 @@
 package render;
 
+import com.badlogic.gdx.graphics.Camera;
+
 public interface Renderable {
-	public boolean render();
+
+	boolean render(float delta, Camera camera);
 }

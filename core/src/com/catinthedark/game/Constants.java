@@ -47,4 +47,5 @@ public class Constants {
 	public static float MAIN_CAMERA_SPEED = 6.0f;
 
 	public static final int DISTANCE_MAX_EASY = 10000;
+	public static final float BOT_DEATH_ANIMATION_TIME = 0.5f;
 }
