@@ -13,6 +13,7 @@ public class Player {
 	private float stateTime;
 	private boolean isOnGround = true;
 	private boolean isMooving;
+    private boolean isDamaged = false;
 
 	private PhysicsModel model;
 
@@ -109,4 +110,11 @@ public class Player {
 		this.isMooving = isMooving;
 	}
 
+    public boolean isDamaged() {
+        return isDamaged;
+    }
+
+    public void setDamaged(boolean isDamaged) {
+        this.isDamaged = isDamaged;
+    }
 }

@@ -114,6 +114,7 @@ public class GameScreen extends ResizableScreen {
 		if (hitTester.isPlayerOnDamage(player)) {
 			System.out.print("damage");
 			hud.decHealth();
+            player.setDamaged(true);
 		}
         if (hud.getHealth() <= 0) {
             gameOver();
