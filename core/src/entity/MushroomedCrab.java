@@ -79,7 +79,7 @@ public class MushroomedCrab implements Entity {
 	}
 
 	public boolean isMoving() {
-		return isMoving;
+		return model.getBody().getLinearVelocity().x != 0;
 	}
 
 	@Override
