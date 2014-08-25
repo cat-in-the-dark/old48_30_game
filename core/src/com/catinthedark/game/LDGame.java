@@ -18,7 +18,7 @@ public class LDGame extends Game {
 		// load game resources
 		Assets.init(conf);
 
-        Assets.audios.music.setVolume(0.7f);
+        Assets.audios.music.setVolume(0.5f);
         Assets.audios.music.play();
         Assets.audios.music.setLooping(true);
 

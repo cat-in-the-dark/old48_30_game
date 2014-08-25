@@ -80,7 +80,7 @@ public class Player {
 		if (now - attackBeganAt > 1300) {
 			// new attack
 			attackBeganAt = now;
-			Assets.audios.shot.play(2.0f);
+			Assets.audios.shot.play(3.0f);
 		}
 
 	}
