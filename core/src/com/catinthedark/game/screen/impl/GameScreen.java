@@ -193,7 +193,7 @@ public class GameScreen extends ResizableScreen {
 		level.getBullets().removeAll(forDelete);
 
 		// add bots
-		botsGenerator.step(delta, player);
+		//botsGenerator.step(delta, player);
 		levelGenerator.updateLevel(level, camera);
 
 		levelRender.render(level, delta);

@@ -40,9 +40,14 @@ public class LevelGenerator {
 		// level.addEntity(createCrub(level, 200, 100));
 		// level.addEntity(createCrub(level, 250, 100));
 
-		List<Tile> preset = factory.build(level.difficult, lastPresetX, 0);
-		level.tiles.addAll(preset);
-		lastPresetX = preset.get(preset.size() - 1).getX()
+		LevelPart part = factory.build(level.difficult, lastPresetX, 0);
+		List<Tile> tilesList = part.tiles;
+		level.tiles.addAll(tilesList);
+
+		for (MushroomedCrab crab : part.crabs)
+			level.addEntity(crab);
+
+		lastPresetX = tilesList.get(tilesList.size() - 1).getX()
 				+ Constants.BLOCK_WIDTH;
 	}
 
@@ -53,9 +58,14 @@ public class LevelGenerator {
 				+ camera.viewportWidth / 2f;
 
 		if (tiles.get(tiles.size() - 1).getX() * Constants.tileSize < levelRightEdge) {
-			List<Tile> preset = factory.build(level.difficult, lastPresetX, 0);
-			tiles.addAll(preset);
-			lastPresetX = preset.get(preset.size() - 1).getX()
+			LevelPart part = factory.build(level.difficult, lastPresetX, 0);
+			List<Tile> tileList = part.tiles;
+			tiles.addAll(tileList);
+
+			for (MushroomedCrab crab : part.crabs)
+				level.addEntity(crab);
+
+			lastPresetX = tileList.get(tileList.size() - 1).getX()
 					+ Constants.BLOCK_WIDTH;
 		}
 	}
