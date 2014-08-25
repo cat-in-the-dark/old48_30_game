@@ -42,75 +42,32 @@ import entity.Player;
 
 public class GameScreen extends ResizableScreen {
 
-	private final OrthographicCamera camera;
-	private final Hud hud;
-	private final HudRenderer hudRenderer;
-	private final PlayerRender playerRenderer;
-	private final LevelRender levelRender;
-	private final LevelGenerator levelGenerator;
-	private final CableRender cableRender;
-	private final HitTester hitTester;
-	private final BotsGenerator botsGenerator;
-	private final List<Renderable> animations = new ArrayList<Renderable>();
+	private OrthographicCamera camera;
+	private Hud hud;
+	private HudRenderer hudRenderer;
+	private PlayerRender playerRenderer;
+	private LevelRender levelRender;
+	private LevelGenerator levelGenerator;
+	private CableRender cableRender;
+	private HitTester hitTester;
+	private BotsGenerator botsGenerator;
+	private List<Renderable> animations = new ArrayList<Renderable>();
 
 	private Player player;
 	private Level level;
 	private AIManager aiManager;
 	private Cable cable;
 
-	private final OrthographicCamera backgroundFarCamera = new OrthographicCamera(
-			conf.VIEW_PORT_WIDTH, conf.VIEW_PORT_HEIGHT);
+	private OrthographicCamera backgroundFarCamera;
 	private final int[] layers = new int[] { 0 };
 
 	private Box2DDebugRenderer debugRenderer;
 	Matrix4 debugMatrix;
 
-	public float walkedDistance = 0;
+	public float walkedDistance;
 
 	public GameScreen(Config conf) {
 		super(conf);
-
-		this.camera = new OrthographicCamera(conf.VIEW_PORT_WIDTH
-				* conf.UNIT_SIZE,
-				conf.VIEW_PORT_HEIGHT * conf.UNIT_SIZE);
-		this.camera.position.x = conf.VIEW_PORT_WIDTH * conf.UNIT_SIZE / 2;
-		this.camera.position.y = conf.VIEW_PORT_HEIGHT * conf.UNIT_SIZE / 2;
-		this.camera.update();
-
-		hud = new Hud(10);
-		hudRenderer = new HudRenderer(conf);
-		hud.setLevel(1);
-
-		playerRenderer = new PlayerRender(conf, camera);
-
-		level = new Level(conf, Constants.EASY, camera);
-		this.aiManager = new AIManager();
-		levelRender = new LevelRender(conf, camera);
-
-		levelGenerator = new LevelGenerator(conf, level);
-		levelGenerator.generateLevel(level);
-
-		hitTester = new HitTester(level);
-
-		cableRender = new CableRender(conf, camera);
-
-		botsGenerator = new BotsGenerator(level);
-
-		debugRenderer = new Box2DDebugRenderer();
-		debugMatrix = new Matrix4(camera.combined);
-
-		backgroundFarCamera.position.set(new float[] {
-				conf.VIEW_PORT_WIDTH / 2,
-				conf.VIEW_PORT_HEIGHT / 2, 0 });
-		backgroundFarCamera.update();
-
-		cable = new Cable(level.getWorld(), new Vector2(5, 5), 1.0f, 40);
-
-		player = createPlayer(level.getWorld(), cable);
-		player.getModel().getFixture().setFriction(Constants.FRICTION);
-
-		player.moveRight();
-		player.crosshairMiddle();
 	}
 
 	public Camera getCamera() {
@@ -281,7 +238,7 @@ public class GameScreen extends ResizableScreen {
 		}
 
 		if (player.getBody().getPosition().y < 0) {
-			next();
+			gotoFrame(4);
 		}
 	}
 
@@ -372,8 +329,53 @@ public class GameScreen extends ResizableScreen {
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
 
+        walkedDistance = 0;
+
+        camera = new OrthographicCamera(conf.VIEW_PORT_WIDTH
+                * conf.UNIT_SIZE,
+                conf.VIEW_PORT_HEIGHT * conf.UNIT_SIZE);
+        this.camera.position.x = conf.VIEW_PORT_WIDTH * conf.UNIT_SIZE / 2;
+        this.camera.position.y = conf.VIEW_PORT_HEIGHT * conf.UNIT_SIZE / 2;
+        this.camera.update();
+
+        this.backgroundFarCamera  = new OrthographicCamera(
+                conf.VIEW_PORT_WIDTH, conf.VIEW_PORT_HEIGHT);
+
+        hud = new Hud(10);
+        hudRenderer = new HudRenderer(conf);
+        hud.setLevel(1);
+
+        playerRenderer = new PlayerRender(conf, camera);
+
+        level = new Level(conf, Constants.EASY, camera);
+        this.aiManager = new AIManager();
+        levelRender = new LevelRender(conf, camera);
+
+        levelGenerator = new LevelGenerator(conf, level);
+        levelGenerator.generateLevel(level);
+
+        hitTester = new HitTester(level);
+
+        cableRender = new CableRender(conf, camera);
+
+        botsGenerator = new BotsGenerator(level);
+
+        debugRenderer = new Box2DDebugRenderer();
+        debugMatrix = new Matrix4(camera.combined);
+
+        backgroundFarCamera.position.set(new float[] {
+                conf.VIEW_PORT_WIDTH / 2,
+                conf.VIEW_PORT_HEIGHT / 2, 0 });
+        backgroundFarCamera.update();
+
+        cable = new Cable(level.getWorld(), new Vector2(5, 5), 1.0f, 40);
+
+        player = createPlayer(level.getWorld(), cable);
+        player.getModel().getFixture().setFriction(Constants.FRICTION);
+
+        player.moveRight();
+        player.crosshairMiddle();
 	}
 
 	@Override
