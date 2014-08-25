@@ -24,24 +24,27 @@ public class Constants {
 
 	public static final Vector2 JUMP_IMPULSE = new Vector2(0f, 3.0f);
 	public static final float WALKING_FORCE = 1.0f;
-    public static final float BULLET_FORCE = 3.0f;
+	public static final float BULLET_FORCE = 3.0f;
 	public static final int FRICTION = 1;
 	public static final Vector2 WALKING_FORCE_RIGHT = new Vector2(
 			WALKING_FORCE, 0f);
 	public static final Vector2 WALKING_FORCE_LEFT = new Vector2(-1
 			* WALKING_FORCE, 0f);
 
-    public static final Vector2 BULLET_FORCE_LEFT = new Vector2(-1 * BULLET_FORCE, 0f);
-    public static final Vector2 BULLET_FORCE_RIGHT = new Vector2(-1 * BULLET_FORCE, 0f);
+	public static final Vector2 BULLET_FORCE_LEFT = new Vector2(-1
+			* BULLET_FORCE, 0f);
+	public static final Vector2 BULLET_FORCE_RIGHT = new Vector2(-1
+			* BULLET_FORCE, 0f);
 
 	public static final float ANIMATION_SPEED = 0.1f;
-    public static final int CABLE_STEPS = 100;
-    public static final int CABLE_THICK = 5;
-    public static final float MUSHROOMED_CRAB_SHUT_DELAY = 1f;
-    public static final int ENEMY_PRICE = 200;
-    public static float MAX_DISTANCE_CAMERA_AHEAD = 4.0f;
+	public static final int CABLE_STEPS = 100;
+	public static final int CABLE_THICK = 5;
+	public static final float MUSHROOMED_CRAB_SHUT_DELAY = 2f;
+	public static final float MUSHROOMED_CRAB_SHUT_TIME = 0.5f;
+	public static final int ENEMY_PRICE = 200;
+	public static float MAX_DISTANCE_CAMERA_AHEAD = 4.0f;
 	public static float BACK_CAMERA_SPEED = 0.05f;
 	public static float MAIN_CAMERA_SPEED = 6.0f;
 
-    public static final int DISTANCE_MAX_EASY = 10000;
+	public static final int DISTANCE_MAX_EASY = 10000;
 }

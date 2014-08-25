@@ -26,9 +26,6 @@ public class PlayerRender {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 
-		System.out.println("ground:" + player.isOnGround());
-		System.out.println("dirY:" + player.getDirY());
-
 		Vector2 playerPos = player.getBody().getPosition();
 		TextureRegion[][] frames;
 		Animation jumpAnimation;

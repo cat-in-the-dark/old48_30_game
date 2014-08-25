@@ -1,13 +1,26 @@
 package com.catinthedark.game.screen.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import render.BlocksRender;
+import render.CableRender;
+import render.HudRenderer;
+import render.LevelRender;
+import render.PlayerRender;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.catinthedark.game.Config;
@@ -28,10 +41,6 @@ import entity.Cable;
 import entity.Mushroom;
 import entity.MushroomedCrab;
 import entity.Player;
-import render.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GameScreen extends ResizableScreen {
 
@@ -41,15 +50,14 @@ public class GameScreen extends ResizableScreen {
 	private final PlayerRender playerRenderer;
 	private final LevelRender levelRender;
 	private final LevelGenerator levelGenerator;
-	private final BlocksRender blocksRender;
 	private final CableRender cableRender;
 	private final HitTester hitTester;
 	private final BotsGenerator botsGenerator;
+	private final List<Renderable> animations = new ArrayList<Renderable>();
 
 	private Player player;
 	private Level level;
 	private AIManager aiManager;
-	private List<Block> blockList;
 	private Cable cable;
 
 	private final OrthographicCamera backgroundFarCamera = new OrthographicCamera(
@@ -77,8 +85,6 @@ public class GameScreen extends ResizableScreen {
 
 		playerRenderer = new PlayerRender(conf, camera);
 
-		blocksRender = new BlocksRender(conf, camera);
-
 		level = new Level(conf, Constants.EASY, camera);
 		this.aiManager = new AIManager();
 		levelRender = new LevelRender(conf, camera);
@@ -99,11 +105,6 @@ public class GameScreen extends ResizableScreen {
 				conf.VIEW_PORT_WIDTH / 2,
 				conf.VIEW_PORT_HEIGHT / 2, 0 });
 		backgroundFarCamera.update();
-
-		blockList = new ArrayList<Block>();
-		for (int i = 0; i < conf.VIEW_PORT_WIDTH / 2; i++) {
-			blockList.add(createBlock(level.getWorld(), i));
-		}
 
 		cable = new Cable(level.getWorld(), new Vector2(5, 5), 1.0f, 40);
 
@@ -138,15 +139,6 @@ public class GameScreen extends ResizableScreen {
 		world.createJoint(weldJointDef);
 
 		return player;
-	}
-
-	private Block createBlock(World world, int x) {
-		PolygonShape blockShape = new PolygonShape();
-		blockShape.setAsBox(Constants.BLOCK_WIDTH / 2,
-				Constants.BLOCK_HEIGHT / 2);
-		PhysicsModel blockModel = new PhysicsModel(world, x, 0, blockShape,
-				true, BodyDef.BodyType.StaticBody, 1.0f);
-		return new Block(blockModel);
 	}
 
 	@Override
@@ -214,6 +206,7 @@ public class GameScreen extends ResizableScreen {
 		hudRenderer.render(hud);
 		playerRenderer.render(player);
 		cableRender.render(cable);
+		// render animations
 
 		// FIXME: move into render loop
 		if (Gdx.input.isKeyPressed(Keys.A)) { // a

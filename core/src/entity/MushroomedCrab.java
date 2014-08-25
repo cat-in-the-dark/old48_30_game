@@ -16,6 +16,7 @@ public class MushroomedCrab implements Entity {
 	private boolean isMoving;
 	public int healt = 100;
 	private boolean shutting = false;
+	private boolean canShut = false;
 
 	private PhysicsModel model;
 
@@ -59,22 +60,17 @@ public class MushroomedCrab implements Entity {
 
 	@Override
 	public Bullet shot() {
-		if (lastShutTime > Constants.MUSHROOMED_CRAB_SHUT_DELAY) {
-			System.out.println("Shut");
-			lastShutTime = 0f;
-			switch (getDirX()) {
-			case RIGHT:
-				shutting = true;
-				return new Mushroom(DirectionX.RIGHT,
-						DirectionY.CROSSHAIR_MIDDLE);
-			case LEFT:
-				shutting = true;
-				return new Mushroom(DirectionX.LEFT,
-						DirectionY.CROSSHAIR_MIDDLE);
-			}
-		}
-		shutting = false;
-		return null;
+		System.out.println("Shut");
+		lastShutTime = stateTime;
+		shutting = true;
+		canShut = false;
+
+		if (getDirX() == DirectionX.RIGHT)
+			return new Mushroom(DirectionX.RIGHT,
+					DirectionY.CROSSHAIR_MIDDLE);
+		else
+			return new Mushroom(DirectionX.LEFT,
+					DirectionY.CROSSHAIR_MIDDLE);
 	}
 
 	@Override
@@ -91,6 +87,10 @@ public class MushroomedCrab implements Entity {
 		return shutting;
 	}
 
+	public boolean canShot() {
+		return canShut;
+	}
+
 	@Override
 	public void setMoving(boolean isMoving) {
 		this.isMoving = isMoving;
@@ -99,6 +99,9 @@ public class MushroomedCrab implements Entity {
 	@Override
 	public void update(float delta) {
 		stateTime += delta;
-		lastShutTime += delta;
+		if (stateTime - lastShutTime > Constants.MUSHROOMED_CRAB_SHUT_DELAY)
+			canShut = true;
+		if (stateTime - lastShutTime > Constants.MUSHROOMED_CRAB_SHUT_TIME)
+			shutting = false;
 	}
 }
