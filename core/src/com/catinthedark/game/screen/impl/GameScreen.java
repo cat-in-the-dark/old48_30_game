@@ -142,6 +142,7 @@ public class GameScreen extends ResizableScreen {
 				System.out.println("healt:" + crab.healt);
 				crab.healt -= 10;
 				if (crab.healt < 0) {
+                    hud.addScore(Constants.CRAB_SCORE);
 					level.deleteEntity(crab);
 
 					final Vector2 pos = new Vector2(crab.getBody()

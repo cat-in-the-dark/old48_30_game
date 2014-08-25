@@ -48,4 +48,6 @@ public class Constants {
 
 	public static final int DISTANCE_MAX_EASY = 10000;
 	public static final float BOT_DEATH_ANIMATION_TIME = 0.5f;
+
+    public static final int CRAB_SCORE = 100;
 }
