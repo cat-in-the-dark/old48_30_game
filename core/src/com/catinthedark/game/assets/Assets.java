@@ -31,6 +31,7 @@ public class Assets {
 		public Sound jump;
 		public Sound landing;
         public Music music;
+        public Sound hit;
 
 		@Override
 		public void init(Config conf) {
@@ -43,6 +44,9 @@ public class Assets {
 
             music = Gdx.audio
                     .newMusic(Gdx.files.internal("sound/background.mp3"));
+
+            hit = Gdx.audio
+                    .newSound(Gdx.files.internal("sound/hit.wav"));
 		}
 
 	}

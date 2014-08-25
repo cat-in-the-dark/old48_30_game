@@ -116,5 +116,8 @@ public class Player {
 
     public void setDamaged(boolean isDamaged) {
         this.isDamaged = isDamaged;
+        if (isDamaged) {
+            Assets.audios.hit.play();
+        }
     }
 }
