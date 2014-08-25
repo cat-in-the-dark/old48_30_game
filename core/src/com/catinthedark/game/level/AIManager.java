@@ -32,9 +32,9 @@ public class AIManager {
 				mushShape.setRadius(0.25f);
 				float bulletPosX;
 				if (crab.getDirX() == DirectionX.RIGHT)
-					bulletPosX = crab.getBody().getPosition().x + 1;
+					bulletPosX = crab.getBody().getPosition().x + 0.6f;
 				else
-					bulletPosX = crab.getBody().getPosition().x - 1;
+					bulletPosX = crab.getBody().getPosition().x - 0.6f;
 
 				PhysicsModel model = new PhysicsModel(level.getWorld(),
 						bulletPosX, crab.getBody()
