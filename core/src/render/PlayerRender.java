@@ -17,6 +17,8 @@ public class PlayerRender {
 	private final SpriteBatch batch = new SpriteBatch();
 	private final OrthographicCamera camera;
 
+    private int wifiRayOffset = 0;
+
 	public PlayerRender(Config conf, OrthographicCamera camera) {
 		this.conf = conf;
 		this.camera = camera;
@@ -93,33 +95,42 @@ public class PlayerRender {
 
 		// draw shot
 		if (player.isInAttack()) {
-			if (player.getDirX() == DirectionX.RIGHT) {
-				switch (player.getDirY()) {
-				case CROSSHAIR_UP:
-					batch.draw(Assets.textures.shot,
-							(playerPos.x + Constants.PLAYER_HEIGHT / 2)
-									* conf.UNIT_SIZE + 3,
-							(playerPos.y - Constants.PLAYER_WIDTH / 2)
-									* conf.UNIT_SIZE + 38, 0, 0, 256, 32, 1, 1,
-							45, 0, 0, 256, 32, false, false);
-					break;
+            wifiRayOffset += 4;
+            if (wifiRayOffset > Assets.textures.shot.getWidth() / 2) {
+                wifiRayOffset = 0;
+            }
+            if (player.getDirX() == DirectionX.RIGHT) {
+                switch (player.getDirY()) {
+                case CROSSHAIR_UP:
+                    batch.draw(Assets.textures.shot,
+                            (playerPos.x + Constants.PLAYER_HEIGHT / 2)
+                                    * conf.UNIT_SIZE + 3,
+                            (playerPos.y - Constants.PLAYER_WIDTH / 2)
+                                    * conf.UNIT_SIZE + 38,
+                            0 , 0, 256, 32, 1, 1, 45,
+                            256 - wifiRayOffset,
+                            0, 256, 32, false, false);
+                    break;
 				case CROSSHAIR_MIDDLE:
 					batch.draw(
 							Assets.textures.shot,
 							(playerPos.x + Constants.PLAYER_HEIGHT / 2)
 									* conf.UNIT_SIZE,
 							(playerPos.y - Constants.PLAYER_WIDTH / 2)
-									* conf.UNIT_SIZE
-									+ 20,
-							256, 32);
+									* conf.UNIT_SIZE + 20,
+                            0, 0, 256, 32, 1, 1, 0,
+                            256 - wifiRayOffset,
+                            0, 256, 32, false, false);
 					break;
 				case CROSSHAIR_DOWN:
 					batch.draw(Assets.textures.shot,
 							(playerPos.x + Constants.PLAYER_HEIGHT / 2)
 									* conf.UNIT_SIZE - 15,
 							(playerPos.y - Constants.PLAYER_WIDTH / 2)
-									* conf.UNIT_SIZE + 5, 0, 0,
-							256, 32, 1, 1, -45, 0, 0, 256, 32, false, false);
+									* conf.UNIT_SIZE + 5,
+                            0, 0, 256, 32, 1, 1, -45,
+                            256 - wifiRayOffset,
+                            0, 256, 32, false, false);
 					break;
 				}
 			} else {
@@ -129,8 +140,10 @@ public class PlayerRender {
 							(playerPos.x - Constants.PLAYER_HEIGHT / 2)
 									* conf.UNIT_SIZE - 5,
 							(playerPos.y - Constants.PLAYER_WIDTH / 2)
-									* conf.UNIT_SIZE + 42, 0, 0,
-							-256, 32, 1, 1, -45, 0, 0, 256, 32, false, false);
+									* conf.UNIT_SIZE + 42,
+                            0 , 0, -256, 32, 1, 1, -45,
+                            256 - wifiRayOffset,
+                            0, 256, 32, false, false);
 					break;
 				case CROSSHAIR_MIDDLE:
 					batch.draw(
@@ -138,21 +151,25 @@ public class PlayerRender {
 							(playerPos.x - Constants.PLAYER_HEIGHT / 2)
 									* conf.UNIT_SIZE,
 							(playerPos.y - Constants.PLAYER_WIDTH / 2)
-									* conf.UNIT_SIZE
-									+ 20,
-							-256, 32);
+									* conf.UNIT_SIZE + 20,
+                            0, 0, -256, 32, 1, 1, 0,
+                            256 - wifiRayOffset,
+                            0, 256, 32, false, false);
 					break;
 				case CROSSHAIR_DOWN:
 					batch.draw(Assets.textures.shot,
 							(playerPos.x - Constants.PLAYER_HEIGHT / 2)
 									* conf.UNIT_SIZE + 13,
 							(playerPos.y - Constants.PLAYER_WIDTH / 2)
-									* conf.UNIT_SIZE + 3, 0, 0,
-							-256, 32, 1, 1, 45, 0, 0, 256, 32, false, false);
+									* conf.UNIT_SIZE + 3,
+                            0, 0, -256, 32, 1, 1, 45,
+                            256 - wifiRayOffset, 0, 256, 32, false, false);
 					break;
 				}
 			}
-		}
+        } else {
+            wifiRayOffset = 0;
+        }
 
 		batch.end();
 	}
