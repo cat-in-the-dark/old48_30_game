@@ -56,8 +56,6 @@ public class GameScreen extends ResizableScreen {
 			conf.VIEW_PORT_WIDTH, conf.VIEW_PORT_HEIGHT);
 	private final int[] layers = new int[] { 0 };
 
-	private ShapeRenderer shapeRenderer;
-
 	private Box2DDebugRenderer debugRenderer;
 	Matrix4 debugMatrix;
 
@@ -136,7 +134,6 @@ public class GameScreen extends ResizableScreen {
 		weldJointDef.bodyA = player.getBody();
 		weldJointDef.bodyB = cable.getBodyList().get(
 				cable.getBodyList().size() - 1);
-		Vector2 playerPos = player.getBody().getPosition();
 		weldJointDef.localAnchorA.set(-30, 8);
 		world.createJoint(weldJointDef);
 
@@ -211,15 +208,11 @@ public class GameScreen extends ResizableScreen {
 
 		// add bots
 		botsGenerator.step(delta, player);
+		levelGenerator.updateLevel(level, camera);
 
+		levelRender.render(level, delta);
 		hudRenderer.render(hud);
 		playerRenderer.render(player);
-
-		// only for dev
-		blocksRender.render(level.getBlockList());
-
-		// call levelGenerator
-
 		cableRender.render(cable);
 
 		// FIXME: move into render loop
@@ -234,9 +227,6 @@ public class GameScreen extends ResizableScreen {
 				player.moveRight();
 			}
 		}
-
-		levelGenerator.updateLevel(level, camera);
-		levelRender.render(level, delta);
 
 		debugRenderer.render(level.getWorld(), debugMatrix);
 		aiManager.update(level);
@@ -286,7 +276,7 @@ public class GameScreen extends ResizableScreen {
 		if (super.keyDown(keycode))
 			return true;
 
-		System.out.print(keycode);
+		System.out.print("ppp" + keycode);
 
 		if (keycode == Keys.W) { // w
 			player.crosshairUp();

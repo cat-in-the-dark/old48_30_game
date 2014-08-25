@@ -15,16 +15,19 @@ import entity.Player;
 public class PlayerRender {
 	private final Config conf;
 	private final SpriteBatch batch = new SpriteBatch();
-    private final OrthographicCamera camera;
+	private final OrthographicCamera camera;
 
 	public PlayerRender(Config conf, OrthographicCamera camera) {
 		this.conf = conf;
-        this.camera = camera;
+		this.camera = camera;
 	}
 
 	public void render(Player player) {
-        batch.setProjectionMatrix(camera.combined);
+		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+
+		System.out.println("ground:" + player.isOnGround());
+		System.out.println("dirY:" + player.getDirY());
 
 		Vector2 playerPos = player.getBody().getPosition();
 		TextureRegion[][] frames;
@@ -59,13 +62,13 @@ public class PlayerRender {
 				// если стоит
 				switch (player.getDirY()) {
 				case CROSSHAIR_UP:
-					frame = frames[0][12];
+					frame = frames[0][13];
 					break;
 				case CROSSHAIR_MIDDLE:
-					frame = frames[0][11];
+					frame = frames[0][12];
 					break;
 				case CROSSHAIR_DOWN:
-					frame = frames[0][13];
+					frame = frames[0][14];
 					break;
 
 				}
@@ -100,8 +103,8 @@ public class PlayerRender {
 							(playerPos.x + Constants.PLAYER_HEIGHT / 2)
 									* conf.UNIT_SIZE + 3,
 							(playerPos.y - Constants.PLAYER_WIDTH / 2)
-									* conf.UNIT_SIZE + 38, 0, 0,
-							256, 32, 1, 1, 45, 0, 0, 1, 1, false, false);
+									* conf.UNIT_SIZE + 38, 0, 0, 256, 32, 1, 1,
+							45, 0, 0, 256, 32, false, false);
 					break;
 				case CROSSHAIR_MIDDLE:
 					batch.draw(
@@ -119,7 +122,7 @@ public class PlayerRender {
 									* conf.UNIT_SIZE - 15,
 							(playerPos.y - Constants.PLAYER_WIDTH / 2)
 									* conf.UNIT_SIZE + 5, 0, 0,
-							256, 32, 1, 1, -45, 0, 0, 1, 1, false, false);
+							256, 32, 1, 1, -45, 0, 0, 256, 32, false, false);
 					break;
 				}
 			} else {
@@ -130,7 +133,7 @@ public class PlayerRender {
 									* conf.UNIT_SIZE - 5,
 							(playerPos.y - Constants.PLAYER_WIDTH / 2)
 									* conf.UNIT_SIZE + 42, 0, 0,
-							-256, 32, 1, 1, -45, 0, 0, 1, 1, false, false);
+							-256, 32, 1, 1, -45, 0, 0, 256, 32, false, false);
 					break;
 				case CROSSHAIR_MIDDLE:
 					batch.draw(
@@ -148,7 +151,7 @@ public class PlayerRender {
 									* conf.UNIT_SIZE + 13,
 							(playerPos.y - Constants.PLAYER_WIDTH / 2)
 									* conf.UNIT_SIZE + 3, 0, 0,
-							-256, 32, 1, 1, 45, 0, 0, 1, 1, false, false);
+							-256, 32, 1, 1, 45, 0, 0, 256, 32, false, false);
 					break;
 				}
 			}
