@@ -216,9 +216,15 @@ public class GameScreen extends ResizableScreen {
 		if (removedAnimations != null)
 			animations.removeAll(removedAnimations);
 
+        float viewportLeftEdge = camera.position.x / conf.UNIT_SIZE - conf.VIEW_PORT_WIDTH / 2;
+        if (player.getBody().getPosition().x < viewportLeftEdge + 1) {
+            player.getBody().setLinearVelocity(0, player.getBody().getLinearVelocity().y);
+            player.getBody().getPosition().set(viewportLeftEdge + 1, player.getBody().getPosition().y);
+        }
+
 		// FIXME: move into render loop
 		if (Gdx.input.isKeyPressed(Keys.A)) { // a
-			if (player.getBody().getLinearVelocity().x > -10) {
+			if (player.getBody().getLinearVelocity().x > -10 && player.getBody().getPosition().x > viewportLeftEdge + 1) {
 				player.moveLeft();
 			}
 		}
