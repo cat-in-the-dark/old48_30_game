@@ -137,17 +137,23 @@ public class TilePresetFactory {
 			}
 		};
 
-		this.botsPositionsEasy = new ArrayList<Vector2[]>(){{
-			add(new Vector2[] { new Vector2(4, 4) });
-			add(new Vector2[] { new Vector2(5, 7) });
-			add(new Vector2[] { new Vector2(6, 7) });
-			add(new Vector2[] { new Vector2(4, 4) });
-		}};
-		this.botsPositionsMedium = new ArrayList<Vector2[]>(){{
-			
-		}};
-		this.botsPositionsHard = new ArrayList<Vector2[]>(){{
-		}};
+		this.botsPositionsEasy = new ArrayList<Vector2[]>() {
+			{
+				add(new Vector2[] { new Vector2(4, 4) });
+				add(new Vector2[] { new Vector2(5, 7) });
+				add(new Vector2[] { new Vector2(6, 7) });
+				add(new Vector2[] { new Vector2(4, 4) });
+			}
+		};
+		this.botsPositionsMedium = new ArrayList<Vector2[]>() {
+			{
+
+			}
+		};
+		this.botsPositionsHard = new ArrayList<Vector2[]>() {
+			{
+			}
+		};
 
 		this.tilePresets = new HashMap<Integer, List<TilePreset>>();
 		this.tilePresets.put(Constants.EASY, new ArrayList<TilePreset>());
@@ -174,19 +180,20 @@ public class TilePresetFactory {
 	}
 
 	private MushroomedCrab createCrub(float posX, float posY) {
-		//PolygonShape crubShape = new PolygonShape();
+		// PolygonShape crubShape = new PolygonShape();
 		CircleShape crubShape = new CircleShape();
-		//crubShape.setAsBox(Constants.CRUB_WIDTH / 2, Constants.CRUB_HEIGHT / 2);
+		// crubShape.setAsBox(Constants.CRUB_WIDTH / 2, Constants.CRUB_HEIGHT /
+		// 2);
 		crubShape.setRadius(Constants.CRUB_WIDTH / 2);
 		PhysicsModel crubModel = new PhysicsModel(world, posX, posY,
 				crubShape,
 				true, BodyDef.BodyType.DynamicBody, 1.0f);
 		MushroomedCrab mush = new MushroomedCrab(crubModel);
-
-		if (new Random().nextInt() % 2 == 0)
-			mush.moveRight();
-		else
-			mush.moveLeft();
+		mush.moveLeft();
+		// if (new Random().nextInt() % 2 == 0)
+		// mush.moveRight();
+		// else
+		// mush.moveLeft();
 
 		return mush;
 	}
