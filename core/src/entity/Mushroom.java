@@ -13,6 +13,7 @@ public class Mushroom implements Bullet {
 	private final DirectionY dirY;
 	public PhysicsModel model;
 	private float stateTime = 0f;
+	private boolean isDamagable = true;
 
 	public Mushroom(DirectionX dirX, DirectionY dirY) {
 		this.dirX = dirX;
@@ -60,5 +61,13 @@ public class Mushroom implements Bullet {
 
 	public float getStateTime() {
 		return stateTime;
+	}
+
+	public boolean isDamagable() {
+		return isDamagable;
+	}
+
+	public void deactivate() {
+		isDamagable = false;
 	}
 }

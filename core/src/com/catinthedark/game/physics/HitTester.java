@@ -15,6 +15,7 @@ import com.catinthedark.game.level.TileType;
 
 import entity.Bullet;
 import entity.DirectionX;
+import entity.Mushroom;
 import entity.MushroomedCrab;
 import entity.Player;
 
@@ -57,24 +58,30 @@ public class HitTester {
 
 	public boolean processContactFixture(Fixture fixture, Level level,
 			Player player) {
-//		for (MushroomedCrab crab : level.getCrabs())
-//			if (crab.getBody().getFixtureList().size != 0)
-//				if (crab.getBody().getFixtureList().get(0) == fixture) {
-//					// level.getWorld().destroyBody(crab.getBody());
-//					player.getBody().getPosition().x += player.getDirX() == DirectionX.RIGHT ? 10
-//							: -10;
-//					// player.getBody().applyLinearImpulse(
-//					// new Vector2(
-//					// player.getDirX() == DirectionX.RIGHT ? 10
-//					// : -10, 0),
-//					// new Vector2(0, 0), true);
-//					return true;
-//				}
+		// for (MushroomedCrab crab : level.getCrabs())
+		// if (crab.getBody().getFixtureList().size != 0)
+		// if (crab.getBody().getFixtureList().get(0) == fixture) {
+		// // level.getWorld().destroyBody(crab.getBody());
+		// player.getBody().getPosition().x += player.getDirX() ==
+		// DirectionX.RIGHT ? 10
+		// : -10;
+		// // player.getBody().applyLinearImpulse(
+		// // new Vector2(
+		// // player.getDirX() == DirectionX.RIGHT ? 10
+		// // : -10, 0),
+		// // new Vector2(0, 0), true);
+		// return true;
+		// }
 
 		for (Bullet bullet : level.getBullets()) {
 			if (bullet.getBody().getFixtureList().size != 0)
 				if (bullet.getBody().getFixtureList().get(0) == fixture) {
 					// level.getWorld().destroyBody(bullet.getBody());
+					Mushroom mush = (Mushroom) bullet;
+					if (!mush.isDamagable())
+						return false;
+
+					mush.deactivate();
 					return true;
 				}
 		}
@@ -111,10 +118,10 @@ public class HitTester {
 		if (player.getDirX() == DirectionX.RIGHT) {
 			switch (player.getDirY()) {
 			case CROSSHAIR_UP:
-				fireTo = new Vector2(ppos.x + 1, ppos.y + 1);
+				fireTo = new Vector2(ppos.x + 8, ppos.y + 8);
 				break;
 			case CROSSHAIR_DOWN:
-				fireTo = new Vector2(ppos.x + 1, ppos.y - 1);
+				fireTo = new Vector2(ppos.x + 8, ppos.y - 8);
 				break;
 			case CROSSHAIR_MIDDLE:
 				fireTo = new Vector2(ppos.x + 8, ppos.y);
@@ -123,13 +130,13 @@ public class HitTester {
 		} else {
 			switch (player.getDirY()) {
 			case CROSSHAIR_UP:
-				fireTo = new Vector2(ppos.x - 1, ppos.y + 1);
+				fireTo = new Vector2(ppos.x - 8, ppos.y + 8);
 				break;
 			case CROSSHAIR_DOWN:
-				fireTo = new Vector2(ppos.x - 1, ppos.y - 1);
+				fireTo = new Vector2(ppos.x - 8, ppos.y - 8);
 				break;
 			case CROSSHAIR_MIDDLE:
-				fireTo = new Vector2(ppos.x - 1, ppos.y);
+				fireTo = new Vector2(ppos.x - 8, ppos.y);
 				break;
 			}
 
@@ -144,7 +151,7 @@ public class HitTester {
 				for (MushroomedCrab crab : crabs) {
 					if (crab.getBody() == fixture.getBody()) {
 						suffered.add(crab);
-						return -1;
+						return 0;
 					}
 				}
 
