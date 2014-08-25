@@ -224,8 +224,10 @@ public class GameScreen extends ResizableScreen {
 		debugRenderer.render(level.getWorld(), debugMatrix);
 		aiManager.update(level);
 
-		if (needMoveCamera())
-			moveMainCamera();
+		if (needMoveCamera()) {
+            moveMainCamera();
+            moveBackgroundCamera();
+        }
 
 		if (player.getBody().getPosition().y < 0) {
 			next();
@@ -250,12 +252,21 @@ public class GameScreen extends ResizableScreen {
 				camera.position.y, camera.position.z);
 		camera.update();
 
-		backgroundFarCamera.position.set(
-				backgroundFarCamera.position.x + Constants.BACK_CAMERA_SPEED,
-				backgroundFarCamera.position.y,
-				backgroundFarCamera.position.z);
-		backgroundFarCamera.update();
 	}
+
+    private void moveBackgroundCamera() {
+        if (backgroundFarCamera.position.x >= conf.VIEW_PORT_WIDTH / 2 + 2 * conf.VIEW_PORT_WIDTH) {
+            backgroundFarCamera.position.set(new float[] {
+                    conf.VIEW_PORT_WIDTH / 2,
+                    conf.VIEW_PORT_HEIGHT / 2, 0 });
+        } else {
+            backgroundFarCamera.position.set(
+                    backgroundFarCamera.position.x + Constants.BACK_CAMERA_SPEED,
+                    backgroundFarCamera.position.y,
+                    backgroundFarCamera.position.z);
+        }
+        backgroundFarCamera.update();
+    }
 
 	private boolean needMoveCamera() {
 		float distance = player.getBody().getPosition().x * conf.UNIT_SIZE
