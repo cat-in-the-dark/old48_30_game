@@ -55,18 +55,26 @@ public class HitTester {
 		return true;
 	}
 
-	public boolean processContactFixture(Fixture fixture, Level level) {
-		for (MushroomedCrab crab : level.getCrabs())
-			if (crab.getBody().getFixtureList().size != 0)
-				if (crab.getBody().getFixtureList().get(0) == fixture) {
-					//level.getWorld().destroyBody(crab.getBody());
-					return true;
-				}
+	public boolean processContactFixture(Fixture fixture, Level level,
+			Player player) {
+//		for (MushroomedCrab crab : level.getCrabs())
+//			if (crab.getBody().getFixtureList().size != 0)
+//				if (crab.getBody().getFixtureList().get(0) == fixture) {
+//					// level.getWorld().destroyBody(crab.getBody());
+//					player.getBody().getPosition().x += player.getDirX() == DirectionX.RIGHT ? 10
+//							: -10;
+//					// player.getBody().applyLinearImpulse(
+//					// new Vector2(
+//					// player.getDirX() == DirectionX.RIGHT ? 10
+//					// : -10, 0),
+//					// new Vector2(0, 0), true);
+//					return true;
+//				}
 
 		for (Bullet bullet : level.getBullets()) {
 			if (bullet.getBody().getFixtureList().size != 0)
 				if (bullet.getBody().getFixtureList().get(0) == fixture) {
-					//level.getWorld().destroyBody(bullet.getBody());
+					// level.getWorld().destroyBody(bullet.getBody());
 					return true;
 				}
 		}
@@ -81,10 +89,12 @@ public class HitTester {
 			if (contact.isTouching()) {
 				if (contact.getFixtureA() == player.getBody().getFixtureList()
 						.get(0))
-					return processContactFixture(contact.getFixtureB(), level);
+					return processContactFixture(contact.getFixtureB(), level,
+							player);
 				else if (contact.getFixtureB() == player.getBody()
 						.getFixtureList().get(0))
-					return processContactFixture(contact.getFixtureA(), level);
+					return processContactFixture(contact.getFixtureA(), level,
+							player);
 
 				return false;
 			}
