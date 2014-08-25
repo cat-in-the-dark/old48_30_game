@@ -16,6 +16,9 @@ public class PlayerRender {
 	private final Config conf;
 	private final SpriteBatch batch = new SpriteBatch();
 	private final OrthographicCamera camera;
+    private boolean blink = false;
+    private int blinkCount = 0;
+
 
     private int wifiRayOffset = 0;
 
@@ -44,54 +47,63 @@ public class PlayerRender {
 			goAnimation = Assets.animations.playerGoBack;
 		}
 
-		if (player.isMooving()) {
-			batch.draw(
-					goAnimation.getKeyFrame(player
-							.getStateTime()),
-					(playerPos.x - Constants.PLAYER_HEIGHT / 2)
-							* conf.UNIT_SIZE,
-					(playerPos.y - Constants.PLAYER_WIDTH / 2) * conf.UNIT_SIZE,
-					Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
-					Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
-		} else {
+        if (!player.isDamaged() || blink) {
+            if (player.isMooving()) {
+                batch.draw(
+                        goAnimation.getKeyFrame(player
+                                .getStateTime()),
+                        (playerPos.x - Constants.PLAYER_HEIGHT / 2)
+                                * conf.UNIT_SIZE,
+                        (playerPos.y - Constants.PLAYER_WIDTH / 2) * conf.UNIT_SIZE,
+                        Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
+                        Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
+            } else {
 
-			if (player.isOnGround()) {
+                if (player.isOnGround()) {
 
-				TextureRegion frame = null;
-				// если стоит
-				switch (player.getDirY()) {
-				case CROSSHAIR_UP:
-					frame = frames[0][13];
-					break;
-				case CROSSHAIR_MIDDLE:
-					frame = frames[0][12];
-					break;
-				case CROSSHAIR_DOWN:
-					frame = frames[0][14];
-					break;
+                    TextureRegion frame = null;
+                    // если стоит
+                    switch (player.getDirY()) {
+                        case CROSSHAIR_UP:
+                            frame = frames[0][13];
+                            break;
+                        case CROSSHAIR_MIDDLE:
+                            frame = frames[0][12];
+                            break;
+                        case CROSSHAIR_DOWN:
+                            frame = frames[0][14];
+                            break;
 
-				}
+                    }
 
-				batch.draw(
-						frame,
-						(playerPos.x - Constants.PLAYER_HEIGHT / 2)
-								* conf.UNIT_SIZE,
-						(playerPos.y - Constants.PLAYER_WIDTH / 2)
-								* conf.UNIT_SIZE,
-						Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
-						Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
-			} else {// летим
-				batch.draw(
-						jumpAnimation.getKeyFrame(player
-								.getStateTime()),
-						(playerPos.x - Constants.PLAYER_HEIGHT / 2)
-								* conf.UNIT_SIZE,
-						(playerPos.y - Constants.PLAYER_WIDTH / 2)
-								* conf.UNIT_SIZE,
-						Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
-						Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
-			}
-		}
+                    batch.draw(
+                            frame,
+                            (playerPos.x - Constants.PLAYER_HEIGHT / 2)
+                                    * conf.UNIT_SIZE,
+                            (playerPos.y - Constants.PLAYER_WIDTH / 2)
+                                    * conf.UNIT_SIZE,
+                            Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
+                            Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
+                } else {// летим
+                    batch.draw(
+                            jumpAnimation.getKeyFrame(player
+                                    .getStateTime()),
+                            (playerPos.x - Constants.PLAYER_HEIGHT / 2)
+                                    * conf.UNIT_SIZE,
+                            (playerPos.y - Constants.PLAYER_WIDTH / 2)
+                                    * conf.UNIT_SIZE,
+                            Constants.PLAYER_WIDTH * conf.UNIT_SIZE,
+                            Constants.PLAYER_HEIGHT * conf.UNIT_SIZE);
+                }
+            }
+        } else {
+            blinkCount++;
+        }
+        if (blinkCount >= 20) {
+            blinkCount = 0;
+            player.setDamaged(false);
+        }
+        blink = !blink;
 
 		// draw shot
 		if (player.isInAttack()) {

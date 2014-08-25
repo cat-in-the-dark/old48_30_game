@@ -96,6 +96,10 @@ public class GameScreen extends ResizableScreen {
 		return player;
 	}
 
+    private void gameOver() {
+        gotoFrame(4);
+    }
+
 	@Override
 	public void render(float delta) {
 		super.render(delta);
@@ -110,7 +114,11 @@ public class GameScreen extends ResizableScreen {
 		if (hitTester.isPlayerOnDamage(player)) {
 			System.out.print("damage");
 			hud.decHealth();
+            player.setDamaged(true);
 		}
+        if (hud.getHealth() <= 0) {
+            gameOver();
+        }
 
 		boolean isStayByPhysics = !hitTester.isPlayerFlyes(player);
 
@@ -244,7 +252,7 @@ public class GameScreen extends ResizableScreen {
 		}
 
 		if (player.getBody().getPosition().y < 0) {
-			gotoFrame(4);
+			gameOver();
 		}
 	}
 
@@ -252,10 +260,6 @@ public class GameScreen extends ResizableScreen {
 
 		walkedDistance += Constants.MAIN_CAMERA_SPEED;
 
-		System.out.println(walkedDistance);
-		hud.addMeters((int) (walkedDistance * 100)
-				/ Constants.DISTANCE_MAX_EASY);
-		System.out.println(walkedDistance);
 		hud.setMeters((int) ((walkedDistance * 100) / Constants.DISTANCE_MAX_EASY));
 
 		if (walkedDistance >= Constants.DISTANCE_MAX_EASY) {
