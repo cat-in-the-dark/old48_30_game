@@ -2,8 +2,8 @@ package render;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.catinthedark.game.Config;
+import com.catinthedark.game.GameScore;
 import com.catinthedark.game.assets.Assets;
-import com.catinthedark.game.hud.Hud;
 
 public class HudRenderer {
 	private final SpriteBatch batch = new SpriteBatch();
@@ -13,19 +13,21 @@ public class HudRenderer {
 		this.conf = conf;
 	}
 
-	public void render(Hud hud) {
+	public void render() {
+        GameScore score = GameScore.getInstance();
+
 		batch.begin();
-		Assets.textures.heartReg.setU(hud.getHealth() + 1);
+		Assets.textures.heartReg.setU(score.getHealth() + 1);
 		batch.draw(Assets.textures.heartReg, conf.HUD_LEFT, conf.HUD_TOP,
-				hud.getHealth()
+				score.getHealth()
 						* conf.UNIT_SIZE / 2,
 				conf.UNIT_SIZE / 2);
 
-		float u = 0.9f - (float) hud.getMeters() / 100;
+		float u = 0.9f - (float) score.getMeters() / 100;
 		if (u < 0)
 			u = 0;
 
-		float width = (float) hud.getMeters() / 10 * 9 / 10 * conf.UNIT_SIZE
+		float width = (float) score.getMeters() / 10 * 9 / 10 * conf.UNIT_SIZE
 				/ 2 + conf.UNIT_SIZE / 2;
 		if (width > conf.UNIT_SIZE / 2 * 10)
 			width = conf.UNIT_SIZE / 2 * 10;
@@ -36,10 +38,10 @@ public class HudRenderer {
 				conf.HUD_TOP - 30, width,
 				conf.UNIT_SIZE / 2);
 
-		Assets.fonts.hudFont.draw(batch, "Score: " + hud.getScore(),
+		Assets.fonts.hudFont.draw(batch, "Score: " + score.getScore(),
 				conf.HUD_LEFT, conf.HUD_TOP - 50);
 
-		Assets.fonts.hudFont.draw(batch, "Level: " + hud.getLevel(),
+		Assets.fonts.hudFont.draw(batch, "Level: " + score.getLevel(),
 				conf.HUD_LEFT, conf.HUD_TOP - 80);
 		batch.end();
 

@@ -21,8 +21,8 @@ public class BotsGenerator {
 
 	private MushroomedCrab createCrub(Level level, float posX, float posY) {
 		PolygonShape crubShape = new PolygonShape();
-		crubShape.setAsBox(Constants.CRUB_WIDTH / 2, Constants.CRUB_HEIGHT / 2);
-		// crubShape.setRadius(Constants.CRUB_WIDTH / 2);
+		crubShape.setAsBox(Constants.CRAB_WIDTH / 2, Constants.CRAB_HEIGHT / 2);
+		// crubShape.setRadius(Constants.CRAB_WIDTH / 2);
 		PhysicsModel crubModel = new PhysicsModel(level.getWorld(), posX
 				/ 32, posY / 32,
 				crubShape,

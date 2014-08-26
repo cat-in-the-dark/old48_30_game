@@ -3,7 +3,6 @@ package com.catinthedark.game.level;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.catinthedark.game.Constants;
 import com.catinthedark.game.physics.PhysicsModel;
@@ -184,9 +183,9 @@ public class TilePresetFactory {
 	private MushroomedCrab createCrub(float posX, float posY) {
 		// PolygonShape crubShape = new PolygonShape();
 		CircleShape crubShape = new CircleShape();
-		// crubShape.setAsBox(Constants.CRUB_WIDTH / 2, Constants.CRUB_HEIGHT /
+		// crubShape.setAsBox(Constants.CRAB_WIDTH / 2, Constants.CRAB_HEIGHT /
 		// 2);
-		crubShape.setRadius(Constants.CRUB_WIDTH / 2);
+		crubShape.setRadius(Constants.CRAB_WIDTH / 2);
 		PhysicsModel crubModel = new PhysicsModel(world, posX, posY,
 				crubShape,
 				true, BodyDef.BodyType.DynamicBody, 1.0f);

@@ -1,14 +1,5 @@
 package com.catinthedark.game.screen.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import render.CableRender;
-import render.HudRenderer;
-import render.LevelRender;
-import render.PlayerRender;
-import render.Renderable;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
@@ -24,8 +15,8 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.catinthedark.game.Config;
 import com.catinthedark.game.Constants;
+import com.catinthedark.game.GameScore;
 import com.catinthedark.game.assets.Assets;
-import com.catinthedark.game.hud.Hud;
 import com.catinthedark.game.level.AIManager;
 import com.catinthedark.game.level.BotsGenerator;
 import com.catinthedark.game.level.Level;
@@ -33,17 +24,15 @@ import com.catinthedark.game.level.LevelGenerator;
 import com.catinthedark.game.physics.HitTester;
 import com.catinthedark.game.physics.PhysicsModel;
 import com.catinthedark.game.screen.ResizableScreen;
+import entity.*;
+import render.*;
 
-import entity.Bullet;
-import entity.Cable;
-import entity.Mushroom;
-import entity.MushroomedCrab;
-import entity.Player;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameScreen extends ResizableScreen {
 
 	private OrthographicCamera camera;
-	private Hud hud;
 	private HudRenderer hudRenderer;
 	private PlayerRender playerRenderer;
 	private LevelRender levelRender;
@@ -113,10 +102,10 @@ public class GameScreen extends ResizableScreen {
 
 		if (hitTester.isPlayerOnDamage(player)) {
 			System.out.print("damage");
-			hud.decHealth();
+            GameScore.getInstance().decHealth();
 			player.setDamaged(true);
 		}
-		if (hud.getHealth() <= 0) {
+		if (GameScore.getInstance().getHealth() <= 0) {
 			gameOver();
 		}
 
@@ -139,10 +128,10 @@ public class GameScreen extends ResizableScreen {
 			List<MushroomedCrab> damaged =
 					hitTester.getCrubsOnSuffering(player);
 			for (final MushroomedCrab crab : damaged) {
-				System.out.println("healt:" + crab.healt);
+				System.out.println("health:" + crab.healt);
 				crab.healt -= 10;
 				if (crab.healt < 0) {
-                    hud.addScore(Constants.CRAB_SCORE);
+                    GameScore.getInstance().priceCrab();
 					level.deleteEntity(crab);
 
 					Assets.audios.crabDeath.play(1.5f);
@@ -208,7 +197,7 @@ public class GameScreen extends ResizableScreen {
 		levelGenerator.updateLevel(level, camera);
 
 		levelRender.render(level, delta);
-		hudRenderer.render(hud);
+		hudRenderer.render();
 		playerRenderer.render(player);
 		cableRender.render(cable);
 		// render animations
@@ -268,7 +257,7 @@ public class GameScreen extends ResizableScreen {
 
 		walkedDistance += Constants.MAIN_CAMERA_SPEED;
 
-		hud.setMeters((int) ((walkedDistance * 100) / Constants.DISTANCE_MAX_EASY));
+        GameScore.getInstance().setMeters((int) ((walkedDistance * 100) / Constants.DISTANCE_MAX_EASY));
 
 		if (walkedDistance >= Constants.DISTANCE_MAX_EASY) {
 			next();
@@ -326,13 +315,6 @@ public class GameScreen extends ResizableScreen {
 		if (keycode == Keys.ENTER)
 			player.shot();
 
-		// if (keycode == 51) // w
-		// hud.addMeters(3);
-		//
-		// if (hud.getMeters() > 100)
-		// hud.clearMeters();
-		//
-		// hud.addScore(1);
 		return true;
 	};
 
@@ -347,6 +329,7 @@ public class GameScreen extends ResizableScreen {
 
 	@Override
 	public void show() {
+        GameScore.getInstance().resetScore();
 
 		walkedDistance = 0;
 
@@ -360,9 +343,7 @@ public class GameScreen extends ResizableScreen {
 		this.backgroundFarCamera = new OrthographicCamera(
 				conf.VIEW_PORT_WIDTH, conf.VIEW_PORT_HEIGHT);
 
-		hud = new Hud(20);
 		hudRenderer = new HudRenderer(conf);
-		hud.setLevel(1);
 
 		playerRenderer = new PlayerRender(conf, camera);
 

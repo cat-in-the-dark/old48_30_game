@@ -6,7 +6,9 @@ package com.catinthedark.game;
 public class GameScore {
     private static GameScore ourInstance = new GameScore();
     private int score;
-    private int wireLength;
+    private int meters;
+    private int health;
+    private int level;
 
     public static GameScore getInstance() {
         return ourInstance;
@@ -20,25 +22,46 @@ public class GameScore {
         this.score = score;
     }
 
-
-    public void setWireLength(int wireLength) {
-        this.wireLength = wireLength;
-    }
-
     public int getScore() {
         return score;
     }
 
-    public int getWireLength() {
-        return wireLength;
-    }
-
-    public void priceEnemy() {
-        this.score += Constants.ENEMY_PRICE;
+    public void priceCrab() {
+        this.score += Constants.CRAB_SCORE;
     }
 
     public void resetScore() {
         setScore(0);
-        setWireLength(0);
+        setMeters(0);
+        setHealth(Constants.START_HEALTH);
+        level = Constants.EASY;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void incHealth() {
+        health++;
+    }
+
+    public void decHealth() {
+        health--;
+    }
+
+    public int getMeters() {
+        return meters;
+    }
+
+    public void setMeters(int meters) {
+        this.meters = meters;
+    }
+
+    public int getLevel() {
+        return level;
     }
 }

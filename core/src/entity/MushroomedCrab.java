@@ -60,7 +60,6 @@ public class MushroomedCrab implements Entity {
 
 	@Override
 	public Bullet shot() {
-		System.out.println("Shut");
 		lastShutTime = stateTime;
 		shutting = true;
 		canShut = false;

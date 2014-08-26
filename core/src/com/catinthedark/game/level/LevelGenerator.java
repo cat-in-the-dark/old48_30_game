@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.catinthedark.game.Config;
 import com.catinthedark.game.Constants;
@@ -27,8 +26,8 @@ public class LevelGenerator {
 
 	private MushroomedCrab createCrub(Level level, float posX, float posY) {
 		PolygonShape crubShape = new PolygonShape();
-		crubShape.setAsBox(Constants.CRUB_WIDTH / 2, Constants.CRUB_HEIGHT / 2);
-		// crubShape.setRadius(Constants.CRUB_WIDTH / 2);
+		crubShape.setAsBox(Constants.CRAB_WIDTH / 2, Constants.CRAB_HEIGHT / 2);
+		// crubShape.setRadius(Constants.CRAB_WIDTH / 2);
 		PhysicsModel crubModel = new PhysicsModel(level.getWorld(), posX
 				/ conf.UNIT_SIZE, posY / conf.UNIT_SIZE,
 				crubShape,
