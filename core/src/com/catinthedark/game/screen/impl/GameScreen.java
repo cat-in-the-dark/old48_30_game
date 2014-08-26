@@ -53,8 +53,6 @@ public class GameScreen extends ResizableScreen {
 	private Box2DDebugRenderer debugRenderer;
 	Matrix4 debugMatrix;
 
-	public float walkedDistance;
-
 	public GameScreen(Config conf) {
 		super(conf);
 	}
@@ -255,11 +253,9 @@ public class GameScreen extends ResizableScreen {
 
 	private void moveMainCamera() {
 
-		walkedDistance += Constants.MAIN_CAMERA_SPEED;
+        GameScore.getInstance().incDistance();
 
-        GameScore.getInstance().setMeters((int) ((walkedDistance * 100) / Constants.DISTANCE_MAX_EASY));
-
-		if (walkedDistance >= Constants.DISTANCE_MAX_EASY) {
+		if (GameScore.getInstance().isWalked()) {
 			next();
 		}
 
@@ -330,8 +326,6 @@ public class GameScreen extends ResizableScreen {
 	@Override
 	public void show() {
         GameScore.getInstance().resetScore();
-
-		walkedDistance = 0;
 
 		camera = new OrthographicCamera(conf.VIEW_PORT_WIDTH
 				* conf.UNIT_SIZE,

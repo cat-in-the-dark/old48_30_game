@@ -9,6 +9,7 @@ public class GameScore {
     private int meters;
     private int health;
     private int level;
+    private float walkedDistance;
 
     public static GameScore getInstance() {
         return ourInstance;
@@ -16,10 +17,6 @@ public class GameScore {
 
     private GameScore() {
         resetScore();
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 
     public int getScore() {
@@ -31,10 +28,11 @@ public class GameScore {
     }
 
     public void resetScore() {
-        setScore(0);
-        setMeters(0);
         setHealth(Constants.START_HEALTH);
-        level = Constants.EASY;
+        this.score = 0;
+        this.level = Constants.EASY;
+        this.meters = 0;
+        this.walkedDistance = 0f;
     }
 
     public int getHealth() {
@@ -57,11 +55,16 @@ public class GameScore {
         return meters;
     }
 
-    public void setMeters(int meters) {
-        this.meters = meters;
-    }
-
     public int getLevel() {
         return level;
+    }
+
+    public void incDistance() {
+        walkedDistance += Constants.MAIN_CAMERA_SPEED;
+        this.meters = ((int) ((walkedDistance * 100) / Constants.DISTANCE_MAX_EASY));
+    }
+
+    public boolean isWalked() {
+        return walkedDistance >= Constants.DISTANCE_MAX_EASY;
     }
 }
