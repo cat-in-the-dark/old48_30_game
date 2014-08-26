@@ -27,21 +27,10 @@ public class Level {
     private List<Bullet> bullets;
 	private Class[] entities_classes = { MushroomedCrab.class };
 
-	private Block createBlock(int x) {
-		PolygonShape blockShape = new PolygonShape();
-		blockShape.setAsBox(Constants.BLOCK_WIDTH / 2,
-				Constants.BLOCK_HEIGHT / 2);
-		PhysicsModel blockModel = new PhysicsModel(world, x, 0, blockShape,
-				true, BodyDef.BodyType.StaticBody, 1.0f);
-		return new Block(blockModel);
-	}
-
 	public Level(Config conf, int difficult, OrthographicCamera camera) {
 		world = new World(new Vector2(0, Constants.WORLD_GRAVITY), true);
 		blockList = new ArrayList<Block>();
         bullets = new ArrayList<Bullet>();
-		for (int i = 0; i < conf.VIEW_PORT_WIDTH; i++)
-			blockList.add(createBlock(i));
 
 		this.difficult = difficult;
 		this.tiles = new LinkedList<Tile>();
