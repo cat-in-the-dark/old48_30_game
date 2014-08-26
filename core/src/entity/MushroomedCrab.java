@@ -9,7 +9,7 @@ import com.catinthedark.game.physics.PhysicsModel;
  * Created by Ilya on 24.08.2014.
  */
 public class MushroomedCrab implements Entity {
-	private DirectionX dirX = DirectionX.RIGHT;
+	public DirectionX dirX = DirectionX.RIGHT;
 	private DirectionY dirY;
 	private float lastShutTime = 0f;
 	private float stateTime;

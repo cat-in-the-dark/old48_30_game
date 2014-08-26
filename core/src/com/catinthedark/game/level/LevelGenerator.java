@@ -24,27 +24,16 @@ public class LevelGenerator {
 		this.conf = conf;
 	}
 
-	private MushroomedCrab createCrub(Level level, float posX, float posY) {
-		PolygonShape crubShape = new PolygonShape();
-		crubShape.setAsBox(Constants.CRAB_WIDTH / 2, Constants.CRAB_HEIGHT / 2);
-		// crubShape.setRadius(Constants.CRAB_WIDTH / 2);
-		PhysicsModel crubModel = new PhysicsModel(level.getWorld(), posX
-				/ conf.UNIT_SIZE, posY / conf.UNIT_SIZE,
-				crubShape,
-				true, BodyDef.BodyType.DynamicBody, 0.1f);
-		return new MushroomedCrab(crubModel);
-	}
-
 	public void generateLevel(Level level) {
 		// level.addEntity(createCrub(level, 200, 100));
 		// level.addEntity(createCrub(level, 250, 100));
 
-		LevelPart part = factory.build(level.difficult, lastPresetX, 0);
+		LevelPart part = factory.build(level.difficult, lastPresetX, 0, false);
 		List<Tile> tilesList = part.tiles;
 		level.tiles.addAll(tilesList);
 
-		for (MushroomedCrab crab : part.crabs)
-			level.addEntity(crab);
+//		for (MushroomedCrab crab : part.crabs)
+//			level.addEntity(crab);
 
 		lastPresetX = tilesList.get(tilesList.size() - 1).getX()
 				+ Constants.BLOCK_WIDTH;
@@ -57,7 +46,8 @@ public class LevelGenerator {
 				+ camera.viewportWidth / 2f;
 
 		if (tiles.get(tiles.size() - 1).getX() * Constants.tileSize < levelRightEdge) {
-			LevelPart part = factory.build(level.difficult, lastPresetX, 0);
+			LevelPart part = factory.build(level.difficult, lastPresetX, 0,
+					true);
 			List<Tile> tileList = part.tiles;
 			tiles.addAll(tileList);
 

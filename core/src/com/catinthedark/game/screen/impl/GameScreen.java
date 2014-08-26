@@ -100,7 +100,7 @@ public class GameScreen extends ResizableScreen {
 
 		if (hitTester.isPlayerOnDamage(player)) {
 			System.out.print("damage");
-            GameScore.getInstance().decHealth();
+			GameScore.getInstance().decHealth();
 			player.setDamaged(true);
 		}
 		if (GameScore.getInstance().getHealth() <= 0) {
@@ -129,7 +129,7 @@ public class GameScreen extends ResizableScreen {
 				System.out.println("health:" + crab.healt);
 				crab.healt -= 10;
 				if (crab.healt < 0) {
-                    GameScore.getInstance().priceCrab();
+					GameScore.getInstance().priceCrab();
 					level.deleteEntity(crab);
 
 					Assets.audios.crabDeath.play(1.5f);
@@ -239,7 +239,7 @@ public class GameScreen extends ResizableScreen {
 		}
 
 		debugRenderer.render(level.getWorld(), debugMatrix);
-		aiManager.update(level);
+		aiManager.update(level, player);
 
 		if (needMoveCamera()) {
 			moveMainCamera();
@@ -253,7 +253,7 @@ public class GameScreen extends ResizableScreen {
 
 	private void moveMainCamera() {
 
-        GameScore.getInstance().incDistance();
+		GameScore.getInstance().incDistance();
 
 		if (GameScore.getInstance().isWalked()) {
 			next();
@@ -325,7 +325,7 @@ public class GameScreen extends ResizableScreen {
 
 	@Override
 	public void show() {
-        GameScore.getInstance().resetScore();
+		GameScore.getInstance().resetScore();
 
 		camera = new OrthographicCamera(conf.VIEW_PORT_WIDTH
 				* conf.UNIT_SIZE,

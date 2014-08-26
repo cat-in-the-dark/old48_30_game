@@ -11,14 +11,21 @@ import entity.Bullet;
 import entity.DirectionX;
 import entity.Mushroom;
 import entity.MushroomedCrab;
+import entity.Player;
 
 /**
  * Created by Ilya on 24.08.2014.
  */
 public class AIManager {
-	public void update(Level level) {
+	public void update(Level level, Player player) {
 		List<MushroomedCrab> entities = level.getCrabs();
 		for (MushroomedCrab crab : entities) {
+
+			if (crab.getBody().getPosition().x > player.getBody().getPosition().x)
+				crab.dirX = DirectionX.LEFT;
+			else
+				crab.dirX = DirectionX.RIGHT;
+
 			// move
 			crab.getBody().applyLinearImpulse(
 					new Vector2(crab.getDirX() == DirectionX.RIGHT ? 0.5f

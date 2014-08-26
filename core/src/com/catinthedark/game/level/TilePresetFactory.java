@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.catinthedark.game.Constants;
 import com.catinthedark.game.physics.PhysicsModel;
+import com.sun.org.apache.regexp.internal.recompile;
 
 import entity.MushroomedCrab;
 
@@ -199,7 +200,8 @@ public class TilePresetFactory {
 		return mush;
 	}
 
-	public LevelPart build(int difficult, float presetX, float presetY) {
+	public LevelPart build(int difficult, float presetX, float presetY,
+			boolean withBots) {
 		LevelPart part = new LevelPart();
 		if (tilePresets.get(difficult).size() == 0) {
 			throw new RuntimeException(
@@ -219,6 +221,9 @@ public class TilePresetFactory {
 		}
 
 		part.tiles = tileList;
+
+		if (!withBots)
+			return part;
 
 		List<MushroomedCrab> crabs = new ArrayList<MushroomedCrab>();
 		for (Vector2 pos : tilePreset.botsPositions.get(i))
